@@ -40,7 +40,6 @@ public class StopWatchDemo {
 
 	public static void main(final String[] arguments) {
 		final Stopwatch stopwatch = new Stopwatch();
-
 		int numberTimes = 5;
 		stopwatch.start();
 		doSomethingJustToBeDoingIt(numberTimes);
