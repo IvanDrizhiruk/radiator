@@ -22,20 +22,11 @@ public class StopWatchDemo {
 		}
 	}
 
-	/**
-	 * Print statistics on Stopwatch-reported times for provided number of
-	 * loops.
-	 * 
-	 * @param numberLoops
-	 *            Number of loops executed.
-	 * @param stopwatch
-	 *            Stopwatch instance with time used statistics.
-	 */
 	public static void printElapsedTime(final int numberLoops,
 			final Stopwatch stopwatch) {
 		if (stopwatch.isRunning()) {
 			out.println("WARNING! Your stopwatch is still running!");
-		} else // stopwatch not running
+		} else
 		{
 			out.println(numberLoops + " loops required: ");
 			
@@ -63,17 +54,10 @@ public class StopWatchDemo {
 		printElapsedTime(numberTimes, stopwatch);
 
 		numberTimes = 2;
-//		stopwatch.reset();
 		stopwatch.start();
 		doSomethingJustToBeDoingIt(numberTimes);
 		stopwatch.stop();
 		printElapsedTime(numberTimes, stopwatch);
 
-//		numberTimes = 125;
-//		stopwatch.reset();
-//		stopwatch.start();
-//		doSomethingJustToBeDoingIt(numberTimes);
-//		stopwatch.stop();
-//		printElapsedTime(numberTimes, stopwatch);
 	}
 }
