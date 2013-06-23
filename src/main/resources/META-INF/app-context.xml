@@ -22,14 +22,14 @@
 	<task:annotation-driven />
 	<task:scheduler id="scheduler" pool-size="3" />
 
-	<bean id="placeholderConfig"
+	<!-- bean id="placeholderConfig"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>config.properties</value>
+				<value></value>
 			</list>
 		</property>
-	</bean>
+	</bean-->
 
 
 

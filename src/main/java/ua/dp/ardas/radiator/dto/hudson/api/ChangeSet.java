@@ -1,4 +1,4 @@
-package ua.dp.ardas.radiator.dto;
+package ua.dp.ardas.radiator.dto.hudson.api;
 
 import java.util.List;
 

@@ -15,7 +15,7 @@ public class RunMe2 {
 	@Autowired
 	private Worker worker;
 
-	//@Scheduled(fixedDelay=30000)
+	//@Scheduled(fixedDelay=3000)
 	private void  executeTask() {
 		worker.doAction(name);
 	}
