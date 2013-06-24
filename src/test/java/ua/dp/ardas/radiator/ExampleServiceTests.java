@@ -1,5 +1,6 @@
 package ua.dp.ardas.radiator;
 
+import ua.dp.ardas.radiator.sheduler.ExampleWorker1;
 import junit.framework.TestCase;
 
 public class ExampleServiceTests extends TestCase {

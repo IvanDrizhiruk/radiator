@@ -1,4 +1,4 @@
-package ua.dp.ardas.radiator;
+package ua.dp.ardas.radiator.sheduler;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;

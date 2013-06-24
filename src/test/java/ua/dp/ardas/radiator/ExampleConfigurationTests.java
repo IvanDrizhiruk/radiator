@@ -2,7 +2,7 @@ package ua.dp.ardas.radiator;
 
 import static org.junit.Assert.assertNotNull;
 
-import ua.dp.ardas.radiator.Worker;
+import ua.dp.ardas.radiator.sheduler.Worker;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

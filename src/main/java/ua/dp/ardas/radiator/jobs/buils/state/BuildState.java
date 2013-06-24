@@ -5,13 +5,15 @@ import ua.dp.ardas.radiator.utils.JsonUtils;
 
 
 public class BuildState {
-	States state;
+	public BuildStateInstances instances;
+	public States state;
 	public String errorMessage;
 	public String failedEmail;
 	public String failedName;
 
-	public BuildState(States state) {
+	public BuildState(States state, BuildStateInstances instances) {
 		this.state = state;
+		this.instances = instances;
 	}
 
 	@Override

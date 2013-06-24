@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import ua.dp.ardas.radiator.Worker;
 import ua.dp.ardas.radiator.jobs.buils.state.BuildStateContorller;
 
 
@@ -19,9 +18,8 @@ public class RunMe1 {
 	@Autowired
 	private BuildStateContorller buildStateContorller;
 	
-	@Scheduled(fixedDelay=50000)
+	@Scheduled(fixedDelay=5000)
 	private void  executeTask() {
-		
 		worcker.doAction(String.valueOf(name));
 		buildStateContorller.execute();
 	}
