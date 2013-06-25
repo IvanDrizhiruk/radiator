@@ -37,7 +37,7 @@ public class BuildStateExecutor {
 			LOG.debug(format("url ", url));
 		}
 
-		BuildState buildState = calculateState(instances, url);;
+		BuildState buildState = calculateState(instances, url);
 		if (LOG.isInfoEnabled()) {
 			LOG.info(format("BuildState for url %s : %s", url, buildState));
 		}

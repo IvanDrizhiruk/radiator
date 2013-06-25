@@ -6,4 +6,11 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
 public class Person {
 	public String absoluteUrl;
 	public String fullName;
+	
+	public Person() {}
+	
+	public Person(String absoluteUrl, String fullName) {
+		this.absoluteUrl = absoluteUrl;
+		this.fullName = fullName;
+	}
 }

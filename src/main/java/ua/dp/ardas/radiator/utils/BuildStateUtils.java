@@ -1,8 +1,10 @@
 package ua.dp.ardas.radiator.utils;
 
+import static org.apache.commons.lang.StringUtils.EMPTY;
+import static org.apache.commons.lang.StringUtils.isBlank;
+
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 
 import ua.dp.ardas.radiator.dto.hudson.api.Person;
@@ -18,12 +20,12 @@ public class BuildStateUtils {
 
 	public static String calculateFailedEmail(List<Person> culprits) {
 		if (null == culprits) {
-			return null;
+			return EMPTY;
 		}
 
 		List<String> wordsList = Lists.transform(culprits,new Function<Person, String>() {
 			public String apply(Person person) {
-				return (null == person
+				return (null == person || isBlank(person.fullName)
 						? null
 						: person.fullName);
 			}
@@ -34,18 +36,17 @@ public class BuildStateUtils {
 
 	public static String calculateFailedName(List<Person> culprits) {
 		if (null == culprits) {
-			return null;
+			return EMPTY;
 		}
 		
         List<String> wordsList = Lists.transform(culprits, new Function<Person, String>() {
 			public String apply(Person person) {
-				if (null == person) {
+				if (null == person || isBlank(person.fullName)) {
 					return null;
 				}
 				
 				return WordUtils.capitalize(
-						CharMatcher.is(' ').replaceFrom(
-								StringUtils.defaultString(person.fullName), " "));
+						CharMatcher.is('.').replaceFrom(person.fullName, " "));
 			}
 		});
 	            
