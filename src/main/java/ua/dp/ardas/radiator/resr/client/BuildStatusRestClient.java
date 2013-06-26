@@ -1,6 +1,7 @@
 package ua.dp.ardas.radiator.resr.client;
 
 import static java.lang.String.format;
+import static ua.dp.ardas.radiator.utils.TypeUtils.toIntegerOrNull;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,21 +30,9 @@ public class BuildStatusRestClient {
 	}
 
 	private Integer loadNumber(String fullUrl) {
-		String loadedString = loadString(fullUrl);
+		return toIntegerOrNull(loadString(fullUrl));
+	}
 
-		return toStringToInteger(loadedString);
-		
-	}
-	
-	private Integer toStringToInteger(String loadedString) {
-		try {
-			return Integer.valueOf(loadedString);
-		}catch (NumberFormatException e) {
-			LOG.error(String.format("Can not convert '%s' to integer.", loadedString), e);
-			return null;
-		}
-	}
-	
 	private String loadString(String fullUrl) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(format("Try load from url ", fullUrl));

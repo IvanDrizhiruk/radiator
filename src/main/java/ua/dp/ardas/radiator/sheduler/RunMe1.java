@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import ua.dp.ardas.radiator.jobs.buils.state.BuildStateContorller;
+import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatusContorller;
 
 
 @Component
@@ -17,10 +18,16 @@ public class RunMe1 {
 	private Worker worcker;
 	@Autowired
 	private BuildStateContorller buildStateContorller;
+	@Autowired
+	private ThucydidesTestStatusContorller thucydidesTestStatusContorller;
 	
-	@Scheduled(fixedDelay=5000)
+
+	
+	@Scheduled(fixedDelay=50000)
 	private void  executeTask() {
 		worcker.doAction(String.valueOf(name));
-		buildStateContorller.execute();
+//		buildStateContorller.execute();
+		
+		thucydidesTestStatusContorller.execute();
 	}
 }
