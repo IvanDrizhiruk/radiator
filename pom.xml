@@ -86,8 +86,13 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-		
-		
+
+		<dependency>
+			<artifactId>xp_st_sync</artifactId>
+			<groupId>ua.dp.ardas.tools.sync</groupId>
+			<version>1.0.5.7-SNAPSHOT</version>
+		</dependency>
+
 		<!-- Tests -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -106,7 +111,6 @@
 			<artifactId>fest-assert</artifactId>
 			<version>1.4</version>
 		</dependency>
-		
 	</dependencies>
 
 	<build>
