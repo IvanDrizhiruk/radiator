@@ -9,14 +9,11 @@
 	<packaging>jar</packaging>
 	<name>Spring Utility</name>
 	<url>http://www.springframework.org</url>
-	<description>
-		<![CDATA[
-      This project is a minimal jar utility with Spring configuration.
-    ]]>
-	</description>
+	<description></description>
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<spring.framework.version>3.1.1.RELEASE</spring.framework.version>
+		<spira.test.utils.version>1.0.5.7-SNAPSHOT</spira.test.utils.version>
 	</properties>	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -86,13 +83,23 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-
+		
+		<!-- SpiraTest utils  -->
+		<dependency>
+			<artifactId>ws-st-api</artifactId>
+			<groupId>ua.dp.ardas.tools.sync</groupId>
+			<version>${spira.test.utils.version}</version>
+		</dependency>
+		<dependency>
+			<artifactId>common-sync-util</artifactId>
+			<groupId>ua.dp.ardas.tools.sync</groupId>
+			<version>${spira.test.utils.version}</version>
+		</dependency>
 		<dependency>
 			<artifactId>xp_st_sync</artifactId>
 			<groupId>ua.dp.ardas.tools.sync</groupId>
-			<version>1.0.5.7-SNAPSHOT</version>
+			<version>${spira.test.utils.version}</version>
 		</dependency>
-
 		<!-- Tests -->
 		<dependency>
 			<groupId>junit</groupId>
