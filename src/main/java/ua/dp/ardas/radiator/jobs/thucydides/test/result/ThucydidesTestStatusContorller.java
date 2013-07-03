@@ -11,9 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
 
-import ua.dp.ardas.radiator.dao.ThucydidesTestRestDAO;
+import ua.dp.ardas.radiator.dao.ThucydidesTestStatusDAO;
 import ua.dp.ardas.radiator.resr.client.ThucydidesTestRestClient;
 
 @Component
@@ -23,9 +24,9 @@ public class ThucydidesTestStatusContorller {
 	@Autowired
 	private ThucydidesTestRestClient restClient;
 	@Autowired
-	private ThucydidesTestRestDAO dao;
+	private ThucydidesTestStatusDAO dao;
 	
-	@Value("thucydides.test.status.url")
+	@Value("${thucydides.test.status.url}")
 	private String url;
 			
 	public void execute() {
@@ -37,12 +38,12 @@ public class ThucydidesTestStatusContorller {
 	protected ThucydidesTestStatistic extractStatistic(String report) {
 		Preconditions.checkNotNull(report);
 		
-		String reportArea = substringBetween(report,
+		String reportArea = CharMatcher.anyOf("\r\n ").removeFrom(
+				substringBetween(report,
 				"<div class=\"test-count-summary\">",
-				"<div id=\"test-results-tabs\">");
+				"<div id=\"test-results-tabs\">"));
 		
-		
-		Pattern pattern = Pattern.compile("([\\d]*)");
+		Pattern pattern = Pattern.compile("(?i)(?s)>([0-9]+)<.*>([0-9]+)<.*>([0-9]+)<.*>([0-9]+)<");
 		Matcher matcher = pattern.matcher(reportArea);
 		
 		if (!matcher.find()) {
@@ -53,16 +54,13 @@ public class ThucydidesTestStatusContorller {
 		}
 		
 		ThucydidesTestStatistic statistic = new ThucydidesTestStatistic();
-		System.out.println(matcher.group(1));
 		statistic.passed =  toIntegerOrNull(matcher.group(1));
+		statistic.pending =  toIntegerOrNull(matcher.group(2));
+		statistic.failed =  toIntegerOrNull(matcher.group(3));
+		statistic.errors =  toIntegerOrNull(matcher.group(4));
 		
-		
-//		statistic.pending =  toIntegerOrNull(matcher.group(2));
-//		statistic.failed =  toIntegerOrNull(matcher.group(3));
-//		statistic.errors =  toIntegerOrNull(matcher.group(4));
-		
-		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("Thucydides statistic %s", statistic));
+		if (LOG.isInfoEnabled()) {
+			LOG.info(String.format("Thucydides statistic %s", statistic));
 		}
 		return statistic;
 	}

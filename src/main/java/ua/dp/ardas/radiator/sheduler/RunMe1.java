@@ -23,7 +23,7 @@ public class RunMe1 {
 	
 
 	
-	@Scheduled(fixedDelay=50000)
+	@Scheduled(fixedDelay=5000)
 	private void  executeTask() {
 		worcker.doAction(String.valueOf(name));
 //		buildStateContorller.execute();

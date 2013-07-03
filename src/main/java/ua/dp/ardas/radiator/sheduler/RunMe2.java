@@ -7,7 +7,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import ua.dp.ardas.radiator.dao.BuildStateDAO;
-import ua.dp.ardas.radiator.jobs.buils.state.BuildState;
+import ua.dp.ardas.radiator.dao.ThucydidesTestStatusDAO;
+import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatistic;
 
 
 
@@ -22,15 +23,23 @@ public class RunMe2 {
 	private Worker worker;
 	
 	@Autowired
-	private BuildStateDAO dao;
+	private BuildStateDAO buildStateDAO;
+	
+	@Autowired
+	private ThucydidesTestStatusDAO thucydidesTestStatusDAO;
 
-	@Scheduled(fixedDelay=10000)
+	@Scheduled(fixedDelay=1000)
 	private void  executeTask() {
 		worker.doAction(name);
 		
+//		LOG.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//		for (BuildState state1 : buildStateDAO.findAll()) {
+//			LOG.warn(state1);
+//		}
+//		LOG.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		LOG.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		for (BuildState state : dao.findAll()) {
-			LOG.warn(state);
+		for (ThucydidesTestStatistic state2 : thucydidesTestStatusDAO.findAll()) {
+			LOG.warn(state2);
 		}
 		LOG.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	}
