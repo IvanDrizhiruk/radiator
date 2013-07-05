@@ -4,7 +4,7 @@ import java.util.List;
 
 import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatistic;
 
-public interface ThucydidesTestStatusDAO {
+public interface ThucydidesTestStatisticDAO {
 	
 	void insert(ThucydidesTestStatistic state);
 	List<ThucydidesTestStatistic> findAll();

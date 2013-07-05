@@ -14,17 +14,17 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
 
-import ua.dp.ardas.radiator.dao.ThucydidesTestStatusDAO;
+import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
 import ua.dp.ardas.radiator.resr.client.ThucydidesTestRestClient;
 
 @Component
-public class ThucydidesTestStatusContorller {
-	private static Logger LOG = Logger.getLogger(ThucydidesTestStatusContorller.class.getName());
+public class ThucydidesTestStatisticContorller {
+	private static Logger LOG = Logger.getLogger(ThucydidesTestStatisticContorller.class.getName());
 	
 	@Autowired
 	private ThucydidesTestRestClient restClient;
 	@Autowired
-	private ThucydidesTestStatusDAO dao;
+	private ThucydidesTestStatisticDAO dao;
 	
 	@Value("${thucydides.test.status.url}")
 	private String url;

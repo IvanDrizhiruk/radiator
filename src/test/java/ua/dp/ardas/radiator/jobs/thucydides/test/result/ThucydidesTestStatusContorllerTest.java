@@ -70,7 +70,7 @@ public class ThucydidesTestStatusContorllerTest {
 	}
 	
 	
-	private class ThucydidesTestStatusContorllerImpl extends ThucydidesTestStatusContorller {
+	private class ThucydidesTestStatusContorllerImpl extends ThucydidesTestStatisticContorller {
 		@Override
 		public ThucydidesTestStatistic extractStatistic(String report) {
 			return super.extractStatistic(report);

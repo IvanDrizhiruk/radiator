@@ -7,12 +7,12 @@ import java.util.List;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import ua.dp.ardas.radiator.dao.ThucydidesTestStatusDAO;
+import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
 import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatistic;
 
 @Component
 @Scope("singleton")
-public class ThucydidesTestStatusDAOInMemoryImpl implements ThucydidesTestStatusDAO {
+public class ThucydidesTestStatusDAOInMemoryImpl implements ThucydidesTestStatisticDAO {
 
 	private List<ThucydidesTestStatistic> thucydidesTestStatistic = newArrayList();
 	

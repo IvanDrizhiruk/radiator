@@ -1,75 +1,70 @@
 package ua.dp.ardas.radiator.jobs.spira.test.bugs;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
+import static java.util.Arrays.asList;
+import static ua.dp.ardas.radiator.jobs.spira.test.bugs.SpiraTestPriorities.increment;
 import static ua.dp.ardas.tools.sync.common.SyncUtil.connectToSpira;
+import static ua.dp.ardas.tools.sync.common.SyncUtil.connectToSpiraProject;
+import static ua.dp.ardas.tools.sync.util.ObjectsUtil.getSpiraAllOpenIncidents;
+import static ua.dp.ardas.tools.sync.util.TypeHelper.INCIDENT_TYPE_BUG;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-import org.apache.commons.lang.mutable.MutableInt;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
-import com.google.common.base.Preconditions;
-
 import ua.dp.ardas.tools.sync.common.SyncException;
-import ua.dp.ardas.tools.sync.common.SyncUtil;
-import ua.dp.ardas.tools.sync.util.ObjectsUtil;
-import ua.dp.ardas.tools.sync.util.TypeHelper;
-import ua.dp.ardas.tools.sync.xp.ArrayOfRemoteIncident;
 import ua.dp.ardas.tools.sync.xp.ImportExportSoap_PortType;
 import ua.dp.ardas.tools.sync.xp.RemoteIncident;
 
 @Component
 public class SpiraTestClient {
 	private static Log LOG = LogFactory.getLog(SpiraTestClient.class);
-	
-	private Integer projectId = 11;
 
-	public SpiraTestStatistic loadBugCount() {
+	public SpiraTestStatistic loadBugCount(Integer projectId) {
 		try {
-			return countIncidents(projectId, connectToSpira());
-		} catch (SyncException e) {
-			LOG.error("Unable connect to SpiraTest ", e);
-			return null;
-		}
-	}
-	
-	
-	private static SpiraTestStatistic countIncidents(Integer spiraProjectId, ImportExportSoap_PortType importExportSoap)
-			throws SyncException {
-		Preconditions.checkNotNull(spiraProjectId);
-		
-		return getIncidents(importExportSoap, spiraProjectId);
-	}
-	
-
-	public static SpiraTestStatistic getIncidents(ImportExportSoap_PortType spira, Integer spiraProjectId) throws SyncException {
-		SyncUtil.connectToSpiraProject(spira, spiraProjectId);
-		ArrayOfRemoteIncident list = ObjectsUtil.getSpiraAllOpenIncidents(spira, spiraProjectId);
-		Map<String, MutableInt> incidents = new HashMap<String, MutableInt>();
-		for (RemoteIncident item : list.getRemoteIncident()) {
-			if (!TypeHelper.INCIDENT_TYPE_BUG.equalsIgnoreCase(item.getIncidentTypeName())){
-				continue;
+			if (LOG.isInfoEnabled()) {
+				LOG.info(format("Try load SpiraTest statistic for project id %d", projectId));
 			}
-			String priority = item.getPriorityName();
-			MutableInt incidentItem = getIncidentItem(incidents, priority);
-			incidentItem.increment();
-		}
-		for (Map.Entry<String, MutableInt> e : incidents.entrySet()) {
-			LOG.info(String.format("priority=[%s] count=[%s]",e.getKey(), e.getValue().getValue()));
+			SpiraTestStatistic statistic = calculateStatistic(loadAllOpenIncidents(projectId));
+			
+			if (LOG.isInfoEnabled()) {
+				LOG.info(format("SpiraTest statistic was loaded for project %d: %s", projectId, statistic));
+			}
+			
+			return statistic;
+		} catch (SyncException e ) {
+			LOG.error("Unable conect to SpiraTest ", e);
+		} catch (Exception e) {
+			LOG.error("Unable process SpiraTest statistic ", e);
 		}
 		
-		return new SpiraTestStatistic();
+		return null;
+	}
+
+
+	private List<RemoteIncident> loadAllOpenIncidents( Integer projectId) throws SyncException {
+		ImportExportSoap_PortType spira = connectToSpira();
+		
+		connectToSpiraProject(spira, projectId);
+		
+		return asList(getSpiraAllOpenIncidents(spira, projectId).getRemoteIncident());
 	}
 	
-	private static MutableInt getIncidentItem(Map<String, MutableInt> incidents, String priority) {
-		if (!incidents.containsKey(priority)) {
-			MutableInt incidentItem = new MutableInt();
-			incidents.put(priority, incidentItem);
-			return incidentItem;
-		} else {
-			return incidents.get(priority);
+	
+	private static SpiraTestStatistic calculateStatistic(List<RemoteIncident> incidents) {
+		checkNotNull(incidents);
+
+		SpiraTestStatistic spiraTestStatistic = new SpiraTestStatistic();
+		for (RemoteIncident item : incidents) {
+			if (INCIDENT_TYPE_BUG.equalsIgnoreCase(item.getIncidentTypeName())){
+				increment(item.getPriorityName(), spiraTestStatistic);
+			} else if ("change request".equalsIgnoreCase(item.getIncidentTypeName())) {
+				spiraTestStatistic.changeRequest++;
+			}
 		}
+		return spiraTestStatistic;
 	}
 }
