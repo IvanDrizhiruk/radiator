@@ -7,4 +7,5 @@ import ua.dp.ardas.radiator.jobs.buils.state.BuildState;
 public interface BuildStateDAO {
 	void insert(BuildState buildState);
 	List<BuildState> findAll();
+	List<?> findLastData();
 }

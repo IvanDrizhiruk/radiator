@@ -1,4 +1,4 @@
-package ua.dp.ardas.radiator.report;
+package ua.dp.ardas.radiator.jobs.report.builder;
 
 import static com.google.common.collect.Maps.newHashMap;
 
@@ -47,15 +47,12 @@ public class ReportBuilder {
 	private Map<String, String> agregateParameters() {
 		Map<String, String> parameters = newHashMap();
 
-		LOG.info("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-		LOG.info("$$$$$$$$$$$$$ Report $$$$$$$$$$$$$$");
-		LOG.info("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-		LOG.info(lastToString(buildStateDAO.findAll()));
+		parameters.put("", value)
+
+		LOG.info(lastToString(buildStateDAO.findLastData()));
 		LOG.info(lastToString(thucydidesTestStaisticDAO.findAll()));
 		LOG.info(lastToString(spiraTestStatisticDAO.findAll()));
-		LOG.info("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-		LOG.info("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-		LOG.info("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+
 
 
 		return parameters;

@@ -12,7 +12,7 @@ import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatistic;
 
 @Component
 @Scope("singleton")
-public class ThucydidesTestStatusDAOInMemoryImpl implements ThucydidesTestStatisticDAO {
+public class ThucydidesTestStatusDAOInMemory implements ThucydidesTestStatisticDAO {
 
 	private List<ThucydidesTestStatistic> thucydidesTestStatistic = newArrayList();
 	

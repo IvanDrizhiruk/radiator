@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
 
 @Component
 @Scope("singleton")
-public class BuildStateDAOInMemoryImpl implements BuildStateDAO {
+public class BuildStateDAOInMemory implements BuildStateDAO {
 
 	private List<BuildState> buildStates = Lists.newArrayList();
 

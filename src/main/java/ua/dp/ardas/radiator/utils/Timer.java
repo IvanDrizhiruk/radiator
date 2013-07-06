@@ -13,6 +13,6 @@ public class Timer {
 
 	public long elapsedTimeInMilliseconds() {
 		timer.stop();
-		return timer.elapsedTime(MILLISECONDS);
+		return timer.elapsed(MILLISECONDS);
 	}
 }
