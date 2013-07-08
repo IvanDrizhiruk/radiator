@@ -1,5 +1,6 @@
 package ua.dp.ardas.radiator.dao.impl;
 
+import static com.google.common.collect.Iterables.getLast;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
@@ -18,12 +19,22 @@ public class ThucydidesTestStatusDAOInMemory implements ThucydidesTestStatisticD
 	
 	@Override
 	public void insert(ThucydidesTestStatistic state) {
+		thucydidesTestStatistic.clear();
 		thucydidesTestStatistic.add(state);
 	}
 
 	@Override
 	public List<ThucydidesTestStatistic> findAll() {
 		return thucydidesTestStatistic;
+	}
+
+	@Override
+	public ThucydidesTestStatistic findLastData() {
+		try {
+			return getLast(thucydidesTestStatistic);
+		}catch (Exception e) {
+			return null;
+		}
 	}
 
 }

@@ -1,0 +1,196 @@
+@charset "utf-8";
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td {
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	vertical-align: baseline;
+	background: transparent
+}
+
+body {
+	line-height: 1
+}
+
+blockquote,q {
+	quotes: none
+}
+
+:focus {
+	outline: 0
+}
+
+ins {
+	text-decoration: none
+}
+
+del {
+	text-decoration: line-through
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section
+	{
+	display: block;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html,body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+body {
+	background: #ccc;
+	color: #000;
+	font: 12px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+}
+
+a {
+	color: blue;
+	font: 12px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+	text-decoration: underline;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.wrap {
+	height: auto !important;
+	height: 100%;
+	min-height: 100%;
+	position: relative;
+}
+
+.empty { /*	height:100px;	*/
+	
+}
+
+header { /*	height:100px;	*/
+	
+}
+
+nav { /*	height:40px; */
+	
+}
+
+footer { /*	height:100px;	*/
+	margin-top: -100px;
+	position: relative;
+}
+
+table {
+	margin: 20px;
+}
+
+.sectname {
+	font: 48px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+	padding-left: 30px;
+}
+
+.sectcont {
+	padding: 30px;
+	font: 60px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+	background: #fff;
+}
+
+.failedlbl {
+	display: block;
+	font: 100px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+	padding: 3px 0px;
+}
+
+.failednum {
+	font: bold 100px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+	border: 1px solid;
+	padding: 3px 20px;
+	background: #e30613;
+	color: #fff;
+	text-align: center;
+}
+
+.passedlbl {
+	display: block;
+	color: #00c200;
+	margin: 15px 0px;
+}
+
+.pendinglbl {
+	display: block;
+	color: #ffb700;
+	margin: 15px 0px;
+}
+
+.tdchart {
+	vertical-align: middle;
+}
+
+.chart {
+	display: block;
+	border-radius: 0px 300px 300px 0px;
+	background: #fff;
+	width: 327px;
+	height: 327px;
+	border: 30px solid #fff;
+}
+
+.thanks {
+	vertical-align: middle;
+	text-align: center;
+	height: 450px;
+	font: 100px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+	color: #00c200;
+}
+
+.shadow {
+	text-shadow: #ededed 0px 1px 0px, #009400 0px -1px 0px;
+}
+
+.green {
+	color: #00c200;
+}
+
+.broker_name {
+	font-size: 90px;
+	padding-top: 20px;
+	display: block;
+}
+
+.broker_foto {
+	background: #e30613;
+	border-color: #e30613;
+}
+
+.broker_foto img {
+	height: 327px;
+	border-radius: 50%
+}
+
+.def_foto {
+	background: url('../i/vasya_alibabaevich.jpg') no-repeat;
+	background-size: 327px;
+	width: 327px;
+	height: 327px;
+	border-radius: 50%;
+}
+
+.badbuild {
+	background: #e30613;
+	color: #fff;
+	font-size: 48px;
+	vertical-align: middle;
+}

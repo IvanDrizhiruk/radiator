@@ -11,8 +11,7 @@ import static ua.dp.ardas.tools.sync.util.TypeHelper.INCIDENT_TYPE_BUG;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import ua.dp.ardas.tools.sync.common.SyncException;
@@ -21,7 +20,7 @@ import ua.dp.ardas.tools.sync.xp.RemoteIncident;
 
 @Component
 public class SpiraTestClient {
-	private static Log LOG = LogFactory.getLog(SpiraTestClient.class);
+	private static Logger LOG = Logger.getLogger(SpiraTestClient.class.getName());
 
 	public SpiraTestStatistic loadBugCount(Integer projectId) {
 		try {

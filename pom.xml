@@ -109,7 +109,15 @@
 			<groupId>axis</groupId>
 			<artifactId>axis</artifactId>
 			<version>1.4</version>
-		</dependency>	
+		</dependency>
+		
+		<!-- Report -->
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+		</dependency>
+			
 		<!-- Tests -->
 		<dependency>
 			<groupId>junit</groupId>

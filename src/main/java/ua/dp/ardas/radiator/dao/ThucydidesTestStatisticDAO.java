@@ -8,5 +8,6 @@ public interface ThucydidesTestStatisticDAO {
 	
 	void insert(ThucydidesTestStatistic state);
 	List<ThucydidesTestStatistic> findAll();
+	ThucydidesTestStatistic findLastData();
 
 }
