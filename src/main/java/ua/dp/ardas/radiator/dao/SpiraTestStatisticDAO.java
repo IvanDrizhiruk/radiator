@@ -10,4 +10,8 @@ public interface SpiraTestStatisticDAO {
 	void insert(SpiraTestStatistic statistic);
 
 	SpiraTestStatistic findLastData();
+	
+	void addByDate(String day, SpiraTestStatistic statistic);
+	
+	SpiraTestStatistic findByDate(String data);
 }

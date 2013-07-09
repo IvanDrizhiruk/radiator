@@ -5,7 +5,8 @@ import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.io.Closeables.closeQuietly;
 import static java.lang.String.format;
 import static ua.dp.ardas.radiator.jobs.buils.state.BuildState.States.SUCCESS;
-import static ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances.UI;
+import static ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances.UI_THUCYDIDES_TESTS4;
+import static ua.dp.ardas.radiator.utils.DataTimeUtils.calculateMondayDate;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,10 +23,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+
 import ua.dp.ardas.radiator.dao.BuildStateDAO;
 import ua.dp.ardas.radiator.dao.SpiraTestStatisticDAO;
 import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
 import ua.dp.ardas.radiator.jobs.buils.state.BuildState;
+import ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances;
 import ua.dp.ardas.radiator.jobs.spira.test.bugs.SpiraTestStatistic;
 import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatistic;
 
@@ -62,7 +67,8 @@ public class ReportBuilder {
 
 		agrefateBuildStates(parameters);
 		agrefateThucydidesTestStais(parameters);
-		grefateSpiraTestStatistic(parameters);
+		agrefateSpiraTestStatistic(parameters);
+		agrefateSpiraTestOnStartWeekStatistic(parameters);
 
 		if (LOG.isInfoEnabled()) {
 			LOG.info(format("Agregated params %s", parameters));
@@ -72,11 +78,7 @@ public class ReportBuilder {
 	}
 
 	private void agrefateBuildStates(Map<String, String> parameters) {
-		List<BuildState> buildStates = buildStateDAO.findLastData();
-		
-		if (null == buildStates) {
-			buildStates = newArrayList(new BuildState(SUCCESS, UI));
-		}
+		List<BuildState> buildStates = findLastDataOrDefault();
 		
 		for (BuildState state : buildStates) {
 			parameters.put(format("buildState%sState", state.instances), String.valueOf(state.state));
@@ -84,6 +86,30 @@ public class ReportBuilder {
 			parameters.put(format("buildState%sFailedEmail", state.instances), String.valueOf(state.failedEmail));
 			parameters.put(format("buildState%sFailedName", state.instances), String.valueOf(state.failedName));
 		}
+	}
+
+	private List<BuildState> findLastDataOrDefault() {
+		List<BuildState> buildStates = buildStateDAO.findLastData();
+		
+		if (null == buildStates) {
+			buildStates = newArrayList();
+		}
+		
+		
+		for (BuildStateInstances instances : BuildStateInstances.values()) {
+			BuildState buildState = Iterables.find(buildStates, new Predicate<BuildState>() {
+			    @Override
+			    public boolean apply(BuildState buildState) {
+			        return buildState.instances == instances;
+			    }
+			});
+			
+			if(null== buildState) {
+				buildStates.add(new BuildState(SUCCESS, UI_THUCYDIDES_TESTS4));
+			}
+		}
+
+		return buildStates;
 	}
 	
 	private void agrefateThucydidesTestStais(Map<String, String> parameters) {
@@ -99,7 +125,7 @@ public class ReportBuilder {
 		parameters.put("thucydidesTestErrors", String.valueOf(thucydidesTestStaistic.errors));
 	}
 
-	private void grefateSpiraTestStatistic(Map<String, String> parameters) {
+	private void agrefateSpiraTestStatistic(Map<String, String> parameters) {
 		SpiraTestStatistic spiraTestStatistics = spiraTestStatisticDAO.findLastData();
 		
 		if (null == spiraTestStatistics) {
@@ -111,6 +137,20 @@ public class ReportBuilder {
 		parameters.put("spiraTestLow", String.valueOf(spiraTestStatistics.low));
 		parameters.put("spiraTestChangeRequest", String.valueOf(spiraTestStatistics.changeRequest));
 
+	}
+
+	private void agrefateSpiraTestOnStartWeekStatistic(Map<String, String> parameters) {
+		SpiraTestStatistic spiraTestStatistics = spiraTestStatisticDAO.findByDate(calculateMondayDate());
+		
+		if (null == spiraTestStatistics) {
+			spiraTestStatistics = new SpiraTestStatistic();
+		}
+		
+		parameters.put("spiraTestOnStartWeekHigh", String.valueOf(spiraTestStatistics.high));
+		parameters.put("spiraTestOnStartWeekMedium", String.valueOf(spiraTestStatistics.medium));
+		parameters.put("spiraTestOnStartWeekLow", String.valueOf(spiraTestStatistics.low));
+		parameters.put("spiraTestOnStartWeekChangeRequest", String.valueOf(spiraTestStatistics.changeRequest));
+		
 	}
 	
 
