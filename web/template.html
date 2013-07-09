@@ -17,182 +17,247 @@
 <script src="js/google_piechart.js"></script>
 
 <script type="text/javascript">
-
- 	var isBuildFailed                 = false;//${buildStateUIState};
-	var lastCommitter                 = 0;//${buildStateUIFailedName};
-	var lastCommitterEmail            = 0;//${buildStateUIFailedEmail};
-	var error                         = "${buildStateUIErrorMessage}";
-/*	
-	var isBuildFailed                 = $build.state.%s.state;
-	var lastCommitter                 = $buildStates%s.failedName;
-	var lastCommitterEmail            = $buildStates%s.failedEmail;
-	var error                         = "$buildStates%s.errorMessage";
-*/	
-	var failedThucydidesCount         = ${thucydidesTestFailed} + ${thucydidesTestErrors};
-	var passedThucydidesCount         = ${thucydidesTestPassed};
-	var pendingThucidydesCount        = ${thucydidesTestPending};
-
-	var thanksVar                     = 'THANKS_VAR';
-
-	var spiraBugsChangeCountCritical  = ${spiraTestHigh};
-	var spiraBugsChangeCountHigh      = ${spiraTestMedium};
-	var spiraBugsChangeCountMedium    = ${spiraTestLow};
-	var spiraChangeRequest            = ${spiraTestChangeRequest};
 	
-	
-	function drawCharts() {
-		drawChart(passedThucydidesCount, pendingThucidydesCount, failedThucydidesCount, 'thucydidesChart');
-		//drawChart(passedCTestsCount, 0, failedCTestsCount, 'cTestsChart');
-		//drawChart(passedWsCount, 0, failedWsCount, 'webServiceChart');
-	}
+		var isBuildFailed                 = ${buildStateUIState};
+		var lastCommitter                 = "${buildStateUIFailedName}";
+		var lastCommitterEmail            = "${buildStateUIFailedEmail}";
+		var error                         = "${buildStateUIErrorMessage}";
 
-	function drawChart(passed, pending, failed, holder) {
-		var data = google.visualization.arrayToDataTable([
-				[ 'Tests', 'Amount' ], [ , passed ], [ , pending ],
-				[ , failed ] ]);
+	/*	
+		var isBuildFailed                 = $build.state.%s.state;
+		var lastCommitter                 = $buildStates%s.failedName;
+		var lastCommitterEmail            = $buildStates%s.failedEmail;
+		var error                         = "$buildStates%s.errorMessage";
+	*/	
 
-		var options = {
-			width : 327,
-			height : 327,
-			chartArea : {
-				width : "100%",
-				height : "100%"
-			},
-			colors : [ '#00C000', '#FFB700', '#FF0000' ],
-			legend : {
-				position : 'none'
-			},
-			backgroundColor : 'none'
-		};
 
-		var chart = new google.visualization.PieChart(document
-				.getElementById(holder));
-		chart.draw(data, options);
-	}
-	
-	function updateRadiator() {
-		if (isBuildFailed) {
-			$(".brokenBuildSection").show();
-			setTheOneWhoBrokeBuildPhoto(lastCommitterEmail);
-			$(".thucydidesTestsSection").hide();
-		} else {
-			$(".brokenBuildSection").hide();
-			setTheOneWhoBrokeBuildPhoto(null);
-			$(".thucydidesTestsSection").show();
+		var failedThucydidesCount         = ${thucydidesTestFailed} + ${thucydidesTestErrors};
+		var passedThucydidesCount         = ${thucydidesTestPassed};
+		var pendingThucidydesCount        = ${thucydidesTestPending};
+
+		var bugCriticalTotal              = ${spiraTestHigh};
+		var bugHighTotal                  = ${spiraTestMedium};
+		var bugMediumTotal                = ${spiraTestLow};
+		var spiraChangeRequest            = ${spiraTestChangeRequest};
+		var bugCriticalNotAssigned        = ${spiraTestOnStartWeekHigh};
+		var bugHighNotAssigned            = ${spiraTestOnStartWeekMedium};
+		var bugMediumNotAssigned          = ${spiraTestOnStartWeekLow};
+		var spiraOnStartWeekChangeRequest = ${spiraTestOnStartWeekChangeRequest};
+
+		var thanksVar                     = 'Thanks';
+
+
+		function drawCharts() {
+			drawChart(passedThucydidesCount, pendingThucidydesCount, failedThucydidesCount, 'thucydidesChart');
+			//drawChart(passedCTestsCount, 0, failedCTestsCount, 'cTestsChart');
+			//drawChart(passedWsCount, 0, failedWsCount, 'webServiceChart');
 		}
-		fillData();
-		drawCharts();
-	}
-	
-	function fillData() {
-		$("#theOneWhoBrokeBuildName")[0].innerHTML = lastCommitter;
-		initFailedCount($("#failednumT"), failedThucydidesCount);
-		$("#passedlblT")[0].innerHTML = passedThucydidesCount;
-		$("#pendinglblT")[0].innerHTML = pendingThucidydesCount;
 
-		initBugSection($("#bugCriticalTitle"), $("#bugCriticalTotal"), spiraBugsChangeCountCritical);
-		initBugSection($("#bugHighTitle"), $("#bugHighTotal"), spiraBugsChangeCountHigh);
-		initBugSection($("#bugMediumTitle"), $("#bugMediumTotal"), spiraBugsChangeCountMedium);
-		$("#thanksSection")[0].innerHTML = thanksVar;
-	}
-	
-	function initFailedCount(element, value) {
-		element[0].innerHTML = value;
-		element.css('background', (0 == value) ? 'green' : '#e30613');
-	}
-	
-	function initBugSection(titleElement, changeCountElement, changeCount) {
-		titleElement.css('color', (-1 < changeCount) ? 'green' : '#e30613');
-		changeCountElement[0].innerHTML = changeCount;
-	}
-	
-	function getNumberOrUnknownSign(num) {
-		return -1 < num ? num : "?";
-	}
-	
-	function setTheOneWhoBrokeBuildPhoto(email) {
-		var element = $("#theOneWhoBrokeBuildPhoto");
-		if (!email) {
-			element.hide();
-			return;
+		function drawChart(passed, pending, failed, holder) {
+			var data = google.visualization.arrayToDataTable([
+					[ 'Tests', 'Amount' ], [ , passed ], [ , pending ],
+					[ , failed ] ]);
+
+			var options = {
+				width : 327,
+				height : 327,
+				chartArea : {
+					width : "100%",
+					height : "100%"
+				},
+				colors : [ '#00C000', '#FFB700', '#FF0000' ],
+				legend : {
+					position : 'none'
+				},
+				backgroundColor : 'none'
+			};
+
+			var chart = new google.visualization.PieChart(document
+					.getElementById(holder));
+			chart.draw(data, options);
 		}
 		
-		element[0].src = "http://www.gravatar.com/avatar/" + $.md5($.trim(email).toLowerCase()) + "?d=none&s=192";
-	}
-</script>
-</head>
+		function updateRadiator() {
+			if (isBuildFailed) {
+				$(".brokenBuildSection").show();
+				setTheOneWhoBrokeBuildPhoto(lastCommitterEmail);
+				$(".thucydidesTestsSection").hide();
+			} else {
+				$(".brokenBuildSection").hide();
+				setTheOneWhoBrokeBuildPhoto(null);
+				$(".thucydidesTestsSection").show();
+			}
+			fillData();
+			drawCharts();
+		}
+		
+		function fillData() {
+			$("#theOneWhoBrokeBuildName")[0].innerHTML = lastCommitter;
+			initFailedCount($("#failednumT"), failedThucydidesCount);
+			$("#passedlblT")[0].innerHTML = passedThucydidesCount;
+			$("#pendinglblT")[0].innerHTML = pendingThucidydesCount;
+			/*initFailedCount($("#failednumC"), failedCTestsCount);
+			$("#passedlblC")[0].innerHTML = passedCTestsCount;
+			initFailedCount($("#failednumW"), failedWsCount);
+			$("#passedlblW")[0].innerHTML = passedWsCount;
+			*/
+			initBugSection($("#bugCriticalTitle"), $("#bugCriticalTotal"), $("#bugCriticalNotAssigned"), bugCriticalTotal, bugCriticalNotAssigned);
+			initBugSection($("#bugHighTitle"), $("#bugHighTotal"), $("#bugHighNotAssigned"), bugHighTotal, bugHighNotAssigned);
+			initBugSection($("#bugMediumTitle"), $("#bugMediumTotal"), $("#bugMediumNotAssigned"), bugMediumTotal, bugMediumNotAssigned);
+			$("#thanksSection")[0].innerHTML = thanksVar;
+		}
+		
+		function initFailedCount(element, value) {
+			element[0].innerHTML = value;
+			element.css('background', (0 == value) ? 'green' : '#e30613');
+		}
+		
+		function initBugSection(titleElement, totalElement, contentElement, totalCount, notAssignedCount) {
+			contentElement[0].innerHTML = getNumberOrUnknownSign(notAssignedCount);
+			if (0 == notAssignedCount) {
+				contentElement.hide();
+			} else {
+				contentElement.show();
+			}
+			titleElement.css('color', (0 == totalCount) ? 'green' : '#e30613');
+			totalElement[0].innerHTML = getNumberOrUnknownSign(totalCount);
+		}
+		
+		function getNumberOrUnknownSign(num) {
+			return -1 < num ? num : "?";
+		}
+		
+		function setTheOneWhoBrokeBuildPhoto(email) {
+			var element = $("#theOneWhoBrokeBuildPhoto");
+			if (!email) {
+				element.hide();
+				return;
+			}
+			
+			element[0].src = "http://www.gravatar.com/avatar/" + $.md5($.trim(email).toLowerCase()) + "?d=none&s=192";
+		}
+	</script>
+	</head>
 
-<body onload="updateRadiator()">
-	<div class="wrap">
-		<header> </header>
-		<nav></nav>
-		<section>
-			<article>
-				<table>
-					<tr class="brokenBuildSection" style="display: none">
-						<td class="sectcont badbuild" colspan="2" style="width: 100%;">
-							ERROR_MSG <span id="theOneWhoBrokeBuildName" class="broker_name"></span>
-						</td>
-						<td class="tdchart">
-							<span class="chart broker_foto">
-								<div class="def_foto">
-									<img id="theOneWhoBrokeBuildPhoto" alt=""/>
-								</div>
-							</span>
-						</td>
-					</tr>
-					<tr class="thucydidesTestsSection">
-						<td class="sectname shadow" colspan="3">Thucydides tests</td>
-					</tr>
-					<tr class="thucydidesTestsSection">
-						<td class="sectcont"><span class="failedlbl">Failed:</span> <span
-							class="passedlbl">Passed:</span> <span class="pendinglbl">Pending:</span>
-						</td>
-						<td class="sectcont" style="width: 100%; padding: 30px 0px;">
-							<span id="failednumT" class="failednum"></span>
-							<span id="passedlblT" class="passedlbl"></span>
-							<span id="pendinglblT" class="pendinglbl"></span>
-						</td>
-						<td class="tdchart">
-							<div id="thucydidesChart" class="chart"></div>
-						</td>
-					</tr>
-					<tr class="thucydidesTestsSection">
-						<td colspan="3">
-							<br/>
-							<br/>
-							<br/>
-						</td>
-					</tr>
-
-					<tr class="bugsSection">
-						<td class="sectname shadow" colspan="3">Bugs</td>
-					</tr>
-					<tr class="bugsSection">
-						<td class="sectcont" colspan="3" style="padding: 0;">
-							<table style="text-align: center; width: 96%;">
-								<tr>
-									<td id="bugCriticalTitle" class="sectcont" style="color: #e30613;">
-										Critical&nbsp;(<span id="bugCriticalTotal"></span>)
-									</td>
-									<td id="bugHighTitle" class="sectcont"">
-										High&nbsp;(<span id="bugHighTotal"></span>)
-									</td>
-									<td id="bugMediumTitle" class="sectcont" style="color: #e30613;">
-										Medium&nbsp;(<span id="bugMediumTotal"></span>)
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr class="thanksSection">
-						<td id="thanksSection" class="thanks shadow" colspan="3"></td>
-					</tr>
-				</table>
-			</article>
-		</section>
-		<div class="empty"></div>
-	</div>
-	<footer> </footer>
-</body>
-</html>
+	<body onload="updateRadiator()">
+		<div class="wrap">
+			<header> </header>
+			<nav></nav>
+			<section>
+				<article>
+					<table>
+						<tr class="brokenBuildSection" style="display: none">
+							<td class="sectcont badbuild" colspan="2" style="width: 100%;">
+								ERROR_MSG <span id="theOneWhoBrokeBuildName" class="broker_name"></span>
+							</td>
+							<td class="tdchart">
+								<span class="chart broker_foto">
+									<div class="def_foto">
+										<img id="theOneWhoBrokeBuildPhoto" alt=""/>
+									</div>
+								</span>
+							</td>
+						</tr>
+						<tr class="thucydidesTestsSection">
+							<td class="sectname shadow" colspan="3">Thucydides tests</td>
+						</tr>
+						<tr class="thucydidesTestsSection">
+							<td class="sectcont"><span class="failedlbl">Failed:</span> <span
+								class="passedlbl">Passed:</span> <span class="pendinglbl">Pending:</span>
+							</td>
+							<td class="sectcont" style="width: 100%; padding: 30px 0px;">
+								<span id="failednumT" class="failednum"></span>
+								<span id="passedlblT" class="passedlbl"></span>
+								<span id="pendinglblT" class="pendinglbl"></span>
+							</td>
+							<td class="tdchart">
+								<div id="thucydidesChart" class="chart"></div>
+							</td>
+						</tr>
+						<tr class="thucydidesTestsSection">
+							<td colspan="3">
+								<br/>
+								<br/>
+								<br/>
+							</td>
+						</tr>
+	<!--					
+						<tr class="thucydidesTestsSection">
+							<td class="sectname shadow" colspan="3">CTests</td>
+						</tr>
+						<tr class="thucydidesTestsSection">
+							<td class="sectcont tdchart"><span class="failedlbl">Failed:</span>
+								<span class="passedlbl">Passed:</span></td>
+							<td class="sectcont tdchart" style="width: 100%; padding: 30px 0px;">
+								<span id="failednumC" class="failednum"></span>
+								<span id="passedlblC" class="passedlbl"></span>
+							</td>
+							<td class="tdchart">
+								<div id="cTestsChart" class="chart"></div>
+							</td>
+						</tr>
+						<tr class="thucydidesTestsSection">
+							<td colspan="3">
+								<br/>
+								<br/>
+								<br/>
+							</td>
+						</tr>
+						<tr class="thucydidesTestsSection">
+							<td class="sectname shadow" colspan="3">WebService tests</td>
+						</tr>
+						<tr class="thucydidesTestsSection">
+							<td class="sectcont tdchart"><span class="failedlbl">Failed:</span>
+								<span class="passedlbl">Passed:</span></td>
+							<td class="sectcont tdchart" style="width: 100%; padding: 30px 0px;">
+								<span id="failednumW" class="failednum"></span>
+								<span id="passedlblW" class="passedlbl"></span>
+							</td>
+							<td class="tdchart">
+								<div id="webServiceChart" class="chart"></div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<br/>
+								<br/>
+								<br/>
+							</td>
+						</tr>
+	-->
+						<tr class="bugsSection">
+							<td class="sectname shadow" colspan="3">Bugs</td>
+						</tr>
+						<tr class="bugsSection">
+							<td class="sectcont" colspan="3" style="padding: 0;">
+								<table style="text-align: center; width: 96%;">
+									<tr>
+										<td id="bugCriticalTitle" class="sectcont" style="color: #e30613;">
+											Critical&nbsp;(<span id="bugCriticalTotal"></span>)
+										</td>
+										<td id="bugHighTitle" class="sectcont"">
+											High&nbsp;(<span id="bugHighTotal"></span>)
+										</td>
+										<td id="bugMediumTitle" class="sectcont" style="color: #e30613;">
+											Medium&nbsp;(<span id="bugMediumTotal"></span>)
+										</td>
+									</tr>
+									<tr>
+										<td><span id="bugCriticalNotAssigned" class="failednum"></span></td>
+										<td><span id="bugHighNotAssigned" class="failednum"></span></td>
+										<td><span id="bugMediumNotAssigned" class="failednum"></span></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr class="thanksSection">
+							<td id="thanksSection" class="thanks shadow" colspan="3"></td>
+						</tr>
+					</table>
+				</article>
+			</section>
+			<div class="empty"></div>
+		</div>
+		<footer> </footer>
+	</body>
+	</html>

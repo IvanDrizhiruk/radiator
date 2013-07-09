@@ -4,8 +4,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.io.Closeables.closeQuietly;
 import static java.lang.String.format;
+import static org.apache.commons.collections.CollectionUtils.find;
 import static ua.dp.ardas.radiator.jobs.buils.state.BuildState.States.SUCCESS;
-import static ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances.UI_THUCYDIDES_TESTS4;
 import static ua.dp.ardas.radiator.utils.DataTimeUtils.calculateMondayDate;
 
 import java.io.File;
@@ -16,15 +16,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 
 import ua.dp.ardas.radiator.dao.BuildStateDAO;
 import ua.dp.ardas.radiator.dao.SpiraTestStatisticDAO;
@@ -95,17 +93,17 @@ public class ReportBuilder {
 			buildStates = newArrayList();
 		}
 		
-		
-		for (BuildStateInstances instances : BuildStateInstances.values()) {
-			BuildState buildState = Iterables.find(buildStates, new Predicate<BuildState>() {
-			    @Override
-			    public boolean apply(BuildState buildState) {
-			        return buildState.instances == instances;
-			    }
+		for (final BuildStateInstances instances : BuildStateInstances.values()) {
+			Object buildState = find(buildStates, new Predicate() {
+
+				@Override
+				public boolean evaluate(Object buildState) {
+					return ((BuildState)buildState).instances == instances;
+				}
 			});
 			
-			if(null== buildState) {
-				buildStates.add(new BuildState(SUCCESS, UI_THUCYDIDES_TESTS4));
+			if(null == buildState) {
+				buildStates.add(new BuildState(SUCCESS, instances));
 			}
 		}
 
