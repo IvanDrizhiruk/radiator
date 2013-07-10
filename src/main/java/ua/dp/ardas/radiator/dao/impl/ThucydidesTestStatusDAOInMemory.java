@@ -19,6 +19,10 @@ public class ThucydidesTestStatusDAOInMemory implements ThucydidesTestStatisticD
 	
 	@Override
 	public void insert(ThucydidesTestStatistic state) {
+		if (null == state) {
+			return;
+		}
+		
 		thucydidesTestStatistic.clear();
 		thucydidesTestStatistic.add(state);
 	}

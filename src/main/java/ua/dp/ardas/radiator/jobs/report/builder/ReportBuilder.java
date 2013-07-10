@@ -1,11 +1,8 @@
 package ua.dp.ardas.radiator.jobs.report.builder;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.io.Closeables.closeQuietly;
 import static java.lang.String.format;
-import static org.apache.commons.collections.CollectionUtils.find;
-import static ua.dp.ardas.radiator.jobs.buils.state.BuildState.States.SUCCESS;
 import static ua.dp.ardas.radiator.utils.DataTimeUtils.calculateMondayDate;
 
 import java.io.File;
@@ -13,10 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -28,12 +24,12 @@ import ua.dp.ardas.radiator.dao.BuildStateDAO;
 import ua.dp.ardas.radiator.dao.SpiraTestStatisticDAO;
 import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
 import ua.dp.ardas.radiator.jobs.buils.state.BuildState;
-import ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances;
-import ua.dp.ardas.radiator.jobs.spira.test.bugs.SpiraTestStatistic;
-import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatistic;
+import ua.dp.ardas.radiator.utils.JsonUtils;
 
 @Component
 public class ReportBuilder {
+	private static final String REPOST_IN_JSON = "repostInJson";
+
 	private static Logger LOG = Logger.getLogger(ReportBuilder.class.getName());
 	
 	@Autowired
@@ -49,106 +45,57 @@ public class ReportBuilder {
 
 	
 	public void build() {
-		Map<String, String> parameters = agregateParameters();
+		HashMap<String, String> reportParameters = reportToParameterMap(agregateReportObject());
 
 		FileReader templateReader = newTemplateReader();
 		FileWriter reportWriter = newReportWriter();
 		
-		Velocity.evaluate(new VelocityContext(parameters),reportWriter, "ReportFileGenerator", templateReader);
+		Velocity.evaluate(new VelocityContext(reportParameters),reportWriter, "ReportFileGenerator", templateReader);
 		
 		closeQuietly(templateReader);
 		closeQuietly(reportWriter);
 	}
 
-	private Map<String, String> agregateParameters() {
-		Map<String, String> parameters = newHashMap();
+	private HashMap<String, String> reportToParameterMap(Report report) {
+		HashMap<String, String> reportParameters = newHashMap();
+		reportParameters.put(REPOST_IN_JSON, JsonUtils.toJSON(report));
+		return reportParameters;
+	}
 
-		agrefateBuildStates(parameters);
-		agrefateThucydidesTestStais(parameters);
-		agrefateSpiraTestStatistic(parameters);
-		agrefateSpiraTestOnStartWeekStatistic(parameters);
+	private Report agregateReportObject() {
+		Report report = new Report();
+
+		agrefateBuildStates(report);
+		agrefateThucydidesTestStais(report);
+		agrefateSpiraTestStatistic(report);
+		agrefateSpiraTestOnStartWeekStatistic(report);
 
 		if (LOG.isInfoEnabled()) {
-			LOG.info(format("Agregated params %s", parameters));
+			LOG.info(format("Agregated params %s", report));
 		}
 
-		return parameters;
+		return report;
 	}
 
-	private void agrefateBuildStates(Map<String, String> parameters) {
-		List<BuildState> buildStates = findLastDataOrDefault();
-		
-		for (BuildState state : buildStates) {
-			parameters.put(format("buildState%sState", state.instances), String.valueOf(state.state));
-			parameters.put(format("buildState%sErrorMessage", state.instances), String.valueOf(state.errorMessage));
-			parameters.put(format("buildState%sFailedEmail", state.instances), String.valueOf(state.failedEmail));
-			parameters.put(format("buildState%sFailedName", state.instances), String.valueOf(state.failedName));
-		}
-	}
-
-	private List<BuildState> findLastDataOrDefault() {
+	private void agrefateBuildStates(Report report) {
 		List<BuildState> buildStates = buildStateDAO.findLastData();
-		
-		if (null == buildStates) {
-			buildStates = newArrayList();
-		}
-		
-		for (final BuildStateInstances instances : BuildStateInstances.values()) {
-			Object buildState = find(buildStates, new Predicate() {
 
-				@Override
-				public boolean evaluate(Object buildState) {
-					return ((BuildState)buildState).instances == instances;
-				}
-			});
-			
-			if(null == buildState) {
-				buildStates.add(new BuildState(SUCCESS, instances));
-			}
+		for (BuildState state : buildStates) {
+			report.buildStates.put(state.instances, state);
 		}
-
-		return buildStates;
-	}
-	
-	private void agrefateThucydidesTestStais(Map<String, String> parameters) {
-		ThucydidesTestStatistic thucydidesTestStaistic = thucydidesTestStaisticDAO.findLastData();
-		
-		if (null == thucydidesTestStaistic) {
-			thucydidesTestStaistic = new ThucydidesTestStatistic();
-		}
-		
-		parameters.put("thucydidesTestPassed", String.valueOf(thucydidesTestStaistic.passed));
-		parameters.put("thucydidesTestPending", String.valueOf(thucydidesTestStaistic.pending));
-		parameters.put("thucydidesTestFailed", String.valueOf(thucydidesTestStaistic.failed));
-		parameters.put("thucydidesTestErrors", String.valueOf(thucydidesTestStaistic.errors));
 	}
 
-	private void agrefateSpiraTestStatistic(Map<String, String> parameters) {
-		SpiraTestStatistic spiraTestStatistics = spiraTestStatisticDAO.findLastData();
+	private void agrefateThucydidesTestStais(Report report) {
+		report.thucydidesTestStaistic = thucydidesTestStaisticDAO.findLastData();
 		
-		if (null == spiraTestStatistics) {
-			spiraTestStatistics = new SpiraTestStatistic();
-		}
-		
-		parameters.put("spiraTestHigh", String.valueOf(spiraTestStatistics.high));
-		parameters.put("spiraTestMedium", String.valueOf(spiraTestStatistics.medium));
-		parameters.put("spiraTestLow", String.valueOf(spiraTestStatistics.low));
-		parameters.put("spiraTestChangeRequest", String.valueOf(spiraTestStatistics.changeRequest));
-
 	}
 
-	private void agrefateSpiraTestOnStartWeekStatistic(Map<String, String> parameters) {
-		SpiraTestStatistic spiraTestStatistics = spiraTestStatisticDAO.findByDate(calculateMondayDate());
-		
-		if (null == spiraTestStatistics) {
-			spiraTestStatistics = new SpiraTestStatistic();
-		}
-		
-		parameters.put("spiraTestOnStartWeekHigh", String.valueOf(spiraTestStatistics.high));
-		parameters.put("spiraTestOnStartWeekMedium", String.valueOf(spiraTestStatistics.medium));
-		parameters.put("spiraTestOnStartWeekLow", String.valueOf(spiraTestStatistics.low));
-		parameters.put("spiraTestOnStartWeekChangeRequest", String.valueOf(spiraTestStatistics.changeRequest));
-		
+	private void agrefateSpiraTestStatistic(Report report) {
+		report.spiraTestStatistics = spiraTestStatisticDAO.findLastData();
+	}
+
+	private void agrefateSpiraTestOnStartWeekStatistic(Report report) {
+		report.spiraTestOnStartWeekStatistics = spiraTestStatisticDAO.findByDate(calculateMondayDate());
 	}
 	
 

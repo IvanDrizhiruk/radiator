@@ -3,30 +3,27 @@ package ua.dp.ardas.radiator.dao.impl;
 import static com.google.common.collect.Iterables.getLast;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static ua.dp.ardas.radiator.utils.JsonUtils.toJSON;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Closeables;
-import com.google.common.io.Files;
-import com.google.common.io.InputSupplier;
-import com.google.common.io.OutputSupplier;
+import com.google.common.collect.Maps;
 import com.google.gson.reflect.TypeToken;
 
 import ua.dp.ardas.radiator.dao.SpiraTestStatisticDAO;
 import ua.dp.ardas.radiator.jobs.spira.test.bugs.SpiraTestStatistic;
+import ua.dp.ardas.radiator.utils.FileUtils;
 import ua.dp.ardas.radiator.utils.JsonUtils;
 
 @Component
+@Scope("singleton")
 public class SpiraTestStatisticDAOInMemory implements SpiraTestStatisticDAO {
 	private static Logger LOG = Logger
 			.getLogger(SpiraTestStatisticDAOInMemory.class.getName());
@@ -37,6 +34,9 @@ public class SpiraTestStatisticDAOInMemory implements SpiraTestStatisticDAO {
 	
 	@Override
 	public void insert(SpiraTestStatistic statistic) {
+		if (null == statistic) {
+			return;
+		}
 		statistics.clear();
 		statistics.add(statistic);
 	}
@@ -72,40 +72,18 @@ public class SpiraTestStatisticDAOInMemory implements SpiraTestStatisticDAO {
 	}
 	
 	private Map<String, SpiraTestStatistic> loadFromFile() {
-		InputSupplier<FileInputStream> newInputStreamSupplier = Files.newInputStreamSupplier(new File(TEMP_FILE_PATH));
-		
-		byte[] bytes = new byte[1000];
-		try {
-			ByteStreams.readFully(newInputStreamSupplier.getInput(), bytes);
-		} catch (IOException e) {
-			LOG.warn("Unable read tmp info", e);
-		} finally {
-			try {
-				Closeables.closeQuietly(newInputStreamSupplier.getInput());
-			} catch (IOException e) {
-				LOG.warn("Unable read tmp info", e);
-			}
-		}
-		
 		Type type = new TypeToken<Map<String, SpiraTestStatistic>>(){}.getType();
 		
-		return JsonUtils.fromJSON(new String(bytes), type);
+		String contentFromFile = FileUtils.loadFromFile(TEMP_FILE_PATH);
+		
+		return (isEmpty(contentFromFile)
+				? Maps.<String, SpiraTestStatistic>newHashMap()
+				: JsonUtils.<Map<String, SpiraTestStatistic>>fromJSON(contentFromFile, type));
 	}
 	
 	private void saveToFile(Map<String, SpiraTestStatistic> statistics) {
-		OutputSupplier<FileOutputStream> newOutputStreamSupplier = Files.newOutputStreamSupplier(new File(TEMP_FILE_PATH));
+		String statisticsString = toJSON(statistics);
 		
-		byte[] from = JsonUtils.toJSON(statistics).getBytes();
-		try {
-			ByteStreams.write(from, newOutputStreamSupplier);
-		} catch (IOException e) {
-			LOG.warn("Unable save tmp info", e);
-		} finally {
-			try {
-				Closeables.closeQuietly(newOutputStreamSupplier.getOutput());
-			} catch (IOException e) {
-				LOG.warn("Unable save tmp info", e);
-			}
-		}
+		FileUtils.saveToFile(TEMP_FILE_PATH, statisticsString);
 	}
 }
