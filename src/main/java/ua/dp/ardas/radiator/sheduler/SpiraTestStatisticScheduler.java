@@ -3,6 +3,8 @@ package ua.dp.ardas.radiator.sheduler;
 import static java.lang.String.format;
 import static ua.dp.ardas.radiator.utils.DataTimeUtils.currentLongTime;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,6 +21,10 @@ public class SpiraTestStatisticScheduler {
 	@Autowired
 	private SpiraTestStatisticController spiraTestController;
 	
+	@PostConstruct
+	void initialize() {
+		executeTask();
+	}
 	
 	@Scheduled(cron="0 0,4,8,12,16,20 * * * *")
 	private void  executeTask() {

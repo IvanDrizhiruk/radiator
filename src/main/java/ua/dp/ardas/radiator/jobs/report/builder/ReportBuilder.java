@@ -4,6 +4,7 @@ import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.io.Closeables.closeQuietly;
 import static java.lang.String.format;
 import static ua.dp.ardas.radiator.utils.DataTimeUtils.calculateMondayDate;
+import static ua.dp.ardas.radiator.utils.JsonUtils.toJSON;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +25,6 @@ import ua.dp.ardas.radiator.dao.BuildStateDAO;
 import ua.dp.ardas.radiator.dao.SpiraTestStatisticDAO;
 import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
 import ua.dp.ardas.radiator.jobs.buils.state.BuildState;
-import ua.dp.ardas.radiator.utils.JsonUtils;
 
 @Component
 public class ReportBuilder {
@@ -58,7 +58,8 @@ public class ReportBuilder {
 
 	private HashMap<String, String> reportToParameterMap(Report report) {
 		HashMap<String, String> reportParameters = newHashMap();
-		reportParameters.put(REPOST_IN_JSON, JsonUtils.toJSON(report));
+		
+		reportParameters.put(REPOST_IN_JSON, toJSON(report));
 		return reportParameters;
 	}
 
