@@ -194,3 +194,8 @@ table {
 	font-size: 48px;
 	vertical-align: middle;
 }
+
+.buildStateImage {
+	width: 300px;
+    height: 300px;
+}

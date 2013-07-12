@@ -8,6 +8,7 @@ import ua.dp.ardas.radiator.jobs.buils.state.BuildState;
 import ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances;
 import ua.dp.ardas.radiator.jobs.spira.test.bugs.SpiraTestStatistic;
 import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatistic;
+import ua.dp.ardas.radiator.utils.JsonUtils;
 
 public class Report {
 
@@ -16,4 +17,8 @@ public class Report {
 	public SpiraTestStatistic spiraTestStatistics;
 	public SpiraTestStatistic spiraTestOnStartWeekStatistics;
 
+	@Override
+	public String toString() {
+		return String.format("Report %s", JsonUtils.toJSON(this));
+	}
 }
