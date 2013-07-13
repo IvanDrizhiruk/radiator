@@ -21,8 +21,8 @@ public class BuildStateUtilsTest {
 		List<Person> nullPersons = null;
 		List<Person> emptyPersons = newArrayList();
 		//when
-		String nullEmails = BuildStateUtils.calculateFailedEmail(nullPersons);
-		String emptyEmails = BuildStateUtils.calculateFailedEmail(emptyPersons);
+		String nullEmails = BuildStateUtils.calculateFailedEmail(nullPersons, "%s@ardas.dp.ua");
+		String emptyEmails = BuildStateUtils.calculateFailedEmail(emptyPersons, "%s@ardas.dp.ua");
 		//then
 		assertThat(nullEmails).isEqualTo(EMPTY);
 		assertThat(emptyEmails).isEqualTo(EMPTY);
@@ -33,9 +33,9 @@ public class BuildStateUtilsTest {
 		//given
 		List<Person> culprits = newPersonList("ivan.drizhiruk");
 		//when
-		String emails = BuildStateUtils.calculateFailedEmail(culprits);
+		String emails = BuildStateUtils.calculateFailedEmail(culprits, "%s@ardas.dp.ua");
 		//then
-		assertThat(emails).isEqualTo("ivan.drizhiruk");
+		assertThat(emails).isEqualTo("ivan.drizhiruk@ardas.dp.ua");
 	}
 	
 	@Test
@@ -43,9 +43,9 @@ public class BuildStateUtilsTest {
 		//given
 		List<Person> culprits = newPersonList("ivan.drizhiruk", null, EMPTY, " ", "nadya.drizhiruk");
 		//when
-		String emails = BuildStateUtils.calculateFailedEmail(culprits);
+		String emails = BuildStateUtils.calculateFailedEmail(culprits, "%s@ardas.dp.ua");
 		//then
-		assertThat(emails).isEqualTo("ivan.drizhiruk, nadya.drizhiruk");
+		assertThat(emails).isEqualTo("ivan.drizhiruk@ardas.dp.ua, nadya.drizhiruk@ardas.dp.ua");
 	}
 	
 	@Test

@@ -164,38 +164,48 @@ table {
 	color: #00c200;
 }
 
+.badbuild {
+	background: #e30613;
+	color: #fff;
+	font-size: 48px;
+	vertical-align: middle;
+	border-radius: 7%
+}
+
 .broker_name {
 	font-size: 90px;
 	padding-top: 20px;
+	padding-bottom: 25px;
 	display: block;
 }
 
 .broker_foto {
 	background: #e30613;
 	border-color: #e30613;
+	margin: 25px auto;
 }
 
 .broker_foto img {
 	height: 327px;
-	border-radius: 50%
+	border-radius: 25%;
 }
 
 .def_foto {
-	background: url('../i/vasya_alibabaevich.jpg') no-repeat;
+	background: url('../images/unknown.jpg') no-repeat;
 	background-size: 327px;
 	width: 327px;
 	height: 327px;
-	border-radius: 50%;
-}
-
-.badbuild {
-	background: #e30613;
-	color: #fff;
-	font-size: 48px;
-	vertical-align: middle;
+	border-radius: 25%;
+	margin: 25px auto;
 }
 
 .buildStateImage {
-	width: 300px;
-    height: 300px;
+	width: 327px;
+    height: 327px;
 }
+
+.BuildStatusSection tr,
+.BuildStatusSection td {
+	margin: 0;
+	padding: 0;
+ }  

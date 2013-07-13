@@ -25,10 +25,10 @@ public class BuildStateExecutor {
 	private AppConfig config;
 	@Autowired
 	private BuildStatusRestClient restClient;
-	
-	
 	@Value("${job.errorMessage:Build has been broken}")
 	private String defaultErrorMessage;
+	@Value("${faild.email.format:%s@ardas.dp.ua}")
+	private String emailFormat;
 
 	
 	public BuildState loadState(BuildStateInstances instances) {
@@ -76,7 +76,7 @@ public class BuildStateExecutor {
 
 		BuildState buildState = new BuildState(BUILD_FAILED, instances);
 		buildState.errorMessage = getErrorMessage(instances);
-		buildState.failedEmail = calculateFailedEmail(buildDetails.culprits);
+		buildState.failedEmail = calculateFailedEmail(buildDetails.culprits, emailFormat);
 		buildState.failedName = calculateFailedName(buildDetails.culprits);
 		return buildState;
 	}

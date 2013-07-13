@@ -1,5 +1,6 @@
 package ua.dp.ardas.radiator.utils;
 
+import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.apache.commons.lang.StringUtils.isBlank;
 
@@ -7,18 +8,18 @@ import java.util.List;
 
 import org.apache.commons.lang.WordUtils;
 
-import ua.dp.ardas.radiator.dto.hudson.api.Person;
-
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
+import ua.dp.ardas.radiator.dto.hudson.api.Person;
+
 public class BuildStateUtils {
 
 	private static final Joiner WORDS_JOINER = Joiner.on(", ").skipNulls();
 
-	public static String calculateFailedEmail(List<Person> culprits) {
+	public static String calculateFailedEmail(List<Person> culprits, final String emailFormat) {
 		if (null == culprits) {
 			return EMPTY;
 		}
@@ -27,7 +28,7 @@ public class BuildStateUtils {
 			public String apply(Person person) {
 				return (null == person || isBlank(person.fullName)
 						? null
-						: person.fullName);
+						: format(emailFormat, person.fullName));
 			}
 		});
 

@@ -74,8 +74,6 @@
 			element.css('background', color);
 		}
 		
-		
-		
 		function processSpiraTestStatisticSection(statistics, statisticsOnWeekStart) {
 			initBugSection($("#bugCriticalTitle"), $("#bugCriticalTotal"), $("#bugCriticalInfo"), statistics.high, statisticsOnWeekStart.high);
 			initBugSection($("#bugHighTitle"), $("#bugHighTotal"), $("#bugHighInfo"), statistics.medium, statisticsOnWeekStart.medium);
@@ -100,100 +98,73 @@
 			var lastCommitter = "Ivan Drizhiruk";
 			var lastCommitterEmail = "ivan.drizhiruk@ardas.dp.ua";
 			
-			processUIBuildStatesSection(states);
-			processWSBuildStatesSection(states);
+			processBuildStatesSectionByInstance($('#UIBuildStatus')[0], states.UI);
+			processBuildStatesSectionByInstance($('#WSBuildStatus')[0], states.WS);
+			
 			processTESTSBuildStatesSection(states);
-			
-			$("#theOneWhoBrokeBuildName")[0].innerHTML = lastCommitter;
+		}
+		
+		function processBuildStatesSectionByInstance(parentElement, instanceStates){
+			if (equelsStates(instanceStates,"SUCCESS")) {
+				showImage(parentElement, "images/successes.jpg");
+			} else if (equelsStates(instanceStates,"CONFIGURATION_FAILED")) {
+				showImage(parentElement, "images/warning.png");
+			} else {
+				showTheOneWhoBrokeBuildPhoto(parentElement, instanceStates);
+			}
+		}
 
-			if (isBuildFailed) {
-				$(".brokenBuildSection").show();
-				setTheOneWhoBrokeBuildPhoto(lastCommitterEmail);
-			} else {
-				$(".brokenBuildSection").hide();
-				setTheOneWhoBrokeBuildPhoto(null);
-			}
-		}
-		
-		function processUIBuildStatesSection(states){
-			if (null == states.UI || states.UI.state == "SUCCESS") {
-				$('UIBuildStatus')[0].href = "images/successes.jpg";
-			} else {
-				$('UIBuildStatus')[0].href = "images/error.jpg";
-			}
-		}
-		
-
-		function processWSBuildStatesSection(states){
-			if (null == states.UI || states.UI.state == "SUCCESS") {
-				$('WSBuildStatus')[0].href = "images/successes.jpg";
-			} else {
-				$('WSBuildStatus')[0].href = "images/error.jpg";
-			}
-		}
-		
 		function processTESTSBuildStatesSection(states){
-			/*
-			images/warning.png
-			*/
-		}
-
-
-		function setTheOneWhoBrokeBuildPhoto(email) {
-			var element = $("#theOneWhoBrokeBuildPhoto");
-			if (!email) {
-				element.hide();
+			if (equelsStates(states.UI_THUCYDIDES_TESTS3,"BUILD_FAILED")) {
+				showTheOneWhoBrokeBuildPhoto($('#TESTSBuildStatus')[0], states.UI_THUCYDIDES_TESTS3);
 				return;
 			}
 			
-			element[0].src = "http://www.gravatar.com/avatar/" + $.md5($.trim(email).toLowerCase()) + "?d=none&s=192";
-		}
-
-		
-		/*
-		
-		function fillData() {
-			$("#theOneWhoBrokeBuildName")[0].innerHTML = lastCommitter;
-			initFailedCount($("#failednumT"), failedThucydidesCount);
-			$("#passedlblT")[0].innerHTML = passedThucydidesCount;
-			$("#pendinglblT")[0].innerHTML = pendingThucidydesCount;
-			/*initFailedCount($("#failednumC"), failedCTestsCount);
-			$("#passedlblC")[0].innerHTML = passedCTestsCount;
-			initFailedCount($("#failednumW"), failedWsCount);
-			$("#passedlblW")[0].innerHTML = passedWsCount;
-			* /
-			initBugSection($("#bugCriticalTitle"), $("#bugCriticalTotal"), $("#bugCriticalNotAssigned"), bugCriticalTotal, bugCriticalNotAssigned);
-			initBugSection($("#bugHighTitle"), $("#bugHighTotal"), $("#bugHighNotAssigned"), bugHighTotal, bugHighNotAssigned);
-			initBugSection($("#bugMediumTitle"), $("#bugMediumTotal"), $("#bugMediumNotAssigned"), bugMediumTotal, bugMediumNotAssigned);
-			$("#thanksSection")[0].innerHTML = thanksVar;
-		}
-		
-		function initFailedCount(element, value) {
-			element[0].innerHTML = value;
-			element.css('background', (0 == value) ? 'green' : '#e30613');
-		}
-		
-		function initBugSection(titleElement, totalElement, contentElement, totalCount, notAssignedCount) {
-			contentElement[0].innerHTML = getNumberOrUnknownSign(notAssignedCount);
-			if (0 == notAssignedCount) {
-				contentElement.hide();
-			} else {
-				contentElement.show();
-			}
-			titleElement.css('color', (0 == totalCount) ? 'green' : '#e30613');
-			totalElement[0].innerHTML = getNumberOrUnknownSign(totalCount);
-		}
-		
-		function setTheOneWhoBrokeBuildPhoto(email) {
-			var element = $("#theOneWhoBrokeBuildPhoto");
-			if (!email) {
-				element.hide();
+			if (equelsStates(states.UI_THUCYDIDES_TESTS1,"CONFIGURATION_FAILED")
+					|| equelsStates(states.UI_THUCYDIDES_TESTS2,"CONFIGURATION_FAILED")
+					|| equelsStates(states.UI_THUCYDIDES_TESTS3,"CONFIGURATION_FAILED")
+					|| equelsStates(states.UI_THUCYDIDES_TESTS4,"CONFIGURATION_FAILED")) {
+				showImage($('#TESTSBuildStatus')[0], "images/warning.png");
 				return;
 			}
 			
-			element[0].src = "http://www.gravatar.com/avatar/" + $.md5($.trim(email).toLowerCase()) + "?d=none&s=192";
+			showImage($('#TESTSBuildStatus')[0], "images/successes.jpg");
 		}
-		*/
+		
+		function equelsStates(obj, state) {
+			return (!obj || obj.state == state);
+		}
+
+		function showImage(parentElement, imageSrc) {
+			var parent = $(parentElement); 
+			parent.innerHTML = '';
+			parent.append($('<img class="buildStateImage" src=' + imageSrc +' />'));
+		}
+		
+		function showTheOneWhoBrokeBuildPhoto(parentElement, instance) {
+			var parent = $(parentElement); 
+
+			var div = $('<div class="badbuild" />');
+
+			var imgSrc = "http://www.gravatar.com/avatar/"
+				+ $.md5($.trim(instance.failedEmail).toLowerCase())
+				+ "?d=none&s=192";
+			div.append('<span class="broker_foto">'
+					+'<div class="def_foto">'
+					+'<img src=' + imgSrc +' />'
+					+'</div>'
+					+'</span>');
+
+			div.append( "<br />"
+					+ instance.errorMessage
+					+ '<span id="theOneWhoBrokeBuildName" class="broker_name">'
+					+ instance.failedName
+					+ '</span>');
+			
+			parent.innerHTML = '';
+			parent.append(div);
+		}	
+
 	</script>
 	</head>
 
@@ -259,44 +230,23 @@
 							<td class="sectcont" colspan="3" style="padding: 0;">
 								<table style="text-align: center; width: 96%;">
 									<tr>
-										<td class="sectcont" style="Width: 34%">
+										<td class="sectcont" style="width: 34%">
 											UI
 										</td>
-										<td class="sectcont"  style="Width: 34%">
+										<td class="sectcont"  style="width: 34%">
 											WS
 										</td>
-										<td class="sectcont"  style="Width: 34%">
+										<td class="sectcont"  style="width: 34%">
 											TEST
 										</td>
 									</tr>
 									<tr>
-										<td class="sectcont" style="Width: 34%">
-											<img id="UIBuildStatus" src="images/successes.jpg" class="buildStateImage"/>
-										</td>
-										<td class="sectcont"  style="Width: 34%">
-											<img id="WSBuildStatus" src="images/successes.jpg"  class="buildStateImage"/>
-										</td>
-										<td class="sectcont"  style="Width: 34%">
-											<img id="TESTSBuildStatus" src="images/successes.jpg"  class="buildStateImage"/>
-										</td>
+										<td id="UIBuildStatus" class="sectcont" style="Width: 34%" />
+										<td id="WSBuildStatus" class="sectcont"  style="Width: 34%" />
+										<td id="TESTSBuildStatus" class="sectcont"  style="Width: 34%" />
 									</tr>
 								</table>
 							</td>
-						</tr>
-						<tr class="brokenBuildSection" style="display: none">
-							<td class="sectcont badbuild" colspan="2" style="width: 100%;">
-								ERROR_MSG <span id="theOneWhoBrokeBuildName" class="broker_name"></span>
-							</td>
-							<td class="tdchart">
-								<span class="chart broker_foto">
-									<div class="def_foto">
-										<img id="theOneWhoBrokeBuildPhoto"/>
-									</div>
-								</span>
-							</td>
-						</tr>
-						<tr class="thanksSection">
-							<td id="thanksSection" class="thanks shadow" colspan="3"></td>
 						</tr>
 					</table>
 				</article>
