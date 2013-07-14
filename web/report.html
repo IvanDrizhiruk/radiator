@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
 <meta name="Author" content="Roman Burdyga, Ardas Group" />
-<meta http-equiv="refresh" content="60">
+<meta http-equiv="refresh" content="10">
 
 <link rel="stylesheet" href="css/style.css">
 
@@ -19,11 +19,11 @@
 <script type="text/javascript">
 
 		function updateRadiator() {
-			var repost = $.parseJSON('{"buildStates":{"WS":{"instances":"WS","state":"SUCCESS"},"UI_THUCYDIDES_TESTS4":{"instances":"UI_THUCYDIDES_TESTS4","state":"SUCCESS"},"UI_THUCYDIDES_TESTS2":{"instances":"UI_THUCYDIDES_TESTS2","state":"SUCCESS"},"UI_THUCYDIDES_TESTS1":{"instances":"UI_THUCYDIDES_TESTS1","state":"CONFIGURATION_FAILED"},"UI_THUCYDIDES_TESTS3":{"instances":"UI_THUCYDIDES_TESTS3","state":"SUCCESS"},"UI":{"instances":"UI","state":"CONFIGURATION_FAILED"}},"thucydidesTestStaistic":{"passed":796,"pending":29,"failed":1,"errors":19},"spiraTestStatistics":{"high":55,"medium":249,"low":153,"changeRequest":101},"spiraTestOnStartWeekStatistics":{"high":53,"medium":242,"low":146,"changeRequest":98}}');
+			var repost = $.parseJSON('{"buildStates":{"UI_THUCYDIDES_TESTS4":{"instances":"UI_THUCYDIDES_TESTS4","state":"SUCCESS"},"UI_THUCYDIDES_TESTS3":{"instances":"UI_THUCYDIDES_TESTS3","state":"SUCCESS"},"UI_THUCYDIDES_TESTS2":{"instances":"UI_THUCYDIDES_TESTS2","state":"SUCCESS"},"WS":{"instances":"WS","state":"SUCCESS"},"UI":{"instances":"UI","state":"SUCCESS"},"UI_THUCYDIDES_TESTS1":{"instances":"UI_THUCYDIDES_TESTS1","state":"SUCCESS"}},"thucydidesTestStaistic":{"passed":796,"pending":29,"failed":1,"errors":20},"configuration":{"spira.test.disabled":true}}');
 			
 			processThucydidesTestsSection(repost.thucydidesTestStaistic);
 
-			processSpiraTestStatisticSection(repost.spiraTestStatistics, repost.spiraTestOnStartWeekStatistics);
+			processSpiraTestStatisticSection(repost.spiraTestStatistics, repost.spiraTestOnStartWeekStatistics, repost.configuration);
 			
 			processBuildStatesSection(repost.buildStates);
 		}
@@ -74,7 +74,12 @@
 			element.css('background', color);
 		}
 		
-		function processSpiraTestStatisticSection(statistics, statisticsOnWeekStart) {
+		function processSpiraTestStatisticSection(statistics, statisticsOnWeekStart, configuration) {
+			if(configuration && configuration['spira.test.disabled']) {
+				$('.bugsSection').hide();
+				return;
+			}
+			
 			initBugSection($("#bugCriticalTitle"), $("#bugCriticalTotal"), $("#bugCriticalInfo"), statistics.high, statisticsOnWeekStart.high);
 			initBugSection($("#bugHighTitle"), $("#bugHighTotal"), $("#bugHighInfo"), statistics.medium, statisticsOnWeekStart.medium);
 			initBugSection($("#bugMediumTitle"), $("#bugMediumTotal"), $("#bugMediumInfo"), statistics.low, statisticsOnWeekStart.low);
@@ -163,7 +168,7 @@
 			
 			parent.innerHTML = '';
 			parent.append(div);
-		}	
+		}
 
 	</script>
 	</head>
@@ -223,10 +228,10 @@
 								</table>
 							</td>
 						</tr>
-						<tr class="bugsSection">
+						<tr class="buildStateSection">
 							<td class="sectname shadow" colspan="3">Build State</td>
 						</tr>
-						<tr class="BuildStatusSection">
+						<tr class="buildStatusSection">
 							<td class="sectcont" colspan="3" style="padding: 0;">
 								<table style="text-align: center; width: 96%;">
 									<tr>
