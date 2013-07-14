@@ -17,8 +17,14 @@ public class SpiraTestOnStartWeekStatisticController {
 	private SpiraTestStatisticDAOInMemory dao;
 	@Value("${spira.test.project.id}")
 	private Integer projectId;
+	@Value("${spira.test.disabled:false}")
+	private boolean isDisabled;
 	
 	public void execute() {
+		if(isDisabled) {
+			return;
+		}
+		
 		String monday = calculateMondayDate();
 		
 		SpiraTestStatistic statistic = dao.findByDate(monday);

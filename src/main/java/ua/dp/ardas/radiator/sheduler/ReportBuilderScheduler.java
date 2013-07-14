@@ -18,7 +18,7 @@ public class ReportBuilderScheduler {
 	@Autowired
 	private ReportBuilder reportBuilder;
 	
-	@Scheduled(fixedDelay=60000)
+	@Scheduled(fixedDelay=5000)
 	private void  executeTask() {
 		LOG.info(format("Start builder of report %s", currentLongTime()));
 		Timer timer = new Timer();

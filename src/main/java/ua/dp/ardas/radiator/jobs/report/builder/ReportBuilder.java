@@ -42,6 +42,8 @@ public class ReportBuilder {
 	private String pathToTemplate;
 	@Value("${report.path}")
 	private String pathToReport;
+	@Value("${spira.test.disabled:false}")
+	private boolean isDisabledSpiraTest;
 
 	
 	public void build() {
@@ -70,12 +72,17 @@ public class ReportBuilder {
 		agrefateThucydidesTestStais(report);
 		agrefateSpiraTestStatistic(report);
 		agrefateSpiraTestOnStartWeekStatistic(report);
+		agrefateConfigurationSettings(report);
 
 		if (LOG.isInfoEnabled()) {
 			LOG.info(format("Agregated params %s", report));
 		}
 
 		return report;
+	}
+
+	private void agrefateConfigurationSettings(Report report) {
+		report.configuration.put("spira.test.disabled", isDisabledSpiraTest);
 	}
 
 	private void agrefateBuildStates(Report report) {
@@ -92,10 +99,16 @@ public class ReportBuilder {
 	}
 
 	private void agrefateSpiraTestStatistic(Report report) {
+		if (isDisabledSpiraTest) {
+			return;
+		}
 		report.spiraTestStatistics = spiraTestStatisticDAO.findLastData();
 	}
 
 	private void agrefateSpiraTestOnStartWeekStatistic(Report report) {
+		if (isDisabledSpiraTest) {
+			return;
+		}
 		report.spiraTestOnStartWeekStatistics = spiraTestStatisticDAO.findByDate(calculateMondayDate());
 	}
 	

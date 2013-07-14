@@ -10,6 +10,12 @@
 	<name>Ardas radiator</name>
 	<url>http://ardas.dp.ua</url>
 	<description></description>
+	
+	<scm>
+		<developerConnection>scm:git:https://github.com/IvanDrizhiruk/radiator.git</developerConnection>
+		<connection>scm:git:https://github.com/IvanDrizhiruk/radiator.git</connection>
+	</scm>
+	
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<spring.framework.version>3.1.1.RELEASE</spring.framework.version>

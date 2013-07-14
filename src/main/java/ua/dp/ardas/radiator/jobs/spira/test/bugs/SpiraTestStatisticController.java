@@ -15,8 +15,13 @@ public class SpiraTestStatisticController {
 	private SpiraTestStatisticDAOInMemory dao;
 	@Value("${spira.test.project.id}")
 	private Integer projectId;
+	@Value("${spira.test.disabled:false}")
+	private boolean isDisabled;
 	
 	public void execute() {
+		if (isDisabled) {
+			return;
+		}
 		dao.insert(spiraTestClient.loadBugCount(projectId));
 	}
 }
