@@ -37,7 +37,16 @@ public class BuildStateExecutor {
 			LOG.debug(format("url ", url));
 		}
 
-		BuildState buildState = calculateState(instances, url);
+		BuildState buildState = null;
+		try {
+			buildState = calculateState(instances, url);
+		} catch (Exception exception) {
+			LOG.error("Can not evaluate buildState");
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Error", exception);
+			}
+		}
+		
 		if (LOG.isInfoEnabled()) {
 			LOG.info(format("BuildState for url %s : %s", url, buildState));
 		}
@@ -46,25 +55,19 @@ public class BuildStateExecutor {
 	}
 
 	private BuildState calculateState(BuildStateInstances instances, String url) {
-		Integer lastBuild = restClient.loadLastBuildNumber(url);
-		if(null == lastBuild) {
-			LOG.error("Can not load last build number");
-			
-			return newConfigurationFailedState(instances);
-		}
-			
-		Integer lastSuccessfulBuild = restClient.loadLastSuccessfulBuildNumber(url);
-		Integer lastFailedBuild = restClient.loadLastFailedBuildNumber(url);
+		int lastBuild = restClient.loadLastBuildNumber(url);
+		int lastSuccessfulBuild = restClient.loadLastSuccessfulBuildNumber(url);
+		int lastFailedBuild = restClient.loadLastFailedBuildNumber(url);
 		
-		if(isConfigurationError(lastBuild, lastSuccessfulBuild, lastFailedBuild)) {
-			return newConfigurationFailedState(instances);
-		} else if(isBuildError(lastBuild, lastSuccessfulBuild, lastFailedBuild)){
-			return (instances.isConfigurationIssue()
-					? newConfigurationFailedState(instances)
-					: newBuildFailedState(instances, url, lastFailedBuild));
+		if(lastSuccessfulBuild > lastFailedBuild) {
+			return newSuccessState(instances);
 		}
 		
-		return newSuccessState(instances);
+		if(lastFailedBuild == lastBuild && !instances.isConfigurationIssue()) {
+			return newBuildFailedState(instances, url, lastFailedBuild);
+		}
+		
+		return newConfigurationFailedState(instances);
 	}
 
 	private BuildState newConfigurationFailedState(BuildStateInstances instances) {
@@ -84,15 +87,6 @@ public class BuildStateExecutor {
 
 	private BuildState newSuccessState(BuildStateInstances instances) {
 		return new BuildState(SUCCESS, instances);
-	}
-
-	private boolean isConfigurationError(Integer lastBuild, Integer lastSuccessfulBuild, Integer lastFailedBuild) {
-		return (!lastBuild.equals(lastSuccessfulBuild)
-				&& !lastBuild.equals(lastFailedBuild));
-	}
-
-	private boolean isBuildError(Integer lastBuild, Integer lastSuccessfulBuild, Integer lastFailedBuild) {
-		return (!lastBuild.equals(lastSuccessfulBuild));
 	}
 
 	private String getUrl(BuildStateInstances instances) {
