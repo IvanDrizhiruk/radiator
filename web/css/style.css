@@ -186,22 +186,22 @@ table {
 }
 
 .broker_foto img {
-	height: 327px;
+	height: 200px;
 	border-radius: 25%;
 }
 
 .def_foto {
 	background: url('../images/unknown.jpg') no-repeat;
-	background-size: 327px;
-	width: 327px;
-	height: 327px;
+	background-size: 200px;
+	width: 200px;
+	height: 200px;
 	border-radius: 25%;
 	margin: 25px auto;
 }
 
 .buildStateImage {
-	width: 327px;
-    height: 327px;
+	width: 200px;
+    height: 200px;
 }
 
 .BuildStatusSection tr,

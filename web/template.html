@@ -99,10 +99,6 @@
 		}
 
 		function processBuildStatesSection(states) {
-			var isBuildFailed = true;
-			var lastCommitter = "Ivan Drizhiruk";
-			var lastCommitterEmail = "ivan.drizhiruk@ardas.dp.ua";
-			
 			processBuildStatesSectionByInstance($('#UIBuildStatus')[0], states.UI);
 			processBuildStatesSectionByInstance($('#WSBuildStatus')[0], states.WS);
 			
@@ -160,9 +156,7 @@
 					+'</div>'
 					+'</span>');
 
-			div.append( "<br />"
-					+ instance.errorMessage
-					+ '<span id="theOneWhoBrokeBuildName" class="broker_name">'
+			div.append('<span id="theOneWhoBrokeBuildName" class="broker_name">'
 					+ instance.failedName
 					+ '</span>');
 			
