@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ua.dp.ardas</groupId>
 	<artifactId>radiator</artifactId>
-	<version>1.2</version>
+	<version>1.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Ardas radiator</name>
 	<url>http://ardas.dp.ua</url>
