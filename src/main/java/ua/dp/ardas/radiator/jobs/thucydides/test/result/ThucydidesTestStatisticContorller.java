@@ -43,7 +43,7 @@ public class ThucydidesTestStatisticContorller {
 				"<div class=\"test-count-summary\">",
 				"<div id=\"test-results-tabs\">"));
 		
-		Pattern pattern = Pattern.compile("(?i)(?s)>([0-9]+).*<.*>([0-9]+).*<.*>([0-9]+).*<.*>([0-9]+).*<");
+		Pattern pattern = Pattern.compile("(?i)(?s)>([0-9]+)<.*>([0-9]+)<.*>([0-9]+)<.*>([0-9]+)<");
 		Matcher matcher = pattern.matcher(reportArea);
 		
 		if (!matcher.find()) {

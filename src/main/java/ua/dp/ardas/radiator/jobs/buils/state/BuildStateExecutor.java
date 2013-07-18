@@ -1,6 +1,7 @@
 package ua.dp.ardas.radiator.jobs.buils.state;
 
 import static java.lang.String.format;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 import static ua.dp.ardas.radiator.jobs.buils.state.BuildState.States.BUILD_FAILED;
 import static ua.dp.ardas.radiator.jobs.buils.state.BuildState.States.CONFIGURATION_FAILED;
@@ -18,7 +19,7 @@ import ua.dp.ardas.radiator.dto.hudson.api.BuildDetails;
 import ua.dp.ardas.radiator.resr.client.BuildStatusRestClient;
 
 @Component
-public class BuildStateExecutor {
+public class BuildStateExecutor<lastBuildDetails> {
 	private static Logger LOG = Logger.getLogger(BuildStateExecutor.class.getName());
 	
 	@Autowired
@@ -63,24 +64,25 @@ public class BuildStateExecutor {
 			return newSuccessState(instances);
 		}
 		
-		if(lastFailedBuild == lastBuild && !instances.isConfigurationIssue()) {
-			return newBuildFailedState(instances, url, lastFailedBuild);
+		BuildDetails lastBuildDetails = restClient.loadBuildDetails(url, lastFailedBuild);
+		
+		if(instances.isConfigurationIssue() || isEmpty(lastBuildDetails.culprits)) {
+			return newConfigurationFailedState(instances);
 		}
 		
-		return newConfigurationFailedState(instances);
+		return newBuildFailedState(instances, lastBuildDetails);
 	}
 
 	private BuildState newConfigurationFailedState(BuildStateInstances instances) {
 		return new BuildState(CONFIGURATION_FAILED, instances);
 	}
 
-	private BuildState newBuildFailedState(BuildStateInstances instances, String url, Integer lastFailedBuild) {
-		BuildDetails buildDetails = restClient.loadBuildDetails(url, lastFailedBuild);
-
+	private BuildState newBuildFailedState(BuildStateInstances instances, BuildDetails buildDetails) {
 		BuildState buildState = new BuildState(BUILD_FAILED, instances);
 		buildState.errorMessage = getErrorMessage(instances);
 		buildState.failedEmail = calculateFailedEmail(buildDetails.culprits, emailFormat);
 		buildState.failedName = calculateFailedName(buildDetails.culprits);
+		
 		return buildState;
 	}
 	
