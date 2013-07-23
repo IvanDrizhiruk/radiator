@@ -5,7 +5,6 @@ import static ua.dp.ardas.radiator.utils.DataTimeUtils.currentLongTime;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import ua.dp.ardas.radiator.jobs.report.builder.ReportBuilder;
@@ -18,7 +17,7 @@ public class ReportBuilderScheduler {
 	@Autowired
 	private ReportBuilder reportBuilder;
 	
-	@Scheduled(fixedDelay=5000)
+//	@Scheduled(fixedDelay=5000)
 	private void  executeTask() {
 		LOG.info(format("Start builder of report %s", currentLongTime()));
 		Timer timer = new Timer();
