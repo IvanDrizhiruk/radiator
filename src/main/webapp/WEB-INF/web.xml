@@ -16,7 +16,7 @@
 
 	<!-- Processes application requests -->
 	<servlet>
-		<servlet-name>appServlet</servlet-name>
+		    <servlet-name>spring</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
@@ -26,8 +26,44 @@
 	</servlet>
 		
 	<servlet-mapping>
-		<servlet-name>appServlet</servlet-name>
-		<url-pattern>/</url-pattern>
+	    <servlet-name>spring</servlet-name>
+	    <url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+
+	
+	<servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.html</url-pattern>
+	    <url-pattern>*.png</url-pattern>
+	    <url-pattern>*.js</url-pattern>
+	    <url-pattern>*.css</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>JerseyWebApplication</servlet-name>
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.resourceConfigClass</param-name>
+			<param-value>com.sun.jersey.api.core.PackagesResourceConfig</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>ua.dp.ardas.radiator</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+			<param-value>com.experiencehorizon.api.service.filter.SizeLimitFilter</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JerseyWebApplication</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>

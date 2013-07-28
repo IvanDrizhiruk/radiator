@@ -19,6 +19,9 @@
 	<context:annotation-config />
 	<context:component-scan base-package="ua.dp.ardas.radiator" />
 
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler /> 
+
 	<task:annotation-driven />
 	<task:scheduler id="scheduler" pool-size="3" />
 
@@ -63,6 +66,25 @@
 	</bean>
 	
 	
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	   <property name="messageConverters">
+	   		<list>
+		      <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+		      <bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+		      <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		      	<property name = "supportedMediaTypes">
+					<list>
+						 <value>application/json</value>
+						 <value>application/javascript</value>
+					</list>
+				</property>
+		         <!-- property name="objectMapper">
+		            <bean class="ua.dp.ardas.radiator.resr.client.RadiatorObjectMapper"/>
+		         </property-->
+		      </bean>		      
+	      </list>
+	   </property>
+	</bean> 
 	
 	
 	

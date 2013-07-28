@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import ua.dp.ardas.radiator.jobs.spira.test.bugs.SpiraTestStatisticController;
@@ -25,7 +26,7 @@ public class SpiraTestStatisticScheduler {
 		executeTask();
 	}
 	
-//	@Scheduled(cron="0 0,4,8,12,16,20 * * * *")
+	@Scheduled(cron="0 0,4,8,12,16,20 * * * *")
 	private void  executeTask() {
 		LOG.info(format("Start SpiraTestStatist calculation %s", currentLongTime()));
 		Timer timer = new Timer();
