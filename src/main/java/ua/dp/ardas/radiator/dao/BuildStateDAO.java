@@ -2,7 +2,7 @@ package ua.dp.ardas.radiator.dao;
 
 import java.util.List;
 
-import ua.dp.ardas.radiator.jobs.buils.state.BuildState;
+import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 
 public interface BuildStateDAO {
 	void insert(BuildState buildState);

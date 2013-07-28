@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 import ua.dp.ardas.radiator.dao.BuildStateDAO;
 import ua.dp.ardas.radiator.dao.SpiraTestStatisticDAO;
 import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
+import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.report.Report;
-import ua.dp.ardas.radiator.jobs.buils.state.BuildState;
 
 @Component
 public class ReportBuilder {

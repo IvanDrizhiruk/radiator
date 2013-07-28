@@ -2,9 +2,9 @@ package ua.dp.ardas.radiator.jobs.buils.state;
 
 import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
-import static ua.dp.ardas.radiator.jobs.buils.state.BuildState.States.BUILD_FAILED;
-import static ua.dp.ardas.radiator.jobs.buils.state.BuildState.States.CONFIGURATION_FAILED;
-import static ua.dp.ardas.radiator.jobs.buils.state.BuildState.States.SUCCESS;
+import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.BUILD_FAILED;
+import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.CONFIGURATION_FAILED;
+import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.SUCCESS;
 import static ua.dp.ardas.radiator.utils.BuildStateUtils.calculateFailedEmail;
 import static ua.dp.ardas.radiator.utils.BuildStateUtils.calculateFailedName;
 
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import ua.dp.ardas.radiator.config.AppConfig;
+import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.hudson.api.BuildDetails;
 import ua.dp.ardas.radiator.resr.client.BuildStatusRestClient;
 
@@ -22,9 +23,9 @@ public class BuildStateExecutor {
 	private static Logger LOG = Logger.getLogger(BuildStateExecutor.class.getName());
 	
 	@Autowired
-	private AppConfig config;
+	protected AppConfig config;
 	@Autowired
-	private BuildStatusRestClient restClient;
+	protected BuildStatusRestClient restClient;
 	@Value("${job.errorMessage:Build has been broken}")
 	private String defaultErrorMessage;
 	@Value("${faild.email.format:%s@ardas.dp.ua}")
@@ -54,7 +55,7 @@ public class BuildStateExecutor {
 		return buildState;
 	}
 
-	private BuildState calculateState(BuildStateInstances instances, String url) {
+	protected BuildState calculateState(BuildStateInstances instances, String url) {
 		int lastBuild = restClient.loadLastBuildNumber(url);
 		int lastSuccessfulBuild = restClient.loadLastSuccessfulBuildNumber(url);
 		int lastFailedBuild = restClient.loadLastFailedBuildNumber(url);
