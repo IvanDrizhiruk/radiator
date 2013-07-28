@@ -15,6 +15,7 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
 
 import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
+import ua.dp.ardas.radiator.dto.thucydides.test.ThucydidesTestStatistic;
 import ua.dp.ardas.radiator.resr.client.ThucydidesTestRestClient;
 
 @Component
@@ -25,7 +26,6 @@ public class ThucydidesTestStatisticContorller {
 	private ThucydidesTestRestClient restClient;
 	@Autowired
 	private ThucydidesTestStatisticDAO dao;
-	
 	@Value("${thucydides.test.status.url}")
 	private String url;
 			
@@ -41,9 +41,9 @@ public class ThucydidesTestStatisticContorller {
 		String reportArea = CharMatcher.anyOf("\r\n ").removeFrom(
 				substringBetween(report,
 				"<div class=\"test-count-summary\">",
-				"<div id=\"test-results-tabs\">"));
+				"<div id=\"test-results-tabs\""));
 		
-		Pattern pattern = Pattern.compile("(?i)(?s)>([0-9]+).*<.*>([0-9]+).*<.*>([0-9]+).*<.*>([0-9]+).*<");
+		Pattern pattern = Pattern.compile("(?i)(?s)class=\"test-count\">([0-9]+).*<.*>([0-9]+).*<.*>([0-9]+).*<.*>([0-9]+).*<");
 		Matcher matcher = pattern.matcher(reportArea);
 		
 		if (!matcher.find()) {

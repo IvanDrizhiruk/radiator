@@ -1,4 +1,4 @@
-package ua.dp.ardas.radiator.jobs.thucydides.test.result;
+package ua.dp.ardas.radiator.dto.thucydides.test;
 
 import ua.dp.ardas.radiator.utils.JsonUtils;
 

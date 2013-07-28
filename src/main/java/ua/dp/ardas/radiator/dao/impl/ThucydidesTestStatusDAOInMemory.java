@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
-import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatistic;
+import ua.dp.ardas.radiator.dto.thucydides.test.ThucydidesTestStatistic;
 
 @Component
 @Scope("singleton")
