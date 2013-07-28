@@ -11,7 +11,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import ua.dp.ardas.radiator.dao.BuildStateDAO;
-import ua.dp.ardas.radiator.jobs.buils.state.BuildState;
+import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances;
 
 @Component

@@ -1,5 +1,6 @@
-package ua.dp.ardas.radiator.jobs.buils.state;
+package ua.dp.ardas.radiator.dto.buils.state;
 
+import ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances;
 import ua.dp.ardas.radiator.utils.JsonUtils;
 
 
