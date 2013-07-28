@@ -7,10 +7,10 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import ua.dp.ardas.radiator.dto.thucydides.test.ThucydidesTestStatistic;
 import ua.dp.ardas.radiator.jobs.buils.state.BuildState;
 import ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances;
 import ua.dp.ardas.radiator.jobs.spira.test.bugs.SpiraTestStatistic;
-import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatistic;
 import ua.dp.ardas.radiator.utils.JsonUtils;
 
 @XmlRootElement
