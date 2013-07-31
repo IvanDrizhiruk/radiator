@@ -22,6 +22,9 @@ public class BuildStateDAOInMemory implements BuildStateDAO {
 
 	@Override
 	public void insert(BuildState buildState) {
+		if (null == buildState) {
+			return;
+		}
 		//TODO ISD if not same with last (build id could be used.)
 		moveOldStatisticBuInstance(buildState.instances);
 

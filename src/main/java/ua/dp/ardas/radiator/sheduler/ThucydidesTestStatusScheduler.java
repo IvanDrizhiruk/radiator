@@ -23,7 +23,14 @@ public class ThucydidesTestStatusScheduler {
 
 	@PostConstruct
 	void initialize() {
-		executeTask();
+		try {
+			executeTask();
+		} catch (Exception e) {
+			LOG.warn("Unable init ThucydidesTestStatus.");
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(String.format("Error: ", e));
+			}
+		}
 	}
 	
 	@Scheduled(fixedDelay=10000)

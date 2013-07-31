@@ -27,7 +27,6 @@ public class BuildStateExecutorTest {
 		BuildState actual = executor.calculateState(BuildStateInstances.UI, "some url");
 		//then
 		assertReflectionEquals(expected, actual);
-		
 		verifyCallNumber(restClientMock, 1, 1, 1, 0);
 	}
 
