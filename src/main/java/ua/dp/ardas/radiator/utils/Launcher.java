@@ -9,7 +9,7 @@ public class Launcher {
         Server server = new Server();
 
         SelectChannelConnector connector = new SelectChannelConnector();
-        connector.setPort(8080);
+        connector.setPort(8085);
         server.addConnector(connector);
 
         WebAppContext context = new WebAppContext("src/main/webapp", "/");

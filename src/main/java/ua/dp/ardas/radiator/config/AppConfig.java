@@ -8,7 +8,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 
 @Configuration
-@PropertySource("config.properties")
+@PropertySource({"config.properties", "auth.properties"})
 public class AppConfig {
 
 	@Autowired
