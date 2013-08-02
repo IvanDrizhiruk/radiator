@@ -29,7 +29,7 @@ public class BuildStateExecutor {
 	@Value("${job.errorMessage:Build has been broken}")
 	private String defaultErrorMessage;
 	@Value("${faild.email.format:%s@ardas.dp.ua}")
-	private String emailFormat;
+	protected String emailFormat;
 
 	
 	public BuildState loadState(BuildStateInstances instances) {

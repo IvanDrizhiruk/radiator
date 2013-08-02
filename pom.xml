@@ -94,7 +94,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.framework.version}</version>
 		</dependency>
-		<!-- Dependencies for RESTful-WS -->
+		<!--RESTful-WS -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
@@ -120,13 +120,18 @@
 			<artifactId>cglib</artifactId>
 			<version>2.2.2</version>
 		</dependency>
+		<dependency>
+		   <groupId>commons-httpclient</groupId>
+		   <artifactId>commons-httpclient</artifactId>
+		   <version>3.1</version>
+		</dependency>
+
         <!-- logs -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.14</version>
 		</dependency>
-		
 		<dependency>
 	        <groupId>com.google.code.gson</groupId>
 	        <artifactId>gson</artifactId>

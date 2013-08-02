@@ -37,7 +37,7 @@ public class BuildStatusRestClient {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(format("Try load from url ", fullUrl));
 		}
-		
+
 		return template.getForObject(fullUrl, String.class);
 	}
 	

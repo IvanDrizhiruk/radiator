@@ -1,4 +1,4 @@
-package ua.dp.ardas.radiator.utils;
+package ua.dp.ardas.radiator;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
