@@ -9,14 +9,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.thucydides.test.ThucydidesTestStatistic;
-import ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances;
 import ua.dp.ardas.radiator.jobs.spira.test.bugs.SpiraTestStatistic;
 import ua.dp.ardas.radiator.utils.JsonUtils;
 
 @XmlRootElement
 public class Report {
 
-	public HashMap<BuildStateInstances, BuildState> buildStates = newHashMap();
+	public HashMap<String, BuildState> buildStates = newHashMap();
 	public ThucydidesTestStatistic thucydidesTestStaistic;
 	public SpiraTestStatistic spiraTestStatistics;
 	public SpiraTestStatistic spiraTestOnStartWeekStatistics;

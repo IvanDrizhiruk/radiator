@@ -1,20 +1,17 @@
 package ua.dp.ardas.radiator.dto.buils.state;
 
-import ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances;
 import ua.dp.ardas.radiator.utils.JsonUtils;
 
-
-
 public class BuildState {
-	public BuildStateInstances instances;
+	public String instancesName;
 	public States state;
 	public String errorMessage;
 	public String failedEmail;
 	public String failedName;
 
-	public BuildState(States state, BuildStateInstances instances) {
+	public BuildState(States state, String instancesName) {
 		this.state = state;
-		this.instances = instances;
+		this.instancesName = instancesName;
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package ua.dp.ardas.radiator.jobs.buils.state;
 
 import static java.lang.String.format;
-import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.BUILD_FAILED;
 import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.CONFIGURATION_FAILED;
 import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.SUCCESS;
@@ -26,14 +25,12 @@ public class BuildStateExecutor {
 	protected AppConfig config;
 	@Autowired
 	protected BuildStatusRestClient restClient;
-	@Value("${job.errorMessage:Build has been broken}")
-	private String defaultErrorMessage;
 	@Value("${faild.email.format:%s@ardas.dp.ua}")
 	protected String emailFormat;
 
 	
-	public BuildState loadState(BuildStateInstances instances) {
-		String url = getUrl(instances);
+	public BuildState loadState(BuildStateInstance instances) {
+		String url = instances.configUrl;
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(format("url ", url));
 		}
@@ -55,7 +52,7 @@ public class BuildStateExecutor {
 		return buildState;
 	}
 
-	protected BuildState calculateState(BuildStateInstances instances, String url) {
+	protected BuildState calculateState(BuildStateInstance instances, String url) {
 		int lastBuild = restClient.loadLastBuildNumber(url);
 		int lastSuccessfulBuild = restClient.loadLastSuccessfulBuildNumber(url);
 		int lastFailedBuild = restClient.loadLastFailedBuildNumber(url);
@@ -64,39 +61,29 @@ public class BuildStateExecutor {
 			return newSuccessState(instances);
 		}
 		
-		if(lastFailedBuild == lastBuild && !instances.isConfigurationIssue()) {
+		if(lastFailedBuild == lastBuild && !instances.isConfigurationIssue) {
 			return newBuildFailedState(instances, url, lastFailedBuild);
 		}
 		
 		return newConfigurationFailedState(instances);
 	}
 
-	private BuildState newConfigurationFailedState(BuildStateInstances instances) {
-		return new BuildState(CONFIGURATION_FAILED, instances);
+	private BuildState newConfigurationFailedState(BuildStateInstance instances) {
+		return new BuildState(CONFIGURATION_FAILED, instances.name);
 	}
 
-	private BuildState newBuildFailedState(BuildStateInstances instances, String url, Integer lastFailedBuild) {
+	private BuildState newBuildFailedState(BuildStateInstance instance, String url, Integer lastFailedBuild) {
 		BuildDetails buildDetails = restClient.loadBuildDetails(url, lastFailedBuild);
 
-		BuildState buildState = new BuildState(BUILD_FAILED, instances);
-		buildState.errorMessage = getErrorMessage(instances);
+		BuildState buildState = new BuildState(BUILD_FAILED, instance.name);
+		buildState.errorMessage = instance.errorMessage;
 		buildState.failedEmail = calculateFailedEmail(buildDetails.culprits, emailFormat);
 		buildState.failedName = calculateFailedName(buildDetails.culprits);
 		return buildState;
 	}
 	
 
-	private BuildState newSuccessState(BuildStateInstances instances) {
-		return new BuildState(SUCCESS, instances);
-	}
-
-	private String getUrl(BuildStateInstances instances) {
-		return config.stringProperty(format("job.%s.url", instances));
-	}
-	
-	private String getErrorMessage(BuildStateInstances instances) {
-		String customErrorMessage = config.stringProperty(format("job.%s.errorMessage", instances));
-		
-		return defaultIfEmpty(customErrorMessage, defaultErrorMessage);
+	private BuildState newSuccessState(BuildStateInstance instance) {
+		return new BuildState(SUCCESS, instance.name);
 	}
 }

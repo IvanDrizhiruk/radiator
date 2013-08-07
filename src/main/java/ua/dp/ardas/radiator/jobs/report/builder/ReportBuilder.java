@@ -66,7 +66,7 @@ public class ReportBuilder {
 		List<BuildState> buildStates = buildStateDAO.findLastData();
 
 		for (BuildState state : buildStates) {
-			report.buildStates.put(state.instances, state);
+			report.buildStates.put(state.instancesName, state);
 		}
 	}
 

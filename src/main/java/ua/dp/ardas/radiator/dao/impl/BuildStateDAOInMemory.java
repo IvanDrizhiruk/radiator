@@ -12,7 +12,6 @@ import com.google.common.collect.Lists;
 
 import ua.dp.ardas.radiator.dao.BuildStateDAO;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
-import ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances;
 
 @Component
 @Scope("singleton")
@@ -26,17 +25,17 @@ public class BuildStateDAOInMemory implements BuildStateDAO {
 			return;
 		}
 		//TODO ISD if not same with last (build id could be used.)
-		moveOldStatisticBuInstance(buildState.instances);
+		moveOldStatisticBuInstance(buildState.instancesName);
 
 		buildStates.add(buildState);
 	}
 
-	private void moveOldStatisticBuInstance(final BuildStateInstances instances) {
+	private void moveOldStatisticBuInstance(final String instancesName) {
 		Iterables.removeIf(buildStates, new Predicate<BuildState>() {
 
 			@Override
 			public boolean apply(BuildState state) {
-				return state.instances == instances;
+				return state.instancesName.equals(instancesName);
 			}
 			
 		});

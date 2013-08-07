@@ -13,9 +13,11 @@ public class BuildStateContorller {
 	private BuildStateExecutor executor;
 	@Autowired
 	private BuildStateDAO dao;
+	@Autowired
+	private BuildStateInstances buildStateInstances;
 			
 	public void execute() {
-		for(BuildStateInstances instances : BuildStateInstances.values()) {
+		for(BuildStateInstance instances : buildStateInstances.values()) {
 			BuildState buildState = executor.loadState(instances);
 			dao.insert(buildState);
 		}

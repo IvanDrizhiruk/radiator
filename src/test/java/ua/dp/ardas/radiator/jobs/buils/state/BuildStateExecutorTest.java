@@ -10,8 +10,6 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.BUILD_FAILED;
 import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.CONFIGURATION_FAILED;
 import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.SUCCESS;
-import static ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances.UI;
-import static ua.dp.ardas.radiator.jobs.buils.state.BuildStateInstances.UI_THUCYDIDES_TESTS1;
 import static ua.dp.ardas.radiator.utils.ResourcesUtils.resourceAsString;
 
 import org.junit.Test;
@@ -28,12 +26,16 @@ import ua.dp.ardas.radiator.utils.JsonUtils;
 
 public class BuildStateExecutorTest {
 
+	private static final BuildStateInstance UI = new BuildStateInstance("UI", false, "ui", "Error in ui");
+	private static final BuildStateInstance UI_THUCYDIDES_TESTS1 = new BuildStateInstance("UI_THUCYDIDES_TESTS1", true, "ui_thucydides_tests1", "Error in ui_thucydides_tests1");;
+
+
 	@Test
 	public void shoudgenerateSuxesBuildIfNoErrors() {
 		//given
 		BuildStatusRestClient restClientMock = newRestClientMock(6275, 6275, 6270);
 		BuildStateExecutor executor = newBuildStateExecutor(restClientMock);
-		BuildState expected = new BuildState(SUCCESS, UI);
+		BuildState expected = new BuildState(SUCCESS, UI.name);
 		//whent
 		BuildState actual = executor.calculateState(UI, "some url");
 		//then
@@ -46,8 +48,8 @@ public class BuildStateExecutorTest {
 		//given
 		BuildStatusRestClient restClientMock = newRestClientMock(6275, 6270, 6275);
 		BuildStateExecutor executor = newBuildStateExecutor(restClientMock);
-		BuildState expected = new BuildState(BUILD_FAILED, UI);
-		expected.errorMessage = "job.UI.errorMessage";
+		BuildState expected = new BuildState(BUILD_FAILED, UI.name);
+		expected.errorMessage = UI.errorMessage;
 		expected.failedEmail ="nick.foster@ardas.dp.ua";
 		expected.failedName = "Nick Foster";
 		//whent
@@ -62,7 +64,7 @@ public class BuildStateExecutorTest {
 		//given
 		BuildStatusRestClient restClientMock = newRestClientMock(6275, 6270, 6275);
 		BuildStateExecutor executor = newBuildStateExecutor(restClientMock);
-		BuildState expected = new BuildState(CONFIGURATION_FAILED, UI_THUCYDIDES_TESTS1);
+		BuildState expected = new BuildState(CONFIGURATION_FAILED, UI_THUCYDIDES_TESTS1.name);
 		//whent
 		BuildState actual = executor.calculateState(UI_THUCYDIDES_TESTS1, "some url");
 		//then
@@ -75,7 +77,7 @@ public class BuildStateExecutorTest {
 		//given
 		BuildStatusRestClient restClientMock = newRestClientMock(6298, 6295, 6297);
 		BuildStateExecutor executor = newBuildStateExecutor(restClientMock);
-		BuildState expected = new BuildState(CONFIGURATION_FAILED, UI);
+		BuildState expected = new BuildState(CONFIGURATION_FAILED, UI.name);
 		//whent
 		BuildState actual = executor.calculateState(UI, "some url");
 		//then

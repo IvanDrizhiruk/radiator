@@ -1,5 +1,8 @@
 package ua.dp.ardas.radiator.config;
 
+import static java.lang.Boolean.parseBoolean;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,5 +25,13 @@ public class AppConfig {
 	
 	public String stringProperty(String key) {
 		return environment.getProperty(key);
+	}
+
+	public Boolean boolenadProperty(String key) {
+		String value = environment.getProperty(key);
+		
+		return isEmpty(value)
+				? null
+				: parseBoolean(value);
 	}
 }
