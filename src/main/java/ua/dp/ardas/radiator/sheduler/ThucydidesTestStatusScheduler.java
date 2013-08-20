@@ -33,7 +33,7 @@ public class ThucydidesTestStatusScheduler {
 		}
 	}
 	
-	@Scheduled(fixedDelay=10000)
+	@Scheduled(cron="${thucydides.test.status.cron}")
 	private void  executeTask() {
 		LOG.info(format("Start ThucydidesTestStatus calculation %s", currentLongTime()));
 		Timer timer = new Timer();

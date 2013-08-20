@@ -26,7 +26,7 @@ public class SpiraTestStatisticScheduler {
 		executeTask();
 	}
 	
-	@Scheduled(cron="0 0,4,8,12,16,20 * * * *")
+	@Scheduled(cron="${spira.test.cron}")
 	private void  executeTask() {
 		LOG.info(format("Start SpiraTestStatist calculation %s", currentLongTime()));
 		Timer timer = new Timer();

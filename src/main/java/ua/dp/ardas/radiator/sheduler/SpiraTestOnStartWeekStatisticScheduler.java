@@ -19,7 +19,7 @@ public class SpiraTestOnStartWeekStatisticScheduler {
 	private SpiraTestOnStartWeekStatisticController spiraTestOnStartWeekStatisticController;
 	
 	
-	@Scheduled(fixedDelay=60000)
+	@Scheduled(cron="${spira.test.on.start.week.statistic.cron}")
 	public void  executeTask() {
 		LOG.info(format("Start SpiraTestStatist on start week calculation %s", currentLongTime()));
 		Timer timer = new Timer();

@@ -23,7 +23,7 @@ public class BuildStateInstances {
 	
 	@Autowired
 	protected AppConfig config;
-	@Value("${buildStale.instances.namesjobs}")
+	@Value("${build.stale.instances.namesjobs}")
 	protected String instancesString;
 	@Value("${build.state.errorMessage:Build has been broken}")
 	protected String defaultErrorMessage;

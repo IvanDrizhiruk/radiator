@@ -30,11 +30,17 @@
 		function updateRadiator() {
 			var repost = loadReport();
 			
+			if (null == repost) {
+				return;
+			}
+			
 			processThucydidesTestsSection(repost.thucydidesTestStaistic);
 
 			processSpiraTestStatisticSection(repost.spiraTestStatistics, repost.spiraTestOnStartWeekStatistics, repost.configuration);
 			
 			processBuildStatesSection(repost.buildStates);
+			
+			playSound(repost.configuration);
 		}
 		
 		function loadReport() {
@@ -45,11 +51,17 @@
 			        cache: false,
 			        async: false,
 		            error: function(jqXHR, textStatus, errorThrown){
-		                alert('updateWine error: ' + textStatus);
-		            }
+		                showError('Unable load report data. Status ' + textStatus);
+		            },
+					success: function(msg){
+						clearError();
+					}
 			    });
-
-			 return $.evalJSON(jqXHR.responseText);
+			 try {
+			 	return $.evalJSON(jqXHR.responseText);
+			 } catch(e) {
+				 return null;
+			 }
 		}
 
 		
@@ -189,7 +201,28 @@
 			parent.innerHTML = '';
 			parent.append(div);
 		}
-
+		
+		function playSound(configuration) {
+			if(configuration && configuration['play.sound.by.pathes']) {
+				
+				$.each( configuration['play.sound.by.pathes'],
+					function( key, path ) {
+						var audio = new Audio();
+						audio.src = path;
+						audio.play();
+					});
+			}
+		}
+		
+		function showError(error) {
+			$('#errorArea').show();
+			$('#errorArea').html(error);
+		}
+		
+		function clearError() {
+			$('#errorArea').hide();
+			$('#errorArea').html("");
+		}
 	</script>
 </head>
 
@@ -199,6 +232,8 @@
 			<nav></nav>
 			<section>
 				<article>
+					<div id="errorArea" style="display:none">
+					</div>
 					<table>
 						<tr class="thucydidesTestsSection">
 							<td class="sectname shadow" colspan="3">Thucydides tests</td>

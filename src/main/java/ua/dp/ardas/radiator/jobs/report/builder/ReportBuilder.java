@@ -18,6 +18,8 @@ import ua.dp.ardas.radiator.dao.SpiraTestStatisticDAO;
 import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.report.Report;
+import ua.dp.ardas.radiator.jobs.play.saund.SoundController;
+import ua.dp.ardas.radiator.sheduler.MittingRemainder;
 
 @Component
 public class ReportBuilder {
@@ -33,6 +35,10 @@ public class ReportBuilder {
 	private SpiraTestStatisticDAO spiraTestStatisticDAO;
 	@Value("${spira.test.disabled:false}")
 	private boolean isDisabledSpiraTest;
+	@Autowired
+	private MittingRemainder mittingRemainder;
+	@Autowired
+	private SoundController soundController;
 
 
 	private HashMap<String, String> reportToParameterMap(Report report) {
@@ -60,6 +66,7 @@ public class ReportBuilder {
 
 	private void agrefateConfigurationSettings(Report report) {
 		report.configuration.put("spira.test.disabled", isDisabledSpiraTest);
+		report.configuration.put("play.sound.by.pathes", soundController.getSoundPathes());
 	}
 
 	private void agrefateBuildStates(Report report) {

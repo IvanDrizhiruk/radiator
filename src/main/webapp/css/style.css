@@ -208,4 +208,13 @@ table {
 .BuildStatusSection td {
 	margin: 0;
 	padding: 0;
- }  
+ }
+ 
+ div#errorArea {
+ 	background-color: white;
+    color: red;
+ 	font: bold 100px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+    margin: auto;
+    position: inherit;
+    text-align: center;
+ }

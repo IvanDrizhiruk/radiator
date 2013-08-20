@@ -26,7 +26,7 @@ public class BuildStateScheduler {
 		executeTask();
 	}
 	
-	@Scheduled(fixedDelay=10000)
+	@Scheduled(cron="${build.stale.cron}")
 	private void  executeTask() {
 		LOG.info(format("Start BuildState calculation %s", currentLongTime()));
 		Timer timer = new Timer();
