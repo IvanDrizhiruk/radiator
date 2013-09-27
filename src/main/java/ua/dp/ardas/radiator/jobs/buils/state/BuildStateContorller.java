@@ -14,7 +14,7 @@ import com.google.common.base.Predicate;
 import ua.dp.ardas.radiator.dao.BuildStateDAO;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState.States;
-import ua.dp.ardas.radiator.jobs.play.saund.SoundController;
+import ua.dp.ardas.radiator.jobs.play.sound.SoundController;
 
 @Component
 public class BuildStateContorller {

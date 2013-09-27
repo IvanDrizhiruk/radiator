@@ -1,4 +1,4 @@
-package ua.dp.ardas.radiator.jobs.play.saund;
+package ua.dp.ardas.radiator.jobs.play.sound;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
