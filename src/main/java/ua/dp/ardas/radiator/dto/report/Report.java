@@ -17,6 +17,7 @@ public class Report {
 
 	public HashMap<String, BuildState> buildStates = newHashMap();
 	public ThucydidesTestStatistic thucydidesTestStaistic;
+	public ThucydidesTestStatistic thucydidesRestTestStaistic;
 	public SpiraTestStatistic spiraTestStatistics;
 	public SpiraTestStatistic spiraTestOnStartWeekStatistics;
 	public Map<String, Object> configuration = newHashMap();

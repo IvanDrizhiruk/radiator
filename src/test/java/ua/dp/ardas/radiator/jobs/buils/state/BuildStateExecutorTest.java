@@ -1,5 +1,6 @@
 package ua.dp.ardas.radiator.jobs.buils.state;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -20,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 
 import ua.dp.ardas.radiator.config.AppConfig;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
+import ua.dp.ardas.radiator.dto.buils.state.Commiter;
 import ua.dp.ardas.radiator.dto.hudson.api.BuildDetails;
 import ua.dp.ardas.radiator.resr.client.BuildStatusRestClient;
 import ua.dp.ardas.radiator.utils.JsonUtils;
@@ -50,8 +52,8 @@ public class BuildStateExecutorTest {
 		BuildStateExecutor executor = newBuildStateExecutor(restClientMock);
 		BuildState expected = new BuildState(BUILD_FAILED, UI.name);
 		expected.errorMessage = UI.errorMessage;
-		expected.failedEmail ="nick.foster@ardas.dp.ua";
-		expected.failedName = "Nick Foster";
+		expected.commiters = newArrayList(new Commiter("Nick Foster", "nick.foster@ardas.dp.ua"));
+
 		//whent
 		BuildState actual = executor.calculateState(UI, "some url");
 		//then

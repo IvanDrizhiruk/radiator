@@ -4,8 +4,6 @@ import static java.lang.String.format;
 import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.BUILD_FAILED;
 import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.CONFIGURATION_FAILED;
 import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.SUCCESS;
-import static ua.dp.ardas.radiator.utils.BuildStateUtils.calculateFailedEmail;
-import static ua.dp.ardas.radiator.utils.BuildStateUtils.calculateFailedName;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import ua.dp.ardas.radiator.config.AppConfig;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.hudson.api.BuildDetails;
 import ua.dp.ardas.radiator.resr.client.BuildStatusRestClient;
+import ua.dp.ardas.radiator.utils.BuildStateUtils;
 
 @Component
 public class BuildStateExecutor {
@@ -77,8 +76,8 @@ public class BuildStateExecutor {
 
 		BuildState buildState = new BuildState(BUILD_FAILED, instance.name);
 		buildState.errorMessage = instance.errorMessage;
-		buildState.failedEmail = calculateFailedEmail(buildDetails.culprits, emailFormat);
-		buildState.failedName = calculateFailedName(buildDetails.culprits);
+		buildState.commiters = BuildStateUtils.calculateCommiters(buildDetails.culprits, emailFormat);
+		
 		return buildState;
 	}
 	

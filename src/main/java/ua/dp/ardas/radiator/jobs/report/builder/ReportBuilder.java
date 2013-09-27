@@ -15,10 +15,11 @@ import org.springframework.stereotype.Component;
 
 import ua.dp.ardas.radiator.dao.BuildStateDAO;
 import ua.dp.ardas.radiator.dao.SpiraTestStatisticDAO;
+import ua.dp.ardas.radiator.dao.ThucydidesRestTestStatisticDAO;
 import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.report.Report;
-import ua.dp.ardas.radiator.jobs.play.saund.SoundController;
+import ua.dp.ardas.radiator.jobs.play.sound.SoundController;
 import ua.dp.ardas.radiator.sheduler.MittingRemainder;
 
 @Component
@@ -31,6 +32,8 @@ public class ReportBuilder {
 	private BuildStateDAO buildStateDAO;
 	@Autowired
 	private ThucydidesTestStatisticDAO thucydidesTestStaisticDAO;
+	@Autowired
+	private ThucydidesRestTestStatisticDAO thucydidesRestTestStatisticDAO;
 	@Autowired
 	private SpiraTestStatisticDAO spiraTestStatisticDAO;
 	@Value("${spira.test.disabled:false}")
@@ -53,6 +56,7 @@ public class ReportBuilder {
 
 		agrefateBuildStates(report);
 		agrefateThucydidesTestStais(report);
+		agrefateThucydidesRestTestStais(report);
 		agrefateSpiraTestStatistic(report);
 		agrefateSpiraTestOnStartWeekStatistic(report);
 		agrefateConfigurationSettings(report);
@@ -79,6 +83,11 @@ public class ReportBuilder {
 
 	private void agrefateThucydidesTestStais(Report report) {
 		report.thucydidesTestStaistic = thucydidesTestStaisticDAO.findLastData();
+		
+	}
+	
+	private void agrefateThucydidesRestTestStais(Report report) {
+		report.thucydidesRestTestStaistic = thucydidesRestTestStatisticDAO.findLastData();
 		
 	}
 
