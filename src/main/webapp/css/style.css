@@ -23,7 +23,7 @@ blockquote,q {
 }
 
 ins {
-	text-decoration: none
+	
 }
 
 del {
@@ -50,7 +50,6 @@ html,body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	overflow: hidden;
 }
 
 body {
@@ -104,7 +103,7 @@ table {
 
 .sectcont {
 	padding: 30px;
-	font: 60px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+	font: 50px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
 	background: #fff;
 }
 
@@ -125,13 +124,13 @@ table {
 
 .passedlbl {
 	display: block;
-	color: #00c200;
+	color: #006400;
 	margin: 15px 0px;
 }
 
 .pendinglbl {
 	display: block;
-	color: #ffb700;
+	color: #FF8C00;
 	margin: 15px 0px;
 }
 
@@ -170,12 +169,12 @@ table {
 	font-size: 48px;
 	vertical-align: middle;
 	border-radius: 7%;
-	height: 290px;
+	height: 190px;
 	margin-bottom: 5px;
 }
 
 .broker_name {
-	font-size: 90px;
+	font-size: 60px;
 	padding-top: 20px;
 	padding-bottom: 25px;
 	display: block;
@@ -190,22 +189,22 @@ table {
 }
 
 .broker_foto img {
-	height: 200px;
+	height: 100px;
 	border-radius: 25%;
 }
 
 .def_foto {
 	background: url('../images/unknown.jpg') no-repeat;
-	background-size: 200px;
-	width: 200px;
-	height: 200px;
+	background-size: 100px;
+	width: 100px;
+	height: 100px;
 	border-radius: 25%;
 	margin: 25px auto;
 }
 
 .buildStateImage {
-	width: 200px;
-    height: 200px;
+	width: 100px;
+    height: 100px;
 }
 
 .BuildStatusSection tr,
@@ -228,3 +227,25 @@ table {
     margin-right: auto;
     width: 97%;
  }
+ 
+ .buildStatisticLabel{
+ 	font-size: 30px;
+ 	padding: 0px;
+ }
+ 
+ .buildStatusSection .sectcont {
+ 	padding: 0px;
+ }
+
+ .warningArea {
+	 position: absolute;
+	 color: #006400;
+ }
+
+.warning {
+	color: #FF8C00;
+}
+
+.error {
+	color: #e30613;
+}

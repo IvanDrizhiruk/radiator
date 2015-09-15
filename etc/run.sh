@@ -1,3 +1,3 @@
 #!/bin/sh
 
-java -jar radiator-0.0-SNAPSHOT.jar
+java -jar jetty-runner.jar --port 8085 target/radiator.war

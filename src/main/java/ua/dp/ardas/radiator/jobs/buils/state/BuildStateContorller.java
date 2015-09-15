@@ -1,20 +1,18 @@
 package ua.dp.ardas.radiator.jobs.buils.state;
 
-import static com.google.common.collect.Iterables.find;
-import static com.google.common.collect.Lists.newArrayList;
-
-import java.util.List;
-
+import com.google.common.base.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.Predicate;
-
 import ua.dp.ardas.radiator.dao.BuildStateDAO;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState.States;
 import ua.dp.ardas.radiator.jobs.play.sound.SoundController;
+
+import java.util.List;
+
+import static com.google.common.collect.Iterables.find;
+import static com.google.common.collect.Lists.newArrayList;
 
 @Component
 public class BuildStateContorller {
@@ -49,7 +47,7 @@ public class BuildStateContorller {
 	}
 
 	private boolean calculateIsNeedSound(BuildState newBuildState, List<BuildState> lastData) {
-		if (States.SUCCESS == newBuildState.state) {
+		if (null == newBuildState || States.SUCCESS == newBuildState.state) {
 			return false;
 		}
 			

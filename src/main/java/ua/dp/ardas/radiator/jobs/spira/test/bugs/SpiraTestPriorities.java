@@ -4,30 +4,56 @@ import org.apache.commons.lang.StringUtils;
 
 
 public enum SpiraTestPriorities {
-	HIGH{
-		@Override
-		public void increment(SpiraTestStatistic spiraTestStatistic) {
+    CRITICAL{
+        @Override
+        public void incrementTotalNumber(SpiraTestStatistic spiraTestStatistic) {
+            spiraTestStatistic.critical++;
+        }
+
+        @Override
+        public void incrementWithOwner(SpiraTestStatistic spiraTestStatistic) {
+            spiraTestStatistic.criticalWithOwner++;
+        }
+    },
+    HIGH{
+        @Override
+        public void incrementTotalNumber(SpiraTestStatistic spiraTestStatistic) {
 			spiraTestStatistic.high++;
 		}
+        @Override
+        public void incrementWithOwner(SpiraTestStatistic spiraTestStatistic) {
+            spiraTestStatistic.highWithOwner++;
+        }
 	},
 	MEDIUM{
 		@Override
-		public void increment(SpiraTestStatistic spiraTestStatistic) {
+		public void incrementTotalNumber(SpiraTestStatistic spiraTestStatistic) {
 			spiraTestStatistic.medium++;
 		}
+        @Override
+        public void incrementWithOwner(SpiraTestStatistic spiraTestStatistic) {
+            spiraTestStatistic.mediumWithOwner++;
+        }
 	},
 	LOW{
 		@Override
-		public void increment(SpiraTestStatistic spiraTestStatistic) {
+		public void incrementTotalNumber(SpiraTestStatistic spiraTestStatistic) {
 			spiraTestStatistic.low++;
 		}
+        @Override
+        public void incrementWithOwner(SpiraTestStatistic spiraTestStatistic) {
+            spiraTestStatistic.lowWithOwner++;
+        }
 	};
 
-	public static void increment(String priority, SpiraTestStatistic spiraTestStatistic) {
+	public static void increment(String priority, boolean isHasOwner, SpiraTestStatistic spiraTestStatistic) {
 		SpiraTestPriorities spiraTestPriority = stringToSpiraTestPriorities(priority);
 		
 		if (null != spiraTestPriority) {
-			spiraTestPriority.increment(spiraTestStatistic);
+			spiraTestPriority.incrementTotalNumber(spiraTestStatistic);
+            if(isHasOwner) {
+                spiraTestPriority.incrementWithOwner(spiraTestStatistic);
+            }
 		}
 	}
 
@@ -41,5 +67,6 @@ public enum SpiraTestPriorities {
 		return null;
 	}
 
-	public abstract void increment(SpiraTestStatistic spiraTestStatistic);
+	public abstract void incrementTotalNumber(SpiraTestStatistic spiraTestStatistic);
+    public abstract void incrementWithOwner(SpiraTestStatistic spiraTestStatistic);
 }

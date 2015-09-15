@@ -1,30 +1,24 @@
 package ua.dp.ardas.radiator.jobs.buils.state;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.BUILD_FAILED;
-import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.CONFIGURATION_FAILED;
-import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.SUCCESS;
-import static ua.dp.ardas.radiator.utils.ResourcesUtils.resourceAsString;
-
+import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-
-import com.google.gson.reflect.TypeToken;
-
 import ua.dp.ardas.radiator.config.AppConfig;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.buils.state.Commiter;
 import ua.dp.ardas.radiator.dto.hudson.api.BuildDetails;
 import ua.dp.ardas.radiator.resr.client.BuildStatusRestClient;
 import ua.dp.ardas.radiator.utils.JsonUtils;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.*;
+import static ua.dp.ardas.radiator.utils.ResourcesUtils.resourceAsString;
 
 public class BuildStateExecutorTest {
 
@@ -41,8 +35,8 @@ public class BuildStateExecutorTest {
 		//whent
 		BuildState actual = executor.calculateState(UI, "some url");
 		//then
-		assertReflectionEquals(expected, actual);
-		verifyCallNumber(restClientMock, 1, 1, 1, 0);
+		assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+		verifyCallNumber(restClientMock, 1, 1, 1, 1);
 	}
 	
 	@Test
@@ -57,8 +51,8 @@ public class BuildStateExecutorTest {
 		//whent
 		BuildState actual = executor.calculateState(UI, "some url");
 		//then
-		assertReflectionEquals(expected, actual);
-		verifyCallNumber(restClientMock, 1, 1, 1, 1);
+		assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+		verifyCallNumber(restClientMock, 1, 1, 1, 2);
 	}
 	
 	@Test
@@ -70,8 +64,8 @@ public class BuildStateExecutorTest {
 		//whent
 		BuildState actual = executor.calculateState(UI_THUCYDIDES_TESTS1, "some url");
 		//then
-		assertReflectionEquals(expected, actual);
-		verifyCallNumber(restClientMock, 1, 1, 1, 0);
+		assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+		verifyCallNumber(restClientMock, 1, 1, 1, 1);
 	}
 	
 	@Test
@@ -83,10 +77,9 @@ public class BuildStateExecutorTest {
 		//whent
 		BuildState actual = executor.calculateState(UI, "some url");
 		//then
-		assertReflectionEquals(expected, actual);
-		verifyCallNumber(restClientMock, 1, 1, 1, 0);
+		assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+		verifyCallNumber(restClientMock, 1, 1, 1, 1);
 	}
-
 
 	private void verifyCallNumber(
 			BuildStatusRestClient restClientMock,
@@ -95,8 +88,8 @@ public class BuildStateExecutorTest {
 			Integer lastFailedBuildNumber,
 			Integer loadDetailsBuildNumber) {
 		verify(restClientMock, times(lastBuildNumber)).loadLastBuildNumber(anyString());
-		verify(restClientMock, times(lastSuccessfulBuildNumber)).loadLastSuccessfulBuildNumber(anyString());
-		verify(restClientMock, times(lastFailedBuildNumber)).loadLastFailedBuildNumber(anyString());
+		verify(restClientMock, times(lastSuccessfulBuildNumber)).loadLastSuccessfulBuildNumber(anyString(), anyInt());
+		verify(restClientMock, times(lastFailedBuildNumber)).loadLastFailedBuildNumber(anyString(), anyInt());
 		verify(restClientMock, times(loadDetailsBuildNumber)).loadBuildDetails(anyString(), anyInt());
 	}
 
@@ -108,8 +101,8 @@ public class BuildStateExecutorTest {
 		BuildStatusRestClient restClientMock = mock(BuildStatusRestClient.class);
 		
 		when(restClientMock.loadLastBuildNumber(anyString())).thenReturn(lastBuildNumber);
-		when(restClientMock.loadLastSuccessfulBuildNumber(anyString())).thenReturn(lastSuccessfulBuildNumber);
-		when(restClientMock.loadLastFailedBuildNumber(anyString())).thenReturn(lastFailedBuildNumber);
+		when(restClientMock.loadLastSuccessfulBuildNumber(anyString(), anyInt())).thenReturn(lastSuccessfulBuildNumber);
+		when(restClientMock.loadLastFailedBuildNumber(anyString(), anyInt())).thenReturn(lastFailedBuildNumber);
 		when(restClientMock.loadBuildDetails(anyString(), anyInt())).thenAnswer(
 				new Answer<BuildDetails>() {
 

@@ -1,11 +1,10 @@
 package ua.dp.ardas.radiator.jobs.thucydides.test.result;
 
+import org.junit.Test;
+import ua.dp.ardas.radiator.dto.thucydides.test.ThucydidesTestStatistic;
+
 import static org.fest.assertions.Assertions.assertThat;
 import static ua.dp.ardas.radiator.utils.ResourcesUtils.resourceAsString;
-
-import org.junit.Test;
-
-import ua.dp.ardas.radiator.dto.thucydides.test.ThucydidesTestStatistic;
 
 public class ThucydidesTestStatusContorllerTest {
 
@@ -19,7 +18,7 @@ public class ThucydidesTestStatusContorllerTest {
 		//when
 		ThucydidesTestStatistic actual = contorller.extractStatistic(report);
 		//then
-		assertThat(actual.passed).isEqualTo(717);
+		assertThat(actual.passed).isEqualTo(1005);
 		assertThat(actual.pending).isEqualTo(30);
 		assertThat(actual.failed).isEqualTo(5);
 		assertThat(actual.errors).isEqualTo(14);

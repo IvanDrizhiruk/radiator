@@ -18,11 +18,13 @@
 	
 	<script type="text/javascript">
 		var thucydidesChar;
-		var thucydidesRestChar;
+		var thucydidesRestChartQ;
+		var thucydidesRestChartR;
 		
 		$(document).ready(function() {
 			thucydidesChart = new google.visualization.PieChart(document.getElementById('thucydidesChart'));
-			thucydidesRestChar = new google.visualization.PieChart(document.getElementById('thucydidesRestChart'));
+			thucydidesRestChartQ = new google.visualization.PieChart(document.getElementById('thucydidesRestChartQ'));
+			thucydidesRestChartR = new google.visualization.PieChart(document.getElementById('thucydidesRestChartR'));
 			
 			updateRadiator();
 			window.setInterval(updateRadiator, 5000);
@@ -31,13 +33,16 @@
 	
 		function updateRadiator() {
 			var repost = loadReport();
-			
+
+            console.log(repost);
+
 			if (null == repost) {
 				return;
 			}
 			
 			processThucydidesTestsSection(repost.thucydidesTestStaistic);
-			processThucydidesRestTestsSection(repost.thucydidesRestTestStaistic);
+			processThucydidesRestTestsSection(repost.thucydidesRestQTestStaistic, 'Q', thucydidesRestChartQ);
+			processThucydidesRestTestsSection(repost.thucydidesRestRTestStaistic, 'R', thucydidesRestChartR);
 			
 
 			processSpiraTestStatisticSection(repost.spiraTestStatistics, repost.spiraTestOnStartWeekStatistics, repost.configuration);
@@ -84,19 +89,19 @@
 			drawChart(statistics.passed, statistics.pending, failed, thucydidesChart);
 		}
 		
-		function processThucydidesRestTestsSection(statistics) {
+		function processThucydidesRestTestsSection(statistics,version, thucydidesRestChart) {
 			if(!statistics) {
-				$('#restThucydidesTestsSection').hide();
+				$('#restThucydidesTestsSection'+version).hide();
 				return;
 			}
 			var failed = statistics.failed + statistics.errors;
 
-			initFailedCount($("#failednumTRest"), failed);
-			$("#passedlblTRest")[0].innerHTML = statistics.passed;
-			$("#pendinglblTRest")[0].innerHTML = statistics.pending;
+			initFailedCount($("#failednumTRest"+version), failed);
+			$("#passedlblTRest"+version)[0].innerHTML = statistics.passed;
+			$("#pendinglblTRest"+version)[0].innerHTML = statistics.pending;
 
 			
-			drawChart(statistics.passed, statistics.pending, failed, thucydidesRestChar);
+			drawChart(statistics.passed, statistics.pending, failed, thucydidesRestChart);
 		}
 
 		function drawChart(passed, pending, failed, chart) {
@@ -137,15 +142,19 @@
 				return;
 			}
 			
-			initBugSection($("#bugCriticalTitle"), $("#bugCriticalTotal"), $("#bugCriticalInfo"), statistics.high, statisticsOnWeekStart.high);
-			initBugSection($("#bugHighTitle"), $("#bugHighTotal"), $("#bugHighInfo"), statistics.medium, statisticsOnWeekStart.medium);
-			initBugSection($("#bugMediumTitle"), $("#bugMediumTotal"), $("#bugMediumInfo"), statistics.low, statisticsOnWeekStart.low);
+			initBugSection($("#bugCriticalTitle"), $("#bugCriticalTotal"), $("#bugCriticalInfo"), statistics.critical, statistics.criticalWithOwner);
+			initBugSection($("#bugHighTitle"), $("#bugHighTotal"), $("#bugHighInfo"), statistics.high, statistics.highWithOwner);
+			initBugSection($("#bugMediumTitle"), $("#bugMediumTotal"), $("#bugMediumInfo"), statistics.medium, statistics.mediumWithOwner);
 		}
 		
-		function initBugSection(titleElement, totalElement, infoElement, totalCount, totalCountOnWeekStart) {
-			
+		function initBugSection(titleElement, totalElement, infoElement, totalCount, countwithOwner) {
 
-			initFailedCount(infoElement, totalCount-totalCountOnWeekStart);
+            var displayInfoElementStyle = (0 == totalCount - countwithOwner)
+                ? 'none'
+                : 'block';
+
+            infoElement.css({'display': displayInfoElementStyle});
+			initFailedCount(infoElement, totalCount - countwithOwner);
 
 			titleElement.css('color', (0 == totalCount) ? 'green' : '#e30613');
 			totalElement[0].innerHTML = getNumberOrUnknownSign(totalCount);
@@ -156,12 +165,29 @@
 		}
 
 		function processBuildStatesSection(states) {
-			processBuildStatesSectionByInstance($('#UIBuildStatus')[0], states.UI);
-			processBuildStatesSectionByInstance($('#WSBuildStatus')[0], states.WS);
-			processBuildStatesSectionByInstance($('#NIGHTLYBuildStatus')[0], states.NIGHTLY);
+            processBuildStatesSectionByInstance($('#BUILDBuildStatus')[0], states.BUILD);
+			processBuildStatesSectionByInstance($('#STAGINGBuildStatus')[0], states.STAGING);
+			processBuildStatesSectionByInstance($('#UI_THUCYDIDES_TESTSBuildStatus')[0], states.UI_THUCYDIDES_TESTS);
 
-			processTESTSBuildStatesSection(states);
+			warningByLastRunTime($('#uiThucydidesTestsSection .warningArea')[0], states.UI_THUCYDIDES_TESTS, 60 * 4, 60 * 24);
 		}
+
+
+		function warningByLastRunTime(warningElement, instanceStates, warningTime, errorTime) {
+			var lastRunTimestemp = instanceStates.lastRunTimestemp;
+			var timeInMinutes = (new Date() - new Date(lastRunTimestemp)) /60000;
+
+			$(warningElement).removeClass("warning")
+			$(warningElement).removeClass("error")
+
+			if (timeInMinutes > errorTime) {
+				$(warningElement).addClass("error");
+			} else if (timeInMinutes > warningTime) {
+				$(warningElement).addClass("warning");
+			}
+			$(warningElement).html("Last run " + (timeInMinutes / 60).toFixed(1) + " hours ago");
+		}
+
 		
 		function processBuildStatesSectionByInstance(parentElement, instanceStates){
 			$(parentElement).empty();
@@ -209,6 +235,11 @@
 
 			parent.innerHTML = '';
 			console.log(instance.commiters);
+			
+			if(null == instance.commiters || 0 == instance.commiters.length) {
+				instance.commiters[0] = {name:"Andrew Ryzhokhin", email:"andrew@ardas.dp.ua"};
+			}
+			
 			$.each(instance.commiters, function(index, person) {
 					showPersonWhoBrokeBuildPhoto(parent, person);
 				});
@@ -271,18 +302,22 @@
 							<td class="sectname shadow" colspan="3">Thucydides tests</td>
 						</tr>
 						<tr class="thucydidesTestsSection">
-							<td class="sectcont"><span class="failedlbl">Failed:</span> <span
-								class="passedlbl">Passed:</span> <span class="pendinglbl">Pending:</span>
+							<td class="sectcont">
+								<span class="failedlbl">Failed:</span>
+								<span class="passedlbl">Passed:</span>
+								<span class="pendinglbl">Pending:</span>
+								<span class="warningArea"></span>
 							</td>
 							<td class="sectcont" style="width: 100%; padding: 30px 0px;">
 								<span id="failednumT" class="failednum"></span>
 								<span id="passedlblT" class="passedlbl"></span>
 								<span id="pendinglblT" class="pendinglbl"></span>
 							</td>
-							<td class="tdchart">
+							<td class="tdchart" >
 								<div id="thucydidesChart" class="chart"></div>
 							</td>
 						</tr>
+
 						<tr class="thucydidesTestsSection">
 							<td colspan="3">
 								<br/>
@@ -292,24 +327,24 @@
 						</tr>
 					</table>	
 <!-- ********************************************************* -->
-					<table id="restThucydidesTestsSection" class="mainTable">						
+					<table id="restThucydidesTestsSectionQ" class="mainTable">
 						<tr class="thucydidesRestTestsSection">
-							<td class="sectname shadow" colspan="3">Thucydides Rest tests</td>
+							<td class="sectname shadow" colspan="3">Thucydides Rest tests Q</td>
 						</tr>
 						<tr class="thucydidesTestsSection">
 							<td class="sectcont"><span class="failedlbl">Failed:</span> <span
 								class="passedlbl">Passed:</span> <span class="pendinglbl">Pending:</span>
 							</td>
 							<td class="sectcont" style="width: 100%; padding: 30px 0px;">
-								<span id="failednumTRest" class="failednum"></span>
-								<span id="passedlblTRest" class="passedlbl"></span>
-								<span id="pendinglblTRest" class="pendinglbl"></span>
+								<span id="failednumTRestQ" class="failednum"></span>
+								<span id="passedlblTRestQ" class="passedlbl"></span>
+								<span id="pendinglblTRestQ" class="pendinglbl"></span>
 							</td>
 							<td class="tdchart">
-								<div id="thucydidesRestChart" class="chart"></div>
+								<div id="thucydidesRestChartQ" class="chart"></div>
 							</td>
 						</tr>
-						<tr class="thucydidesTestsSection">
+						<tr class="thucydidesTestsSectionQ">
 							<td colspan="3">
 								<br/>
 								<br/>
@@ -317,33 +352,34 @@
 							</td>
 						</tr>
 					</table>
-<!-- ********************************************************* -->						
-					<table class="mainTable">	
-						<tr class="bugsSection">
-							<td class="sectname shadow" colspan="3">Bugs</td>
+<!-- ********************************************************* -->
+					<table id="restThucydidesTestsSectionR" class="mainTable">
+						<tr class="thucydidesRestTestsSection">
+							<td class="sectname shadow" colspan="3">Thucydides Rest tests R</td>
 						</tr>
-						<tr class="bugsSection">
-							<td class="sectcont" colspan="3" style="padding: 0;">
-								<table style="text-align: center; width: 96%;">
-									<tr>
-										<td id="bugCriticalTitle" class="sectcont" style="color: #e30613;">
-											Critical&nbsp;(<span id="bugCriticalTotal"></span>)
-										</td>
-										<td id="bugHighTitle" class="sectcont"">
-											High&nbsp;(<span id="bugHighTotal"></span>)
-										</td>
-										<td id="bugMediumTitle" class="sectcont" style="color: #e30613;">
-											Medium&nbsp;(<span id="bugMediumTotal"></span>)
-										</td>
-									</tr>
-									<tr>
-										<td><span id="bugCriticalInfo" class="failednum"></span></td>
-										<td><span id="bugHighInfo" class="failednum"></span></td>
-										<td><span id="bugMediumInfo" class="failednum"></span></td>
-									</tr>
-								</table>
+						<tr class="thucydidesTestsSection">
+							<td class="sectcont"><span class="failedlbl">Failed:</span> <span
+								class="passedlbl">Passed:</span> <span class="pendinglbl">Pending:</span>
+							</td>
+							<td class="sectcont" style="width: 100%; padding: 30px 0px;">
+								<span id="failednumTRestR" class="failednum"></span>
+								<span id="passedlblTRestR" class="passedlbl"></span>
+								<span id="pendinglblTRestR" class="pendinglbl"></span>
+							</td>
+							<td class="tdchart">
+								<div id="thucydidesRestChartR" class="chart"></div>
 							</td>
 						</tr>
+						<tr class="thucydidesTestsSectionR">
+							<td colspan="3">
+								<br/>
+								<br/>
+								<br/>
+							</td>
+						</tr>
+					</table>
+<!-- ********************************************************* -->
+					<table class="mainTable">	
 						<tr class="buildStateSection">
 							<td class="sectname shadow" colspan="3">Build State</td>
 						</tr>
@@ -351,32 +387,53 @@
 							<td class="sectcont" colspan="3" style="padding: 0;">
 								<table style="text-align: center; width: 96%;">
 									<tr>
-										<td class="sectcont" style="width: 34%;">
-											UI
+										<td class="sectcont buildStatisticLabel" style="width: 34%;">
+											Build
 										</td>
-										<td class="sectcont"  style="width: 34%;">
-											WS
+										<td class="sectcont buildStatisticLabel"  style="width: 34%;">
+											Staging
 										</td>
+                                        <td class="sectcont buildStatisticLabel"  style="width: 34%;">
+                                            UI TEST
+                                        </td>
 									</tr>
 									<tr>
-										<td id="UIBuildStatus" class="sectcont" style="Width: 34%; vertical-align: top;" />
-										<td id="WSBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
-									</tr>
-									<tr>																		<tr>
-										<td class="sectcont"  style="width: 34%;">
-											TEST
-										</td>
-										<td class="sectcont"  style="width: 34%;">
-											NIGHTLY
-										</td>
+										<td id="BUILDBuildStatus" class="sectcont" style="Width: 34%; vertical-align: top;" />
+										<td id="STAGINGBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
+                                        <td id="UI_THUCYDIDES_TESTSBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
 									</tr>
 									<tr>
-										<td id="TESTSBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
-										<td id="NIGHTLYBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
+
+										<td id="NoBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
 									</tr>
 								</table>
 							</td>
 						</tr>
+                        <tr class="bugsSection">
+                            <td class="sectname shadow" colspan="3">Bugs</td>
+                        </tr>
+                        <tr class="bugsSection">
+                            <td class="sectcont" colspan="3" style="padding: 0;">
+                                <table style="text-align: center; width: 96%;">
+                                    <tr>
+                                        <td id="bugCriticalTitle" class="sectcont" style="color: #e30613;">
+                                            Critical&nbsp;(<span id="bugCriticalTotal"></span>)
+                                        </td>
+                                        <td id="bugHighTitle" class="sectcont"">
+                                        High&nbsp;(<span id="bugHighTotal"></span>)
+                                        </td>
+                                        <td id="bugMediumTitle" class="sectcont" style="color: #e30613;">
+                                            Medium&nbsp;(<span id="bugMediumTotal"></span>)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span id="bugCriticalInfo" class="failednum"></span></td>
+                                        <td><span id="bugHighInfo" class="failednum"></span></td>
+                                        <td><span id="bugMediumInfo" class="failednum"></span></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
 					</table>
 				</article>
 			</section>

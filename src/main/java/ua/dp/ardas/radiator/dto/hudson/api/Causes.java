@@ -9,4 +9,5 @@ public class Causes {
 	public String upstreamBuild;
 	public String upstreamProject;
 	public String upstreamUrl;
+    public String userId;
 }

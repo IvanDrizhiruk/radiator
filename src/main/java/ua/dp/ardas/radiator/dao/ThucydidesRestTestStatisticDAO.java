@@ -2,13 +2,14 @@ package ua.dp.ardas.radiator.dao;
 
 import java.util.List;
 
+import ua.dp.ardas.radiator.dto.thucydides.test.RestVersion;
 import ua.dp.ardas.radiator.dto.thucydides.test.ThucydidesTestStatistic;
 
 public interface ThucydidesRestTestStatisticDAO {
 
-	void insert(ThucydidesTestStatistic state);
+	void insert(ThucydidesTestStatistic state, RestVersion version);
 
-	List<ThucydidesTestStatistic> findAll();
+	List<ThucydidesTestStatistic> findAll(RestVersion version);
 
-	ThucydidesTestStatistic findLastData();
+	ThucydidesTestStatistic findLastData(RestVersion version);
 }

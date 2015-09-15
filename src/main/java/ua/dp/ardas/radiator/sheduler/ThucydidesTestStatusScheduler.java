@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import ua.dp.ardas.radiator.jobs.thucydides.rest.test.result.ThucydidesRestTestStatisticContorller;
+import ua.dp.ardas.radiator.jobs.thucydides.rest.test.result.q.ThucydidesRestQTestStatisticContorller;
+import ua.dp.ardas.radiator.jobs.thucydides.rest.test.result.r.ThucydidesRestRTestStatisticContorller;
 import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatisticContorller;
 import ua.dp.ardas.radiator.utils.Timer;
 
@@ -21,9 +22,10 @@ public class ThucydidesTestStatusScheduler {
 	
 	@Autowired
 	private ThucydidesTestStatisticContorller thucydidesTestStatusContorller;
-	
 	@Autowired
-	private ThucydidesRestTestStatisticContorller thucydidesResrTestStatusContorller;
+	private ThucydidesRestQTestStatisticContorller thucydidesResrQTestStatusContorller;
+	@Autowired
+	private ThucydidesRestRTestStatisticContorller thucydidesResrRTestStatusContorller;
 
 	@PostConstruct
 	void initialize() {
@@ -40,7 +42,8 @@ public class ThucydidesTestStatusScheduler {
 	@Scheduled(cron="${thucydides.test.status.cron}")
 	private void  executeTask() {
 		executeThucydidesTestStatusContorller();
-		executeThucydidesRestTestStatusContorller();
+		executeThucydidesRestQTestStatusContorller();
+		executeThucydidesRestRTestStatusContorller();
 	}
 
 	private void executeThucydidesTestStatusContorller() {
@@ -53,13 +56,23 @@ public class ThucydidesTestStatusScheduler {
 				currentLongTime(), timer.elapsedTimeInMilliseconds()));
 	}
 	
-	private void executeThucydidesRestTestStatusContorller() {
-		LOG.info(format("Start ThucydidesRestTestStatus calculation %s", currentLongTime()));
+	private void executeThucydidesRestQTestStatusContorller() {
+		LOG.info(format("Start ThucydidesRestQTestStatus calculation %s", currentLongTime()));
 		Timer timer = new Timer();
 
-		thucydidesResrTestStatusContorller.execute();
+		thucydidesResrQTestStatusContorller.execute();
 
-		LOG.info(format("ThucydidesRestTestStatus calculation finished %s. Total time: %d miliseconds",
+		LOG.info(format("ThucydidesRestQTestStatus calculation finished %s. Total time: %d miliseconds",
+				currentLongTime(), timer.elapsedTimeInMilliseconds()));
+	}
+	
+	private void executeThucydidesRestRTestStatusContorller() {
+		LOG.info(format("Start ThucydidesRestRTestStatus calculation %s", currentLongTime()));
+		Timer timer = new Timer();
+		
+		thucydidesResrRTestStatusContorller.execute();
+		
+		LOG.info(format("ThucydidesRestRTestStatus calculation finished %s. Total time: %d miliseconds",
 				currentLongTime(), timer.elapsedTimeInMilliseconds()));
 	}
 }

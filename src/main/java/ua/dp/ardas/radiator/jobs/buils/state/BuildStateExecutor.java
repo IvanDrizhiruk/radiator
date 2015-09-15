@@ -1,20 +1,17 @@
 package ua.dp.ardas.radiator.jobs.buils.state;
 
-import static java.lang.String.format;
-import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.BUILD_FAILED;
-import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.CONFIGURATION_FAILED;
-import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.SUCCESS;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import ua.dp.ardas.radiator.config.AppConfig;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.hudson.api.BuildDetails;
 import ua.dp.ardas.radiator.resr.client.BuildStatusRestClient;
 import ua.dp.ardas.radiator.utils.BuildStateUtils;
+
+import static java.lang.String.format;
+import static ua.dp.ardas.radiator.dto.buils.state.BuildState.States.*;
 
 @Component
 public class BuildStateExecutor {
@@ -53,36 +50,51 @@ public class BuildStateExecutor {
 
 	protected BuildState calculateState(BuildStateInstance instances, String url) {
 		int lastBuild = restClient.loadLastBuildNumber(url);
-		int lastSuccessfulBuild = restClient.loadLastSuccessfulBuildNumber(url);
-		int lastFailedBuild = restClient.loadLastFailedBuildNumber(url);
-		
+		Long lastRunTimestemp = getLastRunTimestemp(url, lastBuild);
+		int lastSuccessfulBuild = restClient.loadLastSuccessfulBuildNumber(url, lastBuild);
+		int lastFailedBuild = restClient.loadLastFailedBuildNumber(url, 0);
+
+
 		if(lastSuccessfulBuild > lastFailedBuild) {
-			return newSuccessState(instances);
+			return newSuccessState(instances, lastRunTimestemp);
 		}
 		
 		if(lastFailedBuild == lastBuild && !instances.isConfigurationIssue) {
-			return newBuildFailedState(instances, url, lastFailedBuild);
+			return newBuildFailedState(instances, url, lastFailedBuild, lastRunTimestemp);
 		}
 		
-		return newConfigurationFailedState(instances);
+		return newConfigurationFailedState(instances, lastRunTimestemp);
 	}
 
-	private BuildState newConfigurationFailedState(BuildStateInstance instances) {
-		return new BuildState(CONFIGURATION_FAILED, instances.name);
+	private BuildState newConfigurationFailedState(BuildStateInstance instances, Long lastRunTimestemp) {
+		BuildState buildState = new BuildState(CONFIGURATION_FAILED, instances.name);
+		buildState.lastRunTimestemp = lastRunTimestemp;
+
+		return buildState;
 	}
 
-	private BuildState newBuildFailedState(BuildStateInstance instance, String url, Integer lastFailedBuild) {
+	private Long getLastRunTimestemp(String url, int lastBuild) {
+		BuildDetails buildDetails = restClient.loadBuildDetails(url, lastBuild);
+
+		return buildDetails.timestamp;
+	}
+
+	private BuildState newBuildFailedState(BuildStateInstance instance, String url, Integer lastFailedBuild, Long lastRunTimestemp) {
 		BuildDetails buildDetails = restClient.loadBuildDetails(url, lastFailedBuild);
 
 		BuildState buildState = new BuildState(BUILD_FAILED, instance.name);
 		buildState.errorMessage = instance.errorMessage;
 		buildState.commiters = BuildStateUtils.calculateCommiters(buildDetails.culprits, emailFormat);
+		buildState.lastRunTimestemp = lastRunTimestemp;
 		
 		return buildState;
 	}
 	
 
-	private BuildState newSuccessState(BuildStateInstance instance) {
-		return new BuildState(SUCCESS, instance.name);
+	private BuildState newSuccessState(BuildStateInstance instance, Long lastRunTimestemp) {
+		BuildState buildState = new BuildState(SUCCESS, instance.name);
+		buildState.lastRunTimestemp = lastRunTimestemp;
+		return buildState;
+
 	}
 }

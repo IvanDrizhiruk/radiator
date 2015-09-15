@@ -1,12 +1,11 @@
 package ua.dp.ardas.radiator.dto.hudson.api;
 
-import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonRootName;
-
 import ua.dp.ardas.radiator.utils.JsonUtils;
+
+import java.util.List;
 
 @JsonAutoDetect
 @JsonRootName("actions")
@@ -24,11 +23,12 @@ public class BuildDetails {
 	public Boolean keepLog;
 	public Integer number;
 	public String result;
-	public String timestamp; // TODO ISD change type
+	public Long timestamp;
 	public String url;
 	public String builtOn;
 	public ChangeSet changeSet;
 	public List<Person> culprits;
+	public List<Runs> runs;
 
 	@Override
 	public String toString() {

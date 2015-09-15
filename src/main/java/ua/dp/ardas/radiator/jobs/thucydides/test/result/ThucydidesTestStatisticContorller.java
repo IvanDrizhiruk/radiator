@@ -1,5 +1,6 @@
 package ua.dp.ardas.radiator.jobs.thucydides.test.result;
 
+import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.apache.commons.lang.StringUtils.substringBetween;
 import static ua.dp.ardas.radiator.utils.TypeUtils.toIntegerOrNull;
 
@@ -30,12 +31,19 @@ public class ThucydidesTestStatisticContorller {
 	private String url;
 			
 	public void execute() {
-		String report = restClient.loadTestReport(url);
-		ThucydidesTestStatistic statistic = extractStatistic(report);
-		dao.insert(statistic);
+        try {
+            String report = restClient.loadTestReport(url);
+            ThucydidesTestStatistic statistic = extractStatistic(report);
+            dao.insert(statistic);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	protected ThucydidesTestStatistic extractStatistic(String report) {
+        if(null == report || report.isEmpty()) {
+            return new ThucydidesTestStatistic();
+        }
 		Preconditions.checkNotNull(report);
 		
 		String reportArea = CharMatcher.anyOf("\r\n ").removeFrom(
@@ -43,7 +51,13 @@ public class ThucydidesTestStatisticContorller {
 				"<div class=\"test-count-summary\">",
 				"<div id=\"test-results-tabs\""));
 		
-		Pattern pattern = Pattern.compile("(?i)(?s)class=\"test-count\">([0-9]+).*<.*>([0-9]+).*<.*>([0-9]+).*<.*>([0-9]+).*<");
+		Pattern pattern = Pattern.compile("(?i)(?s)class=\"test-count\">"
+				+ "([0-9]+[,]?[0-9]*).*<.*>"
+				+ ".*test-count\">([0-9]+[,]?[0-9]*).*<.*>"
+				+ ".*test-count\">([0-9]+[,]?[0-9]*).*<.*>"
+                + ".*test-count\">([0-9]+[,]?[0-9]*).*<.*>"
+                + ".*test-count\">([0-9]+[,]?[0-9]*).*<.*>"
+				+ ".*test-count\">([0-9]+[,]?[0-9]*).*<");
 		Matcher matcher = pattern.matcher(reportArea);
 		
 		if (!matcher.find()) {
@@ -54,14 +68,18 @@ public class ThucydidesTestStatisticContorller {
 		}
 		
 		ThucydidesTestStatistic statistic = new ThucydidesTestStatistic();
-		statistic.passed =  toIntegerOrNull(matcher.group(1));
-		statistic.pending =  toIntegerOrNull(matcher.group(2));
-		statistic.failed =  toIntegerOrNull(matcher.group(3));
-		statistic.errors =  toIntegerOrNull(matcher.group(4));
+		statistic.passed =  toIntegerOrNull(cleanStringNumber(matcher.group(1)));
+		statistic.pending =  toIntegerOrNull(cleanStringNumber(matcher.group(2)));
+		statistic.failed =  toIntegerOrNull(cleanStringNumber(matcher.group(3)));
+		statistic.errors =  toIntegerOrNull(cleanStringNumber(matcher.group(4)));
 		
 		if (LOG.isInfoEnabled()) {
 			LOG.info(String.format("Thucydides statistic %s", statistic));
 		}
 		return statistic;
+	}
+
+	private String cleanStringNumber(String number) {
+		return number.replaceAll("\\D*", EMPTY);
 	}
 }
