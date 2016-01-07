@@ -66,6 +66,8 @@ public class BuildStatusRestClient {
 		BuildDetails forObject = null;
 		try {
 			return forObject = template.getForObject(fullUrl, BuildDetails.class);
+//		} catch(Exception e) {
+//			e.printStackTrace();
 		} finally {
 			if (LOG.isDebugEnabled()) {
 				LOG.debug(format("BuildDetails from url %s loaded : %s", fullUrl, forObject));

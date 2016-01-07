@@ -167,9 +167,9 @@
 		function processBuildStatesSection(states) {
             processBuildStatesSectionByInstance($('#BUILDBuildStatus')[0], states.BUILD);
 			processBuildStatesSectionByInstance($('#STAGINGBuildStatus')[0], states.STAGING);
-			processBuildStatesSectionByInstance($('#UI_THUCYDIDES_TESTSBuildStatus')[0], states.UI_THUCYDIDES_TESTS);
+			processBuildStatesSectionByInstance($('#UI_TESTSBuildStatus')[0], states.UI_TESTS);
 
-			warningByLastRunTime($('#uiThucydidesTestsSection .warningArea')[0], states.UI_THUCYDIDES_TESTS, 60 * 4, 60 * 24);
+			warningByLastRunTime($('#uiThucydidesTestsSection .warningArea')[0], states.UI_TESTS, 60 * 4, 60 * 24);
 		}
 
 
@@ -204,15 +204,15 @@
 		function processTESTSBuildStatesSection(states){
 			$('#TESTSBuildStatus').empty();
 			
-			if (equelsStates(states.UI_THUCYDIDES_TESTS3,"BUILD_FAILED")) {
-				showPersonsWhoBrokeBuildPhoto($('#TESTSBuildStatus')[0], states.UI_THUCYDIDES_TESTS3);
+			if (equelsStates(states.UI_TESTS3,"BUILD_FAILED")) {
+				showPersonsWhoBrokeBuildPhoto($('#TESTSBuildStatus')[0], states.UI_TESTS3);
 				return;
 			}
 			
-			if (equelsStates(states.UI_THUCYDIDES_TESTS1,"CONFIGURATION_FAILED")
-					|| equelsStates(states.UI_THUCYDIDES_TESTS2,"CONFIGURATION_FAILED")
-					|| equelsStates(states.UI_THUCYDIDES_TESTS3,"CONFIGURATION_FAILED")
-					|| equelsStates(states.UI_THUCYDIDES_TESTS4,"CONFIGURATION_FAILED")) {
+			if (equelsStates(states.UI_TESTS1,"CONFIGURATION_FAILED")
+					|| equelsStates(states.UI_TESTS2,"CONFIGURATION_FAILED")
+					|| equelsStates(states.UI_TESTS3,"CONFIGURATION_FAILED")
+					|| equelsStates(states.UI_TESTS4,"CONFIGURATION_FAILED")) {
 				showImage($('#TESTSBuildStatus')[0], "images/warning.png");
 				return;
 			}
@@ -237,12 +237,16 @@
 			console.log(instance.commiters);
 			
 			if(null == instance.commiters || 0 == instance.commiters.length) {
-				instance.commiters[0] = {name:"Andrew Ryzhokhin", email:"andrew@ardas.dp.ua"};
+				instance.commiters[0] = {name:"Unknowen", email:""};
 			}
 			
-			$.each(instance.commiters, function(index, person) {
+			$.each(instance.commiters.slice(0,2), function(index, person) {
 					showPersonWhoBrokeBuildPhoto(parent, person);
 				});
+
+			if(2 < instance.commiters.length) {
+				showPersonWhoBrokeBuildPhoto(parent, {name:"And other", email:""});
+			}
 		}
 		
 		function showPersonWhoBrokeBuildPhoto(parent, person) {
@@ -299,7 +303,7 @@
 					</div>
 					<table id="uiThucydidesTestsSection" class="mainTable">
 						<tr class="thucydidesTestsSection">
-							<td class="sectname shadow" colspan="3">Thucydides tests</td>
+							<td class="sectname shadow" colspan="3">Task and Central tests</td>
 						</tr>
 						<tr class="thucydidesTestsSection">
 							<td class="sectcont">
@@ -400,7 +404,7 @@
 									<tr>
 										<td id="BUILDBuildStatus" class="sectcont" style="Width: 34%; vertical-align: top;" />
 										<td id="STAGINGBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
-                                        <td id="UI_THUCYDIDES_TESTSBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
+                                        <td id="UI_TESTSBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
 									</tr>
 									<tr>
 

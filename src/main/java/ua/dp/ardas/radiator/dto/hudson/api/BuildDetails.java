@@ -12,14 +12,17 @@ import java.util.List;
 public class BuildDetails {
 	@JsonProperty("actions")
 	public List<Action> actions;
+
 	public List<String> artifacts;
 	public Boolean building;
 	public String description;
 	public Integer duration;
 	public Integer estimatedDuration;
-	public Integer executor;
+	public String executor;
 	public String fullDisplayName;
+	public String displayName;
 	public String id;
+	public String queueId;
 	public Boolean keepLog;
 	public Integer number;
 	public String result;

@@ -54,7 +54,7 @@ public class ReportBuilder {
 
 	public Report agregateReportObject() {
 		Report report = new Report();
-
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 		agregateBuildStates(report);
 		agregateThucydidesTestStais(report);
 		agregateThucydidesRestQTestStais(report);
@@ -84,8 +84,8 @@ public class ReportBuilder {
 	}
 
 	private void agregateThucydidesTestStais(Report report) {
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5 " + thucydidesTestStaisticDAO.findLastData());
 		report.thucydidesTestStaistic = thucydidesTestStaisticDAO.findLastData();
-		
 	}
 	
 	private void agregateThucydidesRestQTestStais(Report report) {

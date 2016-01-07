@@ -17,4 +17,14 @@ public class BuildStateInstance {
 		this.configUrl = configUrl;
 		this.errorMessage = errorMessage;
 	}
+
+	@Override
+	public String toString() {
+		return "BuildStateInstance{" +
+				"name='" + name + '\'' +
+				", isConfigurationIssue=" + isConfigurationIssue +
+				", configUrl='" + configUrl + '\'' +
+				", errorMessage='" + errorMessage + '\'' +
+				'}';
+	}
 }

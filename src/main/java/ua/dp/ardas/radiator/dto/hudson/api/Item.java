@@ -1,8 +1,8 @@
 package ua.dp.ardas.radiator.dto.hudson.api;
 
-import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonAutoDetect;
+
+import java.util.List;
 
 @JsonAutoDetect
 public class Item {
@@ -11,8 +11,10 @@ public class Item {
 	public String msg;
 	public List<Path> paths;
 	public Integer revision;
-	public Integer commitId;
+	public String commitId;
 	public String user;
 	public List<String> affectedPaths;
 	public Person author;
+	public String comment;
+	public String id;
 }

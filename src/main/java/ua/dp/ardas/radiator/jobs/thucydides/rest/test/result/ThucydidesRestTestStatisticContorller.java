@@ -1,22 +1,21 @@
 package ua.dp.ardas.radiator.jobs.thucydides.rest.test.result;
 
-import static org.apache.commons.lang.StringUtils.substringBetween;
-import static ua.dp.ardas.radiator.utils.TypeUtils.toIntegerOrNull;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Preconditions;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Preconditions;
-
 import ua.dp.ardas.radiator.dao.ThucydidesRestTestStatisticDAO;
+import ua.dp.ardas.radiator.dto.thucydides.test.RestVersion;
 import ua.dp.ardas.radiator.dto.thucydides.test.ThucydidesTestStatistic;
 import ua.dp.ardas.radiator.resr.client.ThucydidesTestRestClient;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.apache.commons.lang.StringUtils.substringBetween;
+import static ua.dp.ardas.radiator.utils.TypeUtils.toIntegerOrNull;
 
 @Component
 public class ThucydidesRestTestStatisticContorller {
@@ -32,7 +31,7 @@ public class ThucydidesRestTestStatisticContorller {
 	public void execute() {
 		String report = restClient.loadTestReport(url);
 		ThucydidesTestStatistic statistic = extractStatistic(report);
-		dao.insert(statistic);
+		dao.insert(statistic, RestVersion.version);
 	}
 
 	protected ThucydidesTestStatistic extractStatistic(String report) {

@@ -1,15 +1,13 @@
 package ua.dp.ardas.radiator.sheduler;
 
-import static java.lang.String.format;
-import static ua.dp.ardas.radiator.utils.DataTimeUtils.currentLongTime;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import ua.dp.ardas.radiator.jobs.spira.test.bugs.SpiraTestOnStartWeekStatisticController;
 import ua.dp.ardas.radiator.utils.Timer;
+
+import static java.lang.String.format;
+import static ua.dp.ardas.radiator.utils.DataTimeUtils.currentLongTime;
 
 @Component
 public class SpiraTestOnStartWeekStatisticScheduler {
@@ -19,7 +17,7 @@ public class SpiraTestOnStartWeekStatisticScheduler {
 	private SpiraTestOnStartWeekStatisticController spiraTestOnStartWeekStatisticController;
 	
 	
-	@Scheduled(cron="${spira.test.on.start.week.statistic.cron}")
+	//@Scheduled(cron="${spira.test.on.start.week.statistic.cron}")
 	public void  executeTask() {
 		LOG.info(format("Start SpiraTestStatist on start week calculation %s", currentLongTime()));
 		Timer timer = new Timer();

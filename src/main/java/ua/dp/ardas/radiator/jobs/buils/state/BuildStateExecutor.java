@@ -62,7 +62,7 @@ public class BuildStateExecutor {
 		if(lastFailedBuild == lastBuild && !instances.isConfigurationIssue) {
 			return newBuildFailedState(instances, url, lastFailedBuild, lastRunTimestemp);
 		}
-		
+
 		return newConfigurationFailedState(instances, lastRunTimestemp);
 	}
 
