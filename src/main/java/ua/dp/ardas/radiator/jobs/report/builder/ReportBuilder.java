@@ -4,10 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ua.dp.ardas.radiator.dao.BuildStateDAO;
-import ua.dp.ardas.radiator.dao.SpiraTestStatisticDAO;
-import ua.dp.ardas.radiator.dao.ThucydidesRestTestStatisticDAO;
-import ua.dp.ardas.radiator.dao.ThucydidesTestStatisticDAO;
+import ua.dp.ardas.radiator.dao.*;
 import ua.dp.ardas.radiator.dto.buils.state.BuildState;
 import ua.dp.ardas.radiator.dto.report.Report;
 import ua.dp.ardas.radiator.jobs.play.sound.SoundController;
@@ -43,6 +40,8 @@ public class ReportBuilder {
 	private MittingRemainder mittingRemainder;
 	@Autowired
 	private SoundController soundController;
+	@Autowired
+	private KanbanFlowStatisticDAO kanbanFlowStatisticDAO;
 
 
 	private HashMap<String, String> reportToParameterMap(Report report) {
@@ -54,7 +53,6 @@ public class ReportBuilder {
 
 	public Report agregateReportObject() {
 		Report report = new Report();
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 		agregateBuildStates(report);
 		agregateThucydidesTestStais(report);
 		agregateThucydidesRestQTestStais(report);
@@ -62,6 +60,7 @@ public class ReportBuilder {
 		agregateSpiraTestStatistic(report);
 		agregateSpiraTestOnStartWeekStatistic(report);
 		agregateConfigurationSettings(report);
+		agregateKanbanFlowStatistic(report);
 
 		if (LOG.isInfoEnabled()) {
 			LOG.info(format("Agregated params %s", report));
@@ -84,7 +83,6 @@ public class ReportBuilder {
 	}
 
 	private void agregateThucydidesTestStais(Report report) {
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5 " + thucydidesTestStaisticDAO.findLastData());
 		report.thucydidesTestStaistic = thucydidesTestStaisticDAO.findLastData();
 	}
 	
@@ -109,5 +107,9 @@ public class ReportBuilder {
 			return;
 		}
 		report.spiraTestOnStartWeekStatistics = spiraTestStatisticDAO.findByDate(calculateMondayDate());
+	}
+
+	private void agregateKanbanFlowStatistic(Report report) {
+		report.kanbanFlowStatistic = kanbanFlowStatisticDAO.findAll();
 	}
 }

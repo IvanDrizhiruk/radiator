@@ -29,11 +29,11 @@ public class SpiraTestClient {
 				LOG.info(format("Try load SpiraTest statistic for project id %d", projectId));
 			}
 			SpiraTestStatistic statistic = calculateStatistic(loadAllOpenIncidents(projectId));
-			
+
 			if (LOG.isInfoEnabled()) {
 				LOG.info(format("SpiraTest statistic was loaded for project %d: %s", projectId, statistic));
 			}
-			
+
 			return statistic;
 		} catch (SyncException e ) {
 			LOG.error("Unable conect to SpiraTest ", e);

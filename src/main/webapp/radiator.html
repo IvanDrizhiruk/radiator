@@ -1,451 +1,499 @@
 <!doctype html>
 <html lang="ua">
 <head>
-	<title>Activity Monitor</title>
-	
-	<meta charset="utf-8">
-	<meta name="Author" content="Ardas Group" />
-	
-	<link rel="stylesheet" href="css/style.css">
-	
-	<script src="js/modernizr-1.7.min.js"></script>
-	<script src="js/jquery-1.9.0.min.js"></script>
-	<script src="js/jquery.json-2.4.min.js"></script>
-	<script src="js/md5.min.js"></script>
-	
-	<script src="js/google_jsapi.js"></script>
-	<script src="js/google_piechart.js"></script>
-	
-	<script type="text/javascript">
-		var thucydidesChar;
-		var thucydidesRestChartQ;
-		var thucydidesRestChartR;
-		
-		$(document).ready(function() {
-			thucydidesChart = new google.visualization.PieChart(document.getElementById('thucydidesChart'));
-			thucydidesRestChartQ = new google.visualization.PieChart(document.getElementById('thucydidesRestChartQ'));
-			thucydidesRestChartR = new google.visualization.PieChart(document.getElementById('thucydidesRestChartR'));
-			
-			updateRadiator();
-			window.setInterval(updateRadiator, 5000);
-		});
-		
-	
-		function updateRadiator() {
-			var repost = loadReport();
+    <title>Activity Monitor</title>
+
+    <meta charset="utf-8">
+    <meta name="Author" content="Ardas Group"/>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="js/modernizr-1.7.min.js"></script>
+    <script src="js/jquery-1.9.0.min.js"></script>
+    <script src="js/jquery.json-2.4.min.js"></script>
+    <script src="js/md5.min.js"></script>
+
+    <script src="js/google_jsapi.js"></script>
+    <script src="js/google_piechart.js"></script>
+
+    <script type="text/javascript">
+        var thucydidesChar;
+        var thucydidesRestChartQ;
+        var thucydidesRestChartR;
+
+        $(document).ready(function () {
+            thucydidesChart = new google.visualization.PieChart(document.getElementById('thucydidesChart'));
+            thucydidesRestChartQ = new google.visualization.PieChart(document.getElementById('thucydidesRestChartQ'));
+            thucydidesRestChartR = new google.visualization.PieChart(document.getElementById('thucydidesRestChartR'));
+
+            updateRadiator();
+            window.setInterval(updateRadiator, 5000);
+        });
+
+
+        function updateRadiator() {
+            var repost = loadReport();
 
             console.log(repost);
 
-			if (null == repost) {
-				return;
-			}
-			
-			processThucydidesTestsSection(repost.thucydidesTestStaistic);
-			processThucydidesRestTestsSection(repost.thucydidesRestQTestStaistic, 'Q', thucydidesRestChartQ);
-			processThucydidesRestTestsSection(repost.thucydidesRestRTestStaistic, 'R', thucydidesRestChartR);
-			
+            if (null == repost) {
+                return;
+            }
 
-			processSpiraTestStatisticSection(repost.spiraTestStatistics, repost.spiraTestOnStartWeekStatistics, repost.configuration);
-			
-			processBuildStatesSection(repost.buildStates);
-			
-			playSound(repost.configuration);
-		}
-		
-		function loadReport() {
-			 var jqXHR = $.ajax({
-			        type: 'GET',
-			        url: "rest/report",
-			        dataType: "json",
-			        cache: false,
-			        async: false,
-		            error: function(jqXHR, textStatus, errorThrown){
-		                showError('Unable load report data. Status ' + textStatus);
-		            },
-					success: function(msg){
-						clearError();
-					}
-			    });
-			 try {
-			 	return $.evalJSON(jqXHR.responseText);
-			 } catch(e) {
-				 return null;
-			 }
-		}
+            processThucydidesTestsSection(repost.thucydidesTestStaistic);
+            processThucydidesRestTestsSection(repost.thucydidesRestQTestStaistic, 'Q', thucydidesRestChartQ);
+            processThucydidesRestTestsSection(repost.thucydidesRestRTestStaistic, 'R', thucydidesRestChartR);
 
-		
-		function processThucydidesTestsSection(statistics) {
-			if(!statistics) {
-				$('#uiThucydidesTestsSection').hide();
-				return;
-			}
-			var failed = statistics.failed + statistics.errors;
 
-			initFailedCount($("#failednumT"), failed);
-			$("#passedlblT")[0].innerHTML = statistics.passed;
-			$("#pendinglblT")[0].innerHTML = statistics.pending;
+            processSpiraTestStatisticSection(repost.spiraTestStatistics, repost.spiraTestOnStartWeekStatistics, repost.configuration);
 
-			
-			drawChart(statistics.passed, statistics.pending, failed, thucydidesChart);
-		}
-		
-		function processThucydidesRestTestsSection(statistics,version, thucydidesRestChart) {
-			if(!statistics) {
-				$('#restThucydidesTestsSection'+version).hide();
-				return;
-			}
-			var failed = statistics.failed + statistics.errors;
+            processBuildStatesSection(repost.buildStates);
 
-			initFailedCount($("#failednumTRest"+version), failed);
-			$("#passedlblTRest"+version)[0].innerHTML = statistics.passed;
-			$("#pendinglblTRest"+version)[0].innerHTML = statistics.pending;
+            playSound(repost.configuration);
 
-			
-			drawChart(statistics.passed, statistics.pending, failed, thucydidesRestChart);
-		}
 
-		function drawChart(passed, pending, failed, chart) {
-			var data = google.visualization.arrayToDataTable([
-					[ 'Tests', 'Amount' ], [ , passed ], [ , pending ],
-					[ , failed ] ]);
+            processKanbanFlowStatistic(repost.kanbanFlowStatistic);
+        }
 
-			var options = {
-				width : 327,
-				height : 327,
-				chartArea : {
-					width : "100%",
-					height : "100%"
-				},
-				colors : [ '#00C000', '#FFB700', '#FF0000' ],
-				legend : {
-					position : 'none'
-				},
-				backgroundColor : 'none'
-			};
+        function loadReport() {
+            var jqXHR = $.ajax({
+                type: 'GET',
+                url: "rest/report",
+                dataType: "json",
+                cache: false,
+                async: false,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    showError('Unable load report data. Status ' + textStatus);
+                },
+                success: function (msg) {
+                    clearError();
+                }
+            });
+            try {
+                return $.evalJSON(jqXHR.responseText);
+            } catch (e) {
+                return null;
+            }
+        }
 
-			chart.draw(data, options);
-		}
-		
-		function initFailedCount(element, value) {
-			element[0].innerHTML = value;
-			
-			var color = (0 >= value
-							? 'green'
-							: '#e30613')
-				
-			element.css('background', color);
-		}
-		
-		function processSpiraTestStatisticSection(statistics, statisticsOnWeekStart, configuration) {
-			if(configuration && configuration['spira.test.disabled']) {
-				$('.bugsSection').hide();
-				return;
-			}
-			
-			initBugSection($("#bugCriticalTitle"), $("#bugCriticalTotal"), $("#bugCriticalInfo"), statistics.critical, statistics.criticalWithOwner);
-			initBugSection($("#bugHighTitle"), $("#bugHighTotal"), $("#bugHighInfo"), statistics.high, statistics.highWithOwner);
-			initBugSection($("#bugMediumTitle"), $("#bugMediumTotal"), $("#bugMediumInfo"), statistics.medium, statistics.mediumWithOwner);
-		}
-		
-		function initBugSection(titleElement, totalElement, infoElement, totalCount, countwithOwner) {
+
+        function processThucydidesTestsSection(statistics) {
+            if (!statistics) {
+                $('#uiThucydidesTestsSection').hide();
+                return;
+            }
+            var failed = statistics.failed + statistics.errors;
+
+            initFailedCount($("#failednumT"), failed);
+            $("#passedlblT")[0].innerHTML = statistics.passed;
+            $("#pendinglblT")[0].innerHTML = statistics.pending;
+
+
+            drawChart(statistics.passed, statistics.pending, failed, thucydidesChart);
+        }
+
+        function processThucydidesRestTestsSection(statistics, version, thucydidesRestChart) {
+            if (!statistics) {
+                $('#restThucydidesTestsSection' + version).hide();
+                return;
+            }
+            var failed = statistics.failed + statistics.errors;
+
+            initFailedCount($("#failednumTRest" + version), failed);
+            $("#passedlblTRest" + version)[0].innerHTML = statistics.passed;
+            $("#pendinglblTRest" + version)[0].innerHTML = statistics.pending;
+
+
+            drawChart(statistics.passed, statistics.pending, failed, thucydidesRestChart);
+        }
+
+        function drawChart(passed, pending, failed, chart) {
+            var data = google.visualization.arrayToDataTable([
+                ['Tests', 'Amount'], [, passed], [, pending],
+                [, failed]]);
+
+            var options = {
+                width: 327,
+                height: 327,
+                chartArea: {
+                    width: "100%",
+                    height: "100%"
+                },
+                colors: ['#00C000', '#FFB700', '#FF0000'],
+                legend: {
+                    position: 'none'
+                },
+                backgroundColor: 'none'
+            };
+
+            chart.draw(data, options);
+        }
+
+        function initFailedCount(element, value) {
+            element[0].innerHTML = value;
+
+            var color = (0 >= value
+                    ? 'green'
+                    : '#e30613')
+
+            element.css('background', color);
+        }
+
+        function processSpiraTestStatisticSection(statistics, statisticsOnWeekStart, configuration) {
+            if (configuration && configuration['spira.test.disabled']) {
+                $('.bugsSection').hide();
+                return;
+            }
+
+            initBugSection($("#bugCriticalTitle"), $("#bugCriticalTotal"), $("#bugCriticalInfo"), statistics.critical, statistics.criticalWithOwner);
+            initBugSection($("#bugHighTitle"), $("#bugHighTotal"), $("#bugHighInfo"), statistics.high, statistics.highWithOwner);
+            initBugSection($("#bugMediumTitle"), $("#bugMediumTotal"), $("#bugMediumInfo"), statistics.medium, statistics.mediumWithOwner);
+        }
+
+        function initBugSection(titleElement, totalElement, infoElement, totalCount, countwithOwner) {
 
             var displayInfoElementStyle = (0 == totalCount - countwithOwner)
-                ? 'none'
-                : 'block';
+                    ? 'none'
+                    : 'block';
 
             infoElement.css({'display': displayInfoElementStyle});
-			initFailedCount(infoElement, totalCount - countwithOwner);
+            initFailedCount(infoElement, totalCount - countwithOwner);
 
-			titleElement.css('color', (0 == totalCount) ? 'green' : '#e30613');
-			totalElement[0].innerHTML = getNumberOrUnknownSign(totalCount);
-		}
+            titleElement.css('color', (0 == totalCount) ? 'green' : '#e30613');
+            totalElement[0].innerHTML = getNumberOrUnknownSign(totalCount);
+        }
 
-		function getNumberOrUnknownSign(num) {
-			return -1 < num ? num : "?";
-		}
+        function getNumberOrUnknownSign(num) {
+            return -1 < num ? num : "?";
+        }
 
-		function processBuildStatesSection(states) {
+        function processBuildStatesSection(states) {
             processBuildStatesSectionByInstance($('#BUILDBuildStatus')[0], states.BUILD);
-			processBuildStatesSectionByInstance($('#STAGINGBuildStatus')[0], states.STAGING);
-			processBuildStatesSectionByInstance($('#UI_TESTSBuildStatus')[0], states.UI_TESTS);
+            processBuildStatesSectionByInstance($('#STAGINGBuildStatus')[0], states.STAGING);
+            processBuildStatesSectionByInstance($('#UI_TESTSBuildStatus')[0], states.UI_TESTS);
 
-			warningByLastRunTime($('#uiThucydidesTestsSection .warningArea')[0], states.UI_TESTS, 60 * 4, 60 * 24);
-		}
+            warningByLastRunTime($('#uiThucydidesTestsSection .warningArea')[0], states.UI_TESTS, 60 * 4, 60 * 24);
+        }
 
 
-		function warningByLastRunTime(warningElement, instanceStates, warningTime, errorTime) {
-			var lastRunTimestemp = instanceStates.lastRunTimestemp;
-			var timeInMinutes = (new Date() - new Date(lastRunTimestemp)) /60000;
+        function warningByLastRunTime(warningElement, instanceStates, warningTime, errorTime) {
+            var lastRunTimestemp = instanceStates.lastRunTimestemp;
+            var timeInMinutes = (new Date() - new Date(lastRunTimestemp)) / 60000;
 
-			$(warningElement).removeClass("warning")
-			$(warningElement).removeClass("error")
+            $(warningElement).removeClass("warning")
+            $(warningElement).removeClass("error")
 
-			if (timeInMinutes > errorTime) {
-				$(warningElement).addClass("error");
-			} else if (timeInMinutes > warningTime) {
-				$(warningElement).addClass("warning");
-			}
-			$(warningElement).html("Last run " + (timeInMinutes / 60).toFixed(1) + " hours ago");
-		}
+            if (timeInMinutes > errorTime) {
+                $(warningElement).addClass("error");
+            } else if (timeInMinutes > warningTime) {
+                $(warningElement).addClass("warning");
+            }
+            $(warningElement).html("Last run " + (timeInMinutes / 60).toFixed(1) + " hours ago");
+        }
 
-		
-		function processBuildStatesSectionByInstance(parentElement, instanceStates){
-			$(parentElement).empty();
-			
-			if (equelsStates(instanceStates,"SUCCESS")) {
-				showImage(parentElement, "images/successes.jpg");
-			} else if (equelsStates(instanceStates,"CONFIGURATION_FAILED")) {
-				showImage(parentElement, "images/warning.png");
-			} else {
-				showPersonsWhoBrokeBuildPhoto(parentElement, instanceStates);
-			}
-		}
 
-		function processTESTSBuildStatesSection(states){
-			$('#TESTSBuildStatus').empty();
-			
-			if (equelsStates(states.UI_TESTS3,"BUILD_FAILED")) {
-				showPersonsWhoBrokeBuildPhoto($('#TESTSBuildStatus')[0], states.UI_TESTS3);
-				return;
-			}
-			
-			if (equelsStates(states.UI_TESTS1,"CONFIGURATION_FAILED")
-					|| equelsStates(states.UI_TESTS2,"CONFIGURATION_FAILED")
-					|| equelsStates(states.UI_TESTS3,"CONFIGURATION_FAILED")
-					|| equelsStates(states.UI_TESTS4,"CONFIGURATION_FAILED")) {
-				showImage($('#TESTSBuildStatus')[0], "images/warning.png");
-				return;
-			}
-			
-			showImage($('#TESTSBuildStatus')[0], "images/successes.jpg");
-		}
-		
-		function equelsStates(obj, state) {
-			return (!obj || obj.state == state);
-		}
+        function processBuildStatesSectionByInstance(parentElement, instanceStates) {
+            $(parentElement).empty();
 
-		function showImage(parentElement, imageSrc) {
-			var parent = $(parentElement); 
-			parent.innerHTML = '';
-			parent.append($('<img class="buildStateImage" src=' + imageSrc +' />'));
-		}
-		
-		function showPersonsWhoBrokeBuildPhoto(parentElement, instance) {
-			var parent = $(parentElement); 
+            if (equelsStates(instanceStates, "SUCCESS")) {
+                showImage(parentElement, "images/successes.jpg");
+            } else if (equelsStates(instanceStates, "CONFIGURATION_FAILED")) {
+                showImage(parentElement, "images/warning.png");
+            } else {
+                showPersonsWhoBrokeBuildPhoto(parentElement, instanceStates);
+            }
+        }
 
-			parent.innerHTML = '';
-			console.log(instance.commiters);
-			
-			if(null == instance.commiters || 0 == instance.commiters.length) {
-				instance.commiters[0] = {name:"Unknowen", email:""};
-			}
-			
-			$.each(instance.commiters.slice(0,2), function(index, person) {
-					showPersonWhoBrokeBuildPhoto(parent, person);
-				});
+        function processTESTSBuildStatesSection(states) {
+            $('#TESTSBuildStatus').empty();
 
-			if(2 < instance.commiters.length) {
-				showPersonWhoBrokeBuildPhoto(parent, {name:"And other", email:""});
-			}
-		}
-		
-		function showPersonWhoBrokeBuildPhoto(parent, person) {
-			var div = $('<div class="badbuild" />');
+            if (equelsStates(states.UI_TESTS3, "BUILD_FAILED")) {
+                showPersonsWhoBrokeBuildPhoto($('#TESTSBuildStatus')[0], states.UI_TESTS3);
+                return;
+            }
 
-			var imgSrc = "http://www.gravatar.com/avatar/"
-				+ $.md5($.trim(person.email).toLowerCase())
-				+ "?d=none&s=192";
-			div.append('<span class="broker_foto">'
-					+'<div class="def_foto">'
-					+'<img src=' + imgSrc +' />'
-					+'</div>'
-					+'</span>');
+            if (equelsStates(states.UI_TESTS1, "CONFIGURATION_FAILED")
+                    || equelsStates(states.UI_TESTS2, "CONFIGURATION_FAILED")
+                    || equelsStates(states.UI_TESTS3, "CONFIGURATION_FAILED")
+                    || equelsStates(states.UI_TESTS4, "CONFIGURATION_FAILED")) {
+                showImage($('#TESTSBuildStatus')[0], "images/warning.png");
+                return;
+            }
 
-			div.append('<span id="theOneWhoBrokeBuildName" class="broker_name">'
-					+ person.name
-					+ '</span>');
+            showImage($('#TESTSBuildStatus')[0], "images/successes.jpg");
+        }
 
-			parent.append(div);
-		}
-		
-		
-		function playSound(configuration) {
-			if(configuration && configuration['play.sound.by.pathes']) {
-				
-				$.each( configuration['play.sound.by.pathes'],
-					function( key, path ) {
-						var audio = new Audio();
-						audio.src = path;
-						audio.play();
-					});
-			}
-		}
-		
-		function showError(error) {
-			$('#errorArea').show();
-			$('#errorArea').html(error);
-		}
-		
-		function clearError() {
-			$('#errorArea').hide();
-			$('#errorArea').html("");
-		}
-	</script>
+        function equelsStates(obj, state) {
+            return (!obj || obj.state == state);
+        }
+
+        function showImage(parentElement, imageSrc) {
+            var parent = $(parentElement);
+            parent.innerHTML = '';
+            parent.append($('<img class="buildStateImage" src=' + imageSrc + ' />'));
+        }
+
+        function showPersonsWhoBrokeBuildPhoto(parentElement, instance) {
+            var parent = $(parentElement);
+
+            parent.innerHTML = '';
+            console.log(instance.commiters);
+
+            if (null == instance.commiters || 0 == instance.commiters.length) {
+                instance.commiters[0] = {name: "Unknowen", email: ""};
+            }
+
+            $.each(instance.commiters.slice(0, 2), function (index, person) {
+                showPersonWhoBrokeBuildPhoto(parent, person);
+            });
+
+            if (2 < instance.commiters.length) {
+                showPersonWhoBrokeBuildPhoto(parent, {name: "And other", email: ""});
+            }
+        }
+
+        function showPersonWhoBrokeBuildPhoto(parent, person) {
+            var div = $('<div class="badbuild" />');
+
+            var imgSrc = "http://www.gravatar.com/avatar/"
+                    + $.md5($.trim(person.email).toLowerCase())
+                    + "?d=none&s=192";
+            div.append('<span class="broker_foto">'
+                    + '<div class="def_foto">'
+                    + '<img src=' + imgSrc + ' />'
+                    + '</div>'
+                    + '</span>');
+
+            div.append('<span id="theOneWhoBrokeBuildName" class="broker_name">'
+                    + person.name
+                    + '</span>');
+
+            parent.append(div);
+        }
+
+
+        function playSound(configuration) {
+            if (configuration && configuration['play.sound.by.pathes']) {
+
+                console.log("ISD !!!!!!!!!!!!!!!!1");
+                console.log("ISD ", configuration['play.sound.by.pathes']);
+                console.log("ISD !!!!!!!!!!!!!!!!1");
+
+                $.each(configuration['play.sound.by.pathes'],
+                        function (key, path) {
+                            var audio = new Audio();
+                            audio.src = path;
+                            audio.play();
+                        });
+            }
+        }
+
+        function showError(error) {
+            $('#errorArea').show();
+            $('#errorArea').html(error);
+        }
+
+        function clearError() {
+            $('#errorArea').hide();
+            $('#errorArea').html("");
+        }
+
+        function processKanbanFlowStatistic(processKanbanFlowStatistic) {
+            var kanbanFlowArea = $('#kanbanFlowStatistic');
+            kanbanFlowArea.html('');
+
+            var line = '';
+            for (var boardKey in processKanbanFlowStatistic) {
+                console.log("ISD boardKey", boardKey);
+                line += '<div><div class="kfBoard">' + boardKey + '</div>';
+
+                var columns = processKanbanFlowStatistic[boardKey];
+
+                for (var columnIndex in columns) {
+
+                    var column = columns[columnIndex];
+
+                    line += '<div class="kfColumn">' + column.columnName;
+
+                    for (var rowIndex in column.rows) {
+                        var row = column.rows[rowIndex];
+
+                        line += '<div>';
+                        line += '<div class="kfTask">'
+                        if(0 !== row.totals.totalSecondsEstimate) {
+                            line += Math.floor(row.totals.totalSecondsEstimate / 3600);
+                        } else {
+                            line += '&nbsp;'
+                        }
+                        line += '</div>';
+                        line += '</div>';
+                    }
+                    line += '</div>';
+                }
+
+                line += '</div>';
+            }
+
+            kanbanFlowArea.html(line)
+        }
+    </script>
 </head>
 
-	<body>
-		<div class="wrap">
-			<header> </header>
-			<nav></nav>
-			<section>
-				<article>
-					<div id="errorArea" style="display:none">
-					</div>
-					<table id="uiThucydidesTestsSection" class="mainTable">
-						<tr class="thucydidesTestsSection">
-							<td class="sectname shadow" colspan="3">Task and Central tests</td>
-						</tr>
-						<tr class="thucydidesTestsSection">
-							<td class="sectcont">
-								<span class="failedlbl">Failed:</span>
-								<span class="passedlbl">Passed:</span>
-								<span class="pendinglbl">Pending:</span>
-								<span class="warningArea"></span>
-							</td>
-							<td class="sectcont" style="width: 100%; padding: 30px 0px;">
-								<span id="failednumT" class="failednum"></span>
-								<span id="passedlblT" class="passedlbl"></span>
-								<span id="pendinglblT" class="pendinglbl"></span>
-							</td>
-							<td class="tdchart" >
-								<div id="thucydidesChart" class="chart"></div>
-							</td>
-						</tr>
+<body>
+<div class="wrap">
+    <header></header>
+    <nav></nav>
+    <section>
+        <article>
+            <div id="errorArea" style="display:none">
+            </div>
+            <table id="uiThucydidesTestsSection" class="mainTable">
+                <tr class="thucydidesTestsSection">
+                    <td class="sectname shadow" colspan="3">Task and Central tests</td>
+                </tr>
+                <tr class="thucydidesTestsSection">
+                    <td class="sectcont">
+                        <span class="failedlbl">Failed:</span>
+                        <span class="passedlbl">Passed:</span>
+                        <span class="pendinglbl">Pending:</span>
+                        <span class="warningArea"></span>
+                    </td>
+                    <td class="sectcont" style="width: 100%; padding: 30px 0px;">
+                        <span id="failednumT" class="failednum"></span>
+                        <span id="passedlblT" class="passedlbl"></span>
+                        <span id="pendinglblT" class="pendinglbl"></span>
+                    </td>
+                    <td class="tdchart">
+                        <div id="thucydidesChart" class="chart"></div>
+                    </td>
+                </tr>
 
-						<!--<tr class="thucydidesTestsSection">
-							<td colspan="3">
-								<br/>
-								<br/>
-								<br/>
-							</td>
-						</tr>-->
-					</table>	
-<!-- ********************************************************* -->
-					<table id="restThucydidesTestsSectionQ" class="mainTable">
-						<tr class="thucydidesRestTestsSection">
-							<td class="sectname shadow" colspan="3">Thucydides Rest tests Q</td>
-						</tr>
-						<tr class="thucydidesTestsSection">
-							<td class="sectcont"><span class="failedlbl">Failed:</span> <span
-								class="passedlbl">Passed:</span> <span class="pendinglbl">Pending:</span>
-							</td>
-							<td class="sectcont" style="width: 100%; padding: 30px 0px;">
-								<span id="failednumTRestQ" class="failednum"></span>
-								<span id="passedlblTRestQ" class="passedlbl"></span>
-								<span id="pendinglblTRestQ" class="pendinglbl"></span>
-							</td>
-							<td class="tdchart">
-								<div id="thucydidesRestChartQ" class="chart"></div>
-							</td>
-						</tr>
-						<!--<tr class="thucydidesTestsSectionQ">
-							<td colspan="3">
-								<br/>
-								<br/>
-								<br/>
-							</td>
-						</tr>-->
-					</table>
-<!-- ********************************************************* -->
-					<table id="restThucydidesTestsSectionR" class="mainTable">
-						<tr class="thucydidesRestTestsSection">
-							<td class="sectname shadow" colspan="3">Thucydides Rest tests R</td>
-						</tr>
-						<tr class="thucydidesTestsSection">
-							<td class="sectcont"><span class="failedlbl">Failed:</span> <span
-								class="passedlbl">Passed:</span> <span class="pendinglbl">Pending:</span>
-							</td>
-							<td class="sectcont" style="width: 100%; padding: 30px 0px;">
-								<span id="failednumTRestR" class="failednum"></span>
-								<span id="passedlblTRestR" class="passedlbl"></span>
-								<span id="pendinglblTRestR" class="pendinglbl"></span>
-							</td>
-							<td class="tdchart">
-								<div id="thucydidesRestChartR" class="chart"></div>
-							</td>
-						</tr>
-						<!--<tr class="thucydidesTestsSectionR">
-							<td colspan="3">
-								<br/>
-								<br/>
-								<br/>
-							</td>
-						</tr>-->
-					</table>
-<!-- ********************************************************* -->
-					<table class="mainTable">
-						<tr class="bugsSection">
-							<td class="sectname shadow" colspan="3">Bugs</td>
-						</tr>
-						<tr class="bugsSection">
-							<td class="sectcont" colspan="3" style="padding: 0;">
-								<table style="text-align: center; width: 96%;">
-									<tr>
-										<td id="bugCriticalTitle" class="sectcont" style="color: #e30613;">
-											Critical&nbsp;(<span id="bugCriticalTotal"></span>)
-										</td>
-										<td id="bugHighTitle" class="sectcont"">
-										High&nbsp;(<span id="bugHighTotal"></span>)
-										</td>
-										<td id="bugMediumTitle" class="sectcont" style="color: #e30613;">
-											Medium&nbsp;(<span id="bugMediumTotal"></span>)
-										</td>
-									</tr>
-									<tr>
-										<td><span id="bugCriticalInfo" class="failednum"></span></td>
-										<td><span id="bugHighInfo" class="failednum"></span></td>
-										<td><span id="bugMediumInfo" class="failednum"></span></td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-<!-- ********************************************************* -->
-					<table class="mainTable">
-						<tr class="buildStateSection">
-							<td class="sectname shadow" colspan="3">Build State</td>
-						</tr>
-						<tr class="buildStatusSection">
-							<td class="sectcont" colspan="3" style="padding: 0;">
-								<table style="text-align: center; width: 96%;">
-									<tr>
-										<td class="sectcont buildStatisticLabel" style="width: 34%;">
-											Build
-										</td>
-										<td class="sectcont buildStatisticLabel"  style="width: 34%;">
-											Staging
-										</td>
-                                        <td class="sectcont buildStatisticLabel"  style="width: 34%;">
-                                            UI TEST
-                                        </td>
-									</tr>
-									<tr>
-										<td id="BUILDBuildStatus" class="sectcont" style="Width: 34%; vertical-align: top;" />
-										<td id="STAGINGBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
-                                        <td id="UI_TESTSBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
-									</tr>
-									<tr>
+                <!--<tr class="thucydidesTestsSection">
+                    <td colspan="3">
+                        <br/>
+                        <br/>
+                        <br/>
+                    </td>
+                </tr>-->
+            </table>
+            <!-- ********************************************************* -->
+            <table id="restThucydidesTestsSectionQ" class="mainTable">
+                <tr class="thucydidesRestTestsSection">
+                    <td class="sectname shadow" colspan="3">Thucydides Rest tests Q</td>
+                </tr>
+                <tr class="thucydidesTestsSection">
+                    <td class="sectcont"><span class="failedlbl">Failed:</span> <span
+                            class="passedlbl">Passed:</span> <span class="pendinglbl">Pending:</span>
+                    </td>
+                    <td class="sectcont" style="width: 100%; padding: 30px 0px;">
+                        <span id="failednumTRestQ" class="failednum"></span>
+                        <span id="passedlblTRestQ" class="passedlbl"></span>
+                        <span id="pendinglblTRestQ" class="pendinglbl"></span>
+                    </td>
+                    <td class="tdchart">
+                        <div id="thucydidesRestChartQ" class="chart"></div>
+                    </td>
+                </tr>
+                <!--<tr class="thucydidesTestsSectionQ">
+                    <td colspan="3">
+                        <br/>
+                        <br/>
+                        <br/>
+                    </td>
+                </tr>-->
+            </table>
+            <!-- ********************************************************* -->
+            <table id="restThucydidesTestsSectionR" class="mainTable">
+                <tr class="thucydidesRestTestsSection">
+                    <td class="sectname shadow" colspan="3">Thucydides Rest tests R</td>
+                </tr>
+                <tr class="thucydidesTestsSection">
+                    <td class="sectcont"><span class="failedlbl">Failed:</span> <span
+                            class="passedlbl">Passed:</span> <span class="pendinglbl">Pending:</span>
+                    </td>
+                    <td class="sectcont" style="width: 100%; padding: 30px 0px;">
+                        <span id="failednumTRestR" class="failednum"></span>
+                        <span id="passedlblTRestR" class="passedlbl"></span>
+                        <span id="pendinglblTRestR" class="pendinglbl"></span>
+                    </td>
+                    <td class="tdchart">
+                        <div id="thucydidesRestChartR" class="chart"></div>
+                    </td>
+                </tr>
+                <!--<tr class="thucydidesTestsSectionR">
+                    <td colspan="3">
+                        <br/>
+                        <br/>
+                        <br/>
+                    </td>
+                </tr>-->
+            </table>
+            <!-- ********************************************************* -->
+            <table class="mainTable">
+                <tr class="bugsSection">
+                    <td class="sectname shadow" colspan="3">Bugs</td>
+                </tr>
+                <tr class="bugsSection">
+                    <td class="sectcont" colspan="3" style="padding: 0;">
+                        <table style="text-align: center; width: 96%;">
+                            <tr>
+                                <td id="bugCriticalTitle" class="sectcont" style="color: #e30613;">
+                                    Critical&nbsp;(<span id="bugCriticalTotal"></span>)
+                                </td>
+                                <td id="bugHighTitle" class="sectcont"
+                                ">
+                                High&nbsp;(<span id="bugHighTotal"></span>)
+                                </td>
+                                <td id="bugMediumTitle" class="sectcont" style="color: #e30613;">
+                                    Medium&nbsp;(<span id="bugMediumTotal"></span>)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span id="bugCriticalInfo" class="failednum"></span></td>
+                                <td><span id="bugHighInfo" class="failednum"></span></td>
+                                <td><span id="bugMediumInfo" class="failednum"></span></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <div id="kanbanFlowStatistic"></div>
+            <!-- ********************************************************* -->
+            <table class="mainTable">
+                <tr class="buildStateSection">
+                    <td class="sectname shadow" colspan="3">Build State</td>
+                </tr>
+                <tr class="buildStatusSection">
+                    <td class="sectcont" colspan="3" style="padding: 0;">
+                        <table style="text-align: center; width: 96%;">
+                            <tr>
+                                <td class="sectcont buildStatisticLabel" style="width: 34%;">
+                                    Build
+                                </td>
+                                <td class="sectcont buildStatisticLabel" style="width: 34%;">
+                                    Staging
+                                </td>
+                                <td class="sectcont buildStatisticLabel" style="width: 34%;">
+                                    UI TEST
+                                </td>
+                            </tr>
+                            <tr>
+                                <td id="BUILDBuildStatus" class="sectcont" style="Width: 34%; vertical-align: top;"/>
+                                <td id="STAGINGBuildStatus" class="sectcont" style="Width: 34%; vertical-align: top;"/>
+                                <td id="UI_TESTSBuildStatus" class="sectcont" style="Width: 34%; vertical-align: top;"/>
+                            </tr>
+                            <tr>
 
-										<td id="NoBuildStatus" class="sectcont"  style="Width: 34%; vertical-align: top;" />
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-				</article>
-			</section>
-			<div class="empty"></div>
-		</div>
-		<footer> </footer>
-	</body>
-	</html>
+                                <td id="NoBuildStatus" class="sectcont" style="Width: 34%; vertical-align: top;"/>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </article>
+    </section>
+    <div class="empty"></div>
+</div>
+<footer></footer>
+</body>
+</html>

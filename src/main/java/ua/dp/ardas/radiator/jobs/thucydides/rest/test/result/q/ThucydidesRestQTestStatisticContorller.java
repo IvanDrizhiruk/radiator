@@ -1,23 +1,20 @@
 package ua.dp.ardas.radiator.jobs.thucydides.rest.test.result.q;
 
-import static org.apache.commons.lang.StringUtils.substringBetween;
-import static ua.dp.ardas.radiator.dto.thucydides.test.RestVersion.Q;
-import static ua.dp.ardas.radiator.utils.TypeUtils.toIntegerOrNull;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Preconditions;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Preconditions;
-
 import ua.dp.ardas.radiator.dao.ThucydidesRestTestStatisticDAO;
 import ua.dp.ardas.radiator.dto.thucydides.test.ThucydidesTestStatistic;
 import ua.dp.ardas.radiator.resr.client.ThucydidesTestRestClient;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.apache.commons.lang.StringUtils.substringBetween;
+import static ua.dp.ardas.radiator.utils.TypeUtils.toIntegerOrNull;
 
 @Component
 public class ThucydidesRestQTestStatisticContorller {
@@ -32,7 +29,7 @@ public class ThucydidesRestQTestStatisticContorller {
 			
 	public void execute() {
 //        try {
-//            String report = restClient.loadTestReport(url);
+//            String report = restClient.loadTasks(url);
 //            ThucydidesTestStatistic statistic = extractStatistic(report);
 //            dao.insert(statistic, Q);
 //        } catch (Exception e) {
