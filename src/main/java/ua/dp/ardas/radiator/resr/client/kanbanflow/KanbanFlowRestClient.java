@@ -42,13 +42,46 @@ public class KanbanFlowRestClient {
                 LOG.debug(String.format("Try load kanbanflow statistic from url: ", url));
             }
 
-            TasksSet[] responseResult = getTemplate(token).getForObject(url + "tasks", TasksSet[].class);
+            RestTemplate restTtemplate = getTemplate(token);
 
-            return Arrays.asList(responseResult);
+            TasksSet[] responseResult = restTtemplate.getForObject(url + "tasks", TasksSet[].class);
+            List<TasksSet> tasksSets = Arrays.asList(responseResult);
+
+            loadUnloadedTasks(tasksSets, restTtemplate, url);
+
+            return tasksSets;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    private void loadUnloadedTasks(List<TasksSet> tasksSets, RestTemplate restTtemplate, String url) {
+      for (TasksSet taskSet : tasksSets) {
+          if (taskSet.tasksLimited) {
+              loadAllUnloadedTasks(taskSet, restTtemplate, url);
+          }
+      }
+    }
+
+    private void loadAllUnloadedTasks(TasksSet taskSet, RestTemplate restTemplate, String url) {
+        TasksSet currentTaskSet = taskSet;
+        while (currentTaskSet.tasksLimited) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Load tsks after" + taskSet.nextTaskId);
+            }
+
+            String requestUrl = url + "tasks" +
+                    "?" +
+                    "columnId=" + taskSet.columnId + "&" +
+                    "swimlaneId=" + taskSet.swimlaneId + "&" +
+                    "startTaskId=" + taskSet.nextTaskId + "&" +
+                    "limit=100";
+            TasksSet[] responseResult = restTemplate.getForObject(requestUrl, TasksSet[].class);
+            currentTaskSet = responseResult[0];
+
+            taskSet.tasks.addAll(currentTaskSet.tasks);
+        }
     }
 }

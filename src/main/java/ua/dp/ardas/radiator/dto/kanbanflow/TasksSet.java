@@ -11,4 +11,10 @@ public class TasksSet {
     public String columnName;
     public List<Task> tasks;
     public String swimlaneName;
+
+    //For load unloaded tasks
+    public String columnId;
+    public String swimlaneId;
+    public Boolean tasksLimited;
+    public String nextTaskId;
 }
