@@ -1,0 +1,68 @@
+<div>
+    <h2>Build States</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="build-state.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new Build State
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span>ID</span></th>
+                    <th><span>Instances Name</span></th>
+                    <th><span>State</span></th>
+                    <th><span>Error Message</span></th>
+                    <th><span>Last Run Timestemp</span></th>
+                    <th><span>Extracting Date</span></th>
+                    <th><span>Commiter</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="buildState in vm.buildStates track by buildState.id">
+                    <td><a ui-sref="build-state-detail({id:buildState.id})">{{buildState.id}}</a></td>
+                    <td>{{buildState.instancesName}}</td>
+                    <td>{{buildState.state}}</td>
+                    <td>{{buildState.errorMessage}}</td>
+                    <td>{{buildState.lastRunTimestemp}}</td>
+                    <td>{{buildState.extractingDate | date:'medium'}}</td>
+                    <td>
+                        <a ui-sref="commiter-detail({id:buildState.commiter.id})">{{buildState.commiter.name}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="build-state-detail({id:buildState.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="build-state.edit({id:buildState.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="build-state.delete({id:buildState.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

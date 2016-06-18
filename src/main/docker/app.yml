@@ -1,0 +1,15 @@
+version: '2'
+services:
+    radiator-app:
+        image: radiator
+        external_links:
+            - radiator-postgresql:postgresql
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/radiator
+        ports:
+            - 8080:8080
+    radiator-postgresql:
+        extends:
+            file: postgresql.yml
+            service: radiator-postgresql

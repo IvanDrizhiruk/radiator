@@ -1,0 +1,12 @@
+version: '2'
+services:
+    radiator-postgresql:
+        container_name: radiator-postgresql
+        image: postgres:9.5.1
+        # volumes:
+        #     - ~/volumes/jhipster/radiator/postgresql/:/var/lib/postgresql/
+        environment:
+            - POSTGRES_USER=radiator
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432

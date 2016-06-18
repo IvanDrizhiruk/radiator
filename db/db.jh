@@ -1,0 +1,17 @@
+entity BuildState {
+	instancesName String,
+	state String,
+	errorMessage String,	
+	lastRunTimestemp Long,
+    extractingDate ZonedDateTime
+}
+
+entity Commiter {
+	name String,
+	email String
+}
+
+relationship ManyToMany {
+  BuildState{commiter(name)} to Commiter
+}
+

@@ -1,0 +1,42 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "commiter",
+      "otherEntityName": "commiter",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "name"
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "instancesName",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "state",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "errorMessage",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "lastRunTimestemp",
+      "fieldType": "Long"
+    },
+    {
+      "fieldId": 5,
+      "fieldName": "extractingDate",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "changelogDate": "20160525043358",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no"
+}

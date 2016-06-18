@@ -1,0 +1,38 @@
+
+<div>
+    <h2><span>Build State</span> {{vm.buildState.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Instances Name</span></dt>
+        <dd>
+            <span>{{vm.buildState.instancesName}}</span>
+        </dd>
+        <dt><span>State</span></dt>
+        <dd>
+            <span>{{vm.buildState.state}}</span>
+        </dd>
+        <dt><span>Error Message</span></dt>
+        <dd>
+            <span>{{vm.buildState.errorMessage}}</span>
+        </dd>
+        <dt><span>Last Run Timestemp</span></dt>
+        <dd>
+            <span>{{vm.buildState.lastRunTimestemp}}</span>
+        </dd>
+        <dt><span>Extracting Date</span></dt>
+        <dd>
+            <span>{{vm.buildState.extractingDate | date:'medium'}}</span>
+        </dd>
+        <dt><span>Commiter</span></dt>
+        <dd>
+            <a ui-sref="commiter-detail({id:vm.buildState.commiter.id})">{{vm.buildState.commiter.name}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>
