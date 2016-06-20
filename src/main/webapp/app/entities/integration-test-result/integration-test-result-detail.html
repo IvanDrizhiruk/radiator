@@ -1,0 +1,34 @@
+
+<div>
+    <h2><span>Integration Test Result</span> {{vm.integrationTestResult.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Total</span></dt>
+        <dd>
+            <span>{{vm.integrationTestResult.total}}</span>
+        </dd>
+        <dt><span>Passed</span></dt>
+        <dd>
+            <span>{{vm.integrationTestResult.passed}}</span>
+        </dd>
+        <dt><span>Pending</span></dt>
+        <dd>
+            <span>{{vm.integrationTestResult.pending}}</span>
+        </dd>
+        <dt><span>Failed</span></dt>
+        <dd>
+            <span>{{vm.integrationTestResult.failed}}</span>
+        </dd>
+        <dt><span>Extracting Date</span></dt>
+        <dd>
+            <span>{{vm.integrationTestResult.extractingDate | date:'medium'}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>

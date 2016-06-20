@@ -109,12 +109,22 @@ public class RadiatorProperties {
 
         public String cron;
 
+        public String url;
+
         public String getCron() {
             return cron;
         }
 
         public void setCron(String cron) {
             this.cron = cron;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
         }
     }
 }

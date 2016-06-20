@@ -12,9 +12,10 @@ entity Commiter {
 }
 
 entity IntegrationTestResult {
-	total Integer,
-	passed Integer,
-	failed integer,
+	total Long,
+	passed Long,
+	pending Long,
+	failed Long,
 	extractingDate ZonedDateTime
 }
 

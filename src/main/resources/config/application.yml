@@ -101,4 +101,5 @@ radiator:
             password: password
     integrationTest:
         cron: '*/10 * * * * *'
+        url: http://jenkins-cerri.devel.ardas.dp.ua:82/last/result.xml
 

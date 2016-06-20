@@ -10,6 +10,7 @@ import ua.dp.ardas.radiator.dto.BuildStates;
 import ua.dp.ardas.radiator.dto.hudson.api.BuildDetails;
 import ua.dp.ardas.radiator.restclient.BuildStatusRestClient;
 import ua.dp.ardas.radiator.utils.BuildStateUtils;
+import ua.dp.ardas.radiator.utils.DataTimeUtils;
 
 import java.util.List;
 
@@ -73,6 +74,7 @@ public class BuildStateExecutor {
 		buildState.setInstancesName(instance.name);
 		buildState.setState(BuildStates.CONFIGURATION_FAILED.toString());
 		buildState.setLastRunTimestemp(lastRunTimestemp);
+		buildState.setExtractingDate(DataTimeUtils.nowZonedDateTime());
 
 		return buildState;
 	}
@@ -82,7 +84,7 @@ public class BuildStateExecutor {
 
 		return buildDetails.timestamp;
 	}
-//
+
 	private BuildState newBuildFailedState(BuildStateInstance instance, String url, Integer lastFailedBuild, Long lastRunTimestemp) {
 
 
@@ -92,6 +94,7 @@ public class BuildStateExecutor {
 		buildState.setState(BuildStates.BUILD_FAILED.toString());
 		buildState.setErrorMessage(instance.errorMessage);
 		buildState.setLastRunTimestemp(lastRunTimestemp);
+		buildState.setExtractingDate(DataTimeUtils.nowZonedDateTime());
 
 		BuildDetails buildDetails = restClient.loadBuildDetails(url, lastFailedBuild);
 		List<Commiter> commiters = BuildStateUtils.calculateCommiters(buildDetails.culprits, emailFormat);
@@ -107,6 +110,7 @@ public class BuildStateExecutor {
 		buildState.setInstancesName(instance.name);
 		buildState.setState(BuildStates.SUCCESS.toString());
 		buildState.setLastRunTimestemp(lastRunTimestemp);
+		buildState.setExtractingDate(DataTimeUtils.nowZonedDateTime());
 
 		return buildState;
 	}

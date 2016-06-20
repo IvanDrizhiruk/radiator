@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import ua.dp.ardas.radiator.jobs.thucydides.test.result.ProtructorTestStatisticContorller;
+import ua.dp.ardas.radiator.jobs.integration.test.result.IntegrationTestResultContorller;
 import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatisticContorller;
 import ua.dp.ardas.radiator.utils.Timer;
 
@@ -21,12 +21,8 @@ public class IntegrationTestScheduler {
 	
 	@Autowired
 	private ThucydidesTestStatisticContorller thucydidesTestStatusContorller;
-//	@Autowired
-//	private ThucydidesRestQTestStatisticContorller thucydidesResrQTestStatusContorller;
-//	@Autowired
-//	private ThucydidesRestRTestStatisticContorller thucydidesResrRTestStatusContorller;
 	@Inject
-	private ProtructorTestStatisticContorller protructorTestStatisticContorller;
+	private IntegrationTestResultContorller integrationTestResultContorller;
 
 	@PostConstruct
 	void initialize() {
@@ -46,7 +42,7 @@ public class IntegrationTestScheduler {
 		LOG.info(format("Start ProtructorTestStatus calculation %s", currentLongTime()));
 		Timer timer = new Timer();
 
-//		protructorTestStatisticContorller.execute();
+		integrationTestResultContorller.execute();
 
 		LOG.info(format("ProtructorTestStatus calculation finished %s. Total time: %d miliseconds",
 				currentLongTime(), timer.elapsedTimeInMilliseconds()));

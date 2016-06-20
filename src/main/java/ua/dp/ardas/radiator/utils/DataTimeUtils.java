@@ -1,10 +1,12 @@
 package ua.dp.ardas.radiator.utils;
 
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+
 import static java.util.Calendar.DAY_OF_WEEK;
 import static java.util.Calendar.MONDAY;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class DataTimeUtils {
 
@@ -20,5 +22,9 @@ public class DataTimeUtils {
 		calendar.set(DAY_OF_WEEK, MONDAY);
 
 		return dataFormat.format(calendar.getTime());
+	}
+
+	public static ZonedDateTime nowZonedDateTime() {
+		return ZonedDateTime.now(ZoneId.of("UTC")).withNano(0);
 	}
 }

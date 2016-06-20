@@ -2,6 +2,7 @@ package ua.dp.ardas.radiator.restclient;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import ua.dp.ardas.radiator.config.RadiatorProperties;
 import ua.dp.ardas.radiator.dto.hudson.api.BuildDetails;
 
@@ -18,7 +19,7 @@ public class BuildStatusRestClient {
 	@Inject
 	private RadiatorProperties properties;
 
-	private BasicAutorisationRestClient restClient;
+	private RestTemplate restClient;
 
 	@PostConstruct
 	public void init() {
@@ -77,11 +78,8 @@ public class BuildStatusRestClient {
 		}
 		BuildDetails forObject = null;
 		try {
-			//System.out.println(restClient.getForObject(fullUrl, String.class));
 
 			return forObject = restClient.getForObject(fullUrl, BuildDetails.class);
-//		} catch(Exception e) {
-//			e.printStackTrace();
 		} finally {
 			if (LOG.isDebugEnabled()) {
 				LOG.debug(format("BuildDetails from url %s loaded : %s", fullUrl, forObject));

@@ -18,4 +18,17 @@ public class TypeUtils {
 			return null;
 		}
 	}
+
+	public static Long toLongOrNull(String loadedString) {
+		if(StringUtils.isEmpty(loadedString)) {
+			return null;
+		}
+
+		try {
+			return Long.valueOf(loadedString);
+		}catch (NumberFormatException e) {
+			LOG.error(String.format("Can not convert '%s' to long.", loadedString), e);
+			return null;
+		}
+	}
 }

@@ -1,0 +1,34 @@
+{
+  "relationships": [],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "total",
+      "fieldType": "Long"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "passed",
+      "fieldType": "Long"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "pending",
+      "fieldType": "Long"
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "failed",
+      "fieldType": "Long"
+    },
+    {
+      "fieldId": 5,
+      "fieldName": "extractingDate",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "changelogDate": "20160620060558",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no"
+}
