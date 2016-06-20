@@ -32,7 +32,7 @@ public class BuildStateScheduler {
 
 		LOG.debug(String.format("Start BuildState calculation %s", DataTimeUtils.currentLongTime()));
 		Timer timer = new Timer();
-		//buildStateContorller.execute();
+		buildStateContorller.execute();
 
 		LOG.debug(String.format("BuildState calculation finished %s. Total time: %d miliseconds",
 				DataTimeUtils.currentLongTime(), timer.elapsedTimeInMilliseconds()));

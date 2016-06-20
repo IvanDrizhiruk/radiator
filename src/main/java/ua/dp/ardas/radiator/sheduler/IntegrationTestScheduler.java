@@ -1,11 +1,9 @@
 package ua.dp.ardas.radiator.sheduler;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ua.dp.ardas.radiator.jobs.integration.test.result.IntegrationTestResultContorller;
-import ua.dp.ardas.radiator.jobs.thucydides.test.result.ThucydidesTestStatisticContorller;
 import ua.dp.ardas.radiator.utils.Timer;
 
 import javax.annotation.PostConstruct;
@@ -19,8 +17,6 @@ import static ua.dp.ardas.radiator.utils.DataTimeUtils.currentLongTime;
 public class IntegrationTestScheduler {
 	private static Logger LOG = Logger.getLogger(IntegrationTestScheduler.class.getName());
 	
-	@Autowired
-	private ThucydidesTestStatisticContorller thucydidesTestStatusContorller;
 	@Inject
 	private IntegrationTestResultContorller integrationTestResultContorller;
 

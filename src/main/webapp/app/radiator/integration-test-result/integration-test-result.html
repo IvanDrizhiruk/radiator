@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-md-8">
+        failed: {{ vm.item.failed }} <br />
+        passed: {{ vm.item.passed }} <br />
+        pending: {{ vm.item.pending }} <br />
+    </div>
+    <div class="col-md-4">
+        <canvas id="pie" class="chart chart-pie"
+                chart-data="vm.chartData.data"
+                chart-labels="vm.chartData.labels"
+                chart-colors="vm.chartData.colors">
+        </canvas>
+    </div>
+</div>

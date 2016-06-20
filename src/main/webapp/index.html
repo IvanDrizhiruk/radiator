@@ -18,17 +18,10 @@
     <!-- endbuild -->
 </head>
 <body ng-app="radiatorApp">
-    <!--[if lt IE 9]>
-        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
     <div ui-view="navbar" ng-cloak></div>
     <div class="container">
         <div class="well" ui-view="content">
             <!-- Angular views -->
-        </div>
-
-        <div class="footer" ng-cloak>
-            <p>This is your footer</p>
         </div>
     </div>
 
@@ -85,11 +78,6 @@
     <script src="app/services/auth/auth.jwt.service.js"></script>
     <script src="app/services/auth/activate.service.js"></script>
     <script src="app/services/auth/account.service.js"></script>
-    <script src="app/radiator/build-state/r-build-state-instance.directive.js"></script>
-    <script src="app/radiator/build-state/r-build-state-instance.controller.js"></script>
-    <script src="app/radiator/build-state/r-build-state.service.js"></script>
-    <script src="app/radiator/build-state/r-build-state.directive.js"></script>
-    <script src="app/radiator/build-state/r-build-state.controller.js"></script>
     <script src="app/layouts/navbar/navbar.controller.js"></script>
     <script src="app/layouts/navbar/active-link.directive.js"></script>
     <script src="app/layouts/error/error.state.js"></script>
@@ -188,6 +176,15 @@
     <script src="app/account/activate/activate.state.js"></script>
     <script src="app/account/activate/activate.controller.js"></script>
     <script src="app/account/account.state.js"></script>
+
+    <script src="app/radiator/build-state/r-build-state-instance.directive.js"></script>
+    <script src="app/radiator/build-state/r-build-state-instance.controller.js"></script>
+    <script src="app/radiator/build-state/r-build-state.service.js"></script>
+    <script src="app/radiator/build-state/r-build-state.directive.js"></script>
+    <script src="app/radiator/build-state/r-build-state.controller.js"></script>
+    <script src="app/radiator/integration-test-result/r-integration-test-result.controller.js"></script>
+    <script src="app/radiator/integration-test-result/r-integration-test-results.directive.js"></script>
+    <script src="app/radiator/integration-test-result/r-integration-test-result.directive.js"></script>
     <!-- endinject -->
     <!-- endbuild -->
 

@@ -18,7 +18,7 @@
         return directive;
     }
 
-    SortController.$inject = ['$scope', 'md5'];
+    rBuildStateInstanceController.$inject = ['$scope', 'md5'];
 
     function rBuildStateInstanceController ($scope, md5) {
         var vm = this;
