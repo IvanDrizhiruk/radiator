@@ -1,5 +1,14 @@
 {
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "buildState",
+      "otherEntityName": "buildState",
+      "relationshipType": "many-to-many",
+      "ownerSide": false,
+      "otherEntityRelationshipName": "commiter"
+    }
+  ],
   "fields": [
     {
       "fieldId": 1,

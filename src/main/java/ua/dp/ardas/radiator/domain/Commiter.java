@@ -1,8 +1,11 @@
 package ua.dp.ardas.radiator.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -23,6 +26,10 @@ public class Commiter implements Serializable {
 
     @Column(name = "email")
     private String email;
+
+    @ManyToMany(mappedBy = "commiters")
+    @JsonIgnore
+    private Set<BuildState> buildStates = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -46,6 +53,14 @@ public class Commiter implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<BuildState> getBuildStates() {
+        return buildStates;
+    }
+
+    public void setBuildStates(Set<BuildState> buildStates) {
+        this.buildStates = buildStates;
     }
 
     @Override

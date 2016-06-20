@@ -8,11 +8,16 @@
     -->
     <changeSet id="20160525043358-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="commiter_id"
-                                 baseTableName="build_state"
-                                 constraintName="fk_buildstate_commiter_id"
+        <addForeignKeyConstraint baseColumnNames="build_states_id"
+                                 baseTableName="build_state_commiter"
+                                 constraintName="fk_build_state_commiter_commiter_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="build_state"/>
+        <addForeignKeyConstraint baseColumnNames="commiters_id"
+                                 baseTableName="build_state_commiter"
+                                 constraintName="fk_build_state_commiter_buildstate_id"
                                  referencedColumnNames="id"
                                  referencedTableName="commiter"/>
-
+        
     </changeSet>
 </databaseChangeLog>

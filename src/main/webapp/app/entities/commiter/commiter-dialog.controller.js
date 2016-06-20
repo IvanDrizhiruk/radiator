@@ -5,11 +5,12 @@
         .module('radiatorApp')
         .controller('CommiterDialogController', CommiterDialogController);
 
-    CommiterDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Commiter'];
+    CommiterDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Commiter', 'BuildState'];
 
-    function CommiterDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Commiter) {
+    function CommiterDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Commiter, BuildState) {
         var vm = this;
         vm.commiter = entity;
+        vm.buildstates = BuildState.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

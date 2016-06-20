@@ -48,6 +48,7 @@
     <logger name="sun.rmi" level="WARN"/>
     <logger name="liquibase" level="WARN"/>
     <logger name="sun.rmi.transport" level="WARN"/>
+    <logger name="ua.dp.ardas.radiator" level="INFO"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>

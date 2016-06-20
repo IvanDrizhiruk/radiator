@@ -42,7 +42,7 @@ public class BuildStateExecutor {
 		}
 		
 		if (LOG.isInfoEnabled()) {
-			LOG.info(format("BuildState for url %s : %s", url, buildState));
+			LOG.debug(format("BuildState for url %s : %s", url, buildState));
 		}
 		
 		return buildState;
@@ -93,12 +93,9 @@ public class BuildStateExecutor {
 		buildState.setErrorMessage(instance.errorMessage);
 		buildState.setLastRunTimestemp(lastRunTimestemp);
 
-		//TODO ISD Change To ListOfComiters
 		BuildDetails buildDetails = restClient.loadBuildDetails(url, lastFailedBuild);
 		List<Commiter> commiters = BuildStateUtils.calculateCommiters(buildDetails.culprits, emailFormat);
-		if (0<commiters.size()) {
-			buildState.setCommiter(commiters.get(0));
-		}
+		buildState.getCommiters().addAll(commiters);
 
 		return buildState;
 	}

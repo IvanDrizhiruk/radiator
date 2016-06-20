@@ -50,9 +50,7 @@
 
         <div class="form-group">
             <label for="field_commiter">Commiter</label>
-            <select class="form-control" id="field_commiter" name="commiter" ng-model="vm.buildState.commiter" ng-options="commiter as commiter.name for commiter in vm.commiters track by commiter.id">
-                <option value=""></option>
-            </select>
+            <select class="form-control" id="field_commiter" multiple name="commiter" ng-model="vm.buildState.commiters" ng-options="commiter as commiter.name for commiter in vm.commiters track by commiter.id"></select>
         </div>
     </div>
     <div class="modal-footer">

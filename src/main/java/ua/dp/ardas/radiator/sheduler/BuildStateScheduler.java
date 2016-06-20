@@ -30,11 +30,11 @@ public class BuildStateScheduler {
 	@Scheduled(cron="${radiator.buildState.cron}")
 	private void  executeTask() {
 
-		LOG.info(String.format("Start BuildState calculation %s", DataTimeUtils.currentLongTime()));
+		LOG.debug(String.format("Start BuildState calculation %s", DataTimeUtils.currentLongTime()));
 		Timer timer = new Timer();
-		buildStateContorller.execute();
+		//buildStateContorller.execute();
 
-		LOG.info(String.format("BuildState calculation finished %s. Total time: %d miliseconds",
+		LOG.debug(String.format("BuildState calculation finished %s. Total time: %d miliseconds",
 				DataTimeUtils.currentLongTime(), timer.elapsedTimeInMilliseconds()));
 	}
 }

@@ -33,6 +33,13 @@ public class BuildStateReportResource {
     public List<BuildState> getLastBuildStates() {
         log.debug("REST request to get last BuildStates");
 
-        return buildStateRepository.findLastBuildStates();
+        List<BuildState> lastBuildStates = buildStateRepository.findLastBuildStates();
+
+//        System.out.println("============================");
+//        for (BuildState s : lastBuildStates) {
+//            System.out.println(s.getCommiters());
+//        }
+
+        return lastBuildStates;
     }
 }

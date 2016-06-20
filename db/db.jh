@@ -11,7 +11,14 @@ entity Commiter {
 	email String
 }
 
+entity IntegrationTestResult {
+	total Integer,
+	passed Integer,
+	failed integer,
+	extractingDate ZonedDateTime
+}
+
 relationship ManyToMany {
-  BuildState{commiter(name)} to Commiter
+  BuildState{commiter(name)} to Commiter{buildState}
 }
 

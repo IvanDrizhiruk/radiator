@@ -7,7 +7,7 @@ import ua.dp.ardas.radiator.domain.Commiter;
  * Spring Data JPA repository for the Commiter entity.
  */
 @SuppressWarnings("unused")
-public interface CommiterRepository extends JpaRepository<Commiter, Long> {
+public interface CommiterRepository extends JpaRepository<Commiter,Long> {
 
     Commiter findOneByEmail(String email);
 }

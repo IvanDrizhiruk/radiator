@@ -79,23 +79,26 @@ jhipster:
 
 radiator:
     buildState:
-            cron: '*/10 * * * * *'
-            brokenSound: audio/GLASS.WAV
-            errorMessage: Build has been broken
-            emailFormat: '%s@ardas.dp.ua'
-            instances:
-                -
-                    name: BUILD
-                    configUrl: http://jenkins-cerri.devel.ardas.dp.ua:8080/job/cerri-build
-                    errorMessage: Cerri front-end Build has been broken
-                - 
-                    name: STAGING
-                    configUrl: http://jenkins-cerri.devel.ardas.dp.ua:8080/job/cerri-deploy
-                    errorMessage: Cerri staging deploy has been broken
-                -
-                    name: UI_TESTS
-                    configUrl: http://jenkins-cerri.devel.ardas.dp.ua:8080/job/0-ci-e2e-main
-                    errorMessage: Protractor tests has been broken
-            auth:
-                username: user
-                password: password
+        cron: '*/10 * * * * *'
+        brokenSound: audio/GLASS.WAV
+        errorMessage: Build has been broken
+        emailFormat: '%s@ardas.dp.ua'
+        instances:
+            -
+                name: BUILD
+                configUrl: http://jenkins-cerri.devel.ardas.dp.ua:8080/job/cerri-build
+                errorMessage: Cerri front-end Build has been broken
+            -
+                name: STAGING
+                configUrl: http://jenkins-cerri.devel.ardas.dp.ua:8080/job/cerri-deploy
+                errorMessage: Cerri staging deploy has been broken
+            -
+                name: UI_TESTS
+                configUrl: http://jenkins-cerri.devel.ardas.dp.ua:8080/job/0-ci-e2e-main
+                errorMessage: Protractor tests has been broken
+        auth:
+            username: user
+            password: password
+    integrationTest:
+        cron: '*/10 * * * * *'
+

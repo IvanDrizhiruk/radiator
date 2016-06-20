@@ -26,7 +26,9 @@
         </dd>
         <dt><span>Commiter</span></dt>
         <dd>
-            <a ui-sref="commiter-detail({id:vm.buildState.commiter.id})">{{vm.buildState.commiter.name}}</a>
+            <span ng-repeat="commiter in vm.buildState.commiters">
+                <a ui-sref="commiter-detail({id: {{commiter.id}}})">{{commiter.name}}</a>{{$last ? '' : ', '}}
+            </span>
         </dd>
     </dl>
 

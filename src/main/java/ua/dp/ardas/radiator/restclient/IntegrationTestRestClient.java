@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ThucydidesTestRestClient {
-	private static Logger LOG = Logger.getLogger(ThucydidesTestRestClient.class.getName());
+public class IntegrationTestRestClient {
+	private static Logger LOG = Logger.getLogger(IntegrationTestRestClient.class.getName());
 	
 //	@Inject
 //	private RestTemplate template;

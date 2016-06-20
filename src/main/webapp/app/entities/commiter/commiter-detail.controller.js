@@ -5,9 +5,9 @@
         .module('radiatorApp')
         .controller('CommiterDetailController', CommiterDetailController);
 
-    CommiterDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'entity', 'Commiter'];
+    CommiterDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'entity', 'Commiter', 'BuildState'];
 
-    function CommiterDetailController($scope, $rootScope, $stateParams, entity, Commiter) {
+    function CommiterDetailController($scope, $rootScope, $stateParams, entity, Commiter, BuildState) {
         var vm = this;
         vm.commiter = entity;
         

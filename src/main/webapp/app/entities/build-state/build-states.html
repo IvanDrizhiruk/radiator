@@ -37,7 +37,9 @@
                     <td>{{buildState.lastRunTimestemp}}</td>
                     <td>{{buildState.extractingDate | date:'medium'}}</td>
                     <td>
-                        <a ui-sref="commiter-detail({id:buildState.commiter.id})">{{buildState.commiter.name}}</a>
+                        <span ng-repeat="commiter in buildState.commiters">
+                            <a class="form-control-static" ui-sref="commiter-detail({id: {{commiter.id}}})">{{commiter.name}}</a>{{$last ? '' : ', '}}
+                        </span>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

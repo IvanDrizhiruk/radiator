@@ -87,7 +87,7 @@ public class BuildStateResource {
     @Timed
     public List<BuildState> getAllBuildStates() {
         log.debug("REST request to get all BuildStates");
-        List<BuildState> buildStates = buildStateRepository.findAll();
+        List<BuildState> buildStates = buildStateRepository.findAllWithEagerRelationships();
         return buildStates;
     }
 
@@ -103,7 +103,7 @@ public class BuildStateResource {
     @Timed
     public ResponseEntity<BuildState> getBuildState(@PathVariable Long id) {
         log.debug("REST request to get BuildState : {}", id);
-        BuildState buildState = buildStateRepository.findOne(id);
+        BuildState buildState = buildStateRepository.findOneWithEagerRelationships(id);
         return Optional.ofNullable(buildState)
             .map(result -> new ResponseEntity<>(
                 result,

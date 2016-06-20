@@ -4,6 +4,8 @@ package ua.dp.ardas.radiator.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -34,8 +36,11 @@ public class BuildState implements Serializable {
     @Column(name = "extracting_date")
     private ZonedDateTime extractingDate;
 
-    @ManyToOne
-    private Commiter commiter;
+    @ManyToMany
+    @JoinTable(name = "build_state_commiter",
+               joinColumns = @JoinColumn(name="build_states_id", referencedColumnName="ID"),
+               inverseJoinColumns = @JoinColumn(name="commiters_id", referencedColumnName="ID"))
+    private Set<Commiter> commiters = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -85,12 +90,12 @@ public class BuildState implements Serializable {
         this.extractingDate = extractingDate;
     }
 
-    public Commiter getCommiter() {
-        return commiter;
+    public Set<Commiter> getCommiters() {
+        return commiters;
     }
 
-    public void setCommiter(Commiter commiter) {
-        this.commiter = commiter;
+    public void setCommiters(Set<Commiter> commiters) {
+        this.commiters = commiters;
     }
 
     @Override

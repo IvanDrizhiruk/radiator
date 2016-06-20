@@ -19,9 +19,14 @@ import java.util.List;
 public class RadiatorProperties {
 
     public final BuildState buildState = new BuildState();
+    public final IntegrationTest integrationTest = new IntegrationTest();
 
     public BuildState getBuildState() {
         return buildState;
+    }
+
+    public IntegrationTest getIntegrationTest() {
+        return integrationTest;
     }
 
     public static class BuildState {
@@ -96,6 +101,20 @@ public class RadiatorProperties {
             public void setPassword(String password) {
                 this.password = password;
             }
+        }
+    }
+
+
+    public static class IntegrationTest {
+
+        public String cron;
+
+        public String getCron() {
+            return cron;
+        }
+
+        public void setCron(String cron) {
+            this.cron = cron;
         }
     }
 }

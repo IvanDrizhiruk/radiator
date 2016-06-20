@@ -4,8 +4,9 @@
       "relationshipId": 1,
       "relationshipName": "commiter",
       "otherEntityName": "commiter",
-      "relationshipType": "many-to-one",
-      "otherEntityField": "name"
+      "relationshipType": "many-to-many",
+      "otherEntityField": "name",
+      "ownerSide": true
     }
   ],
   "fields": [

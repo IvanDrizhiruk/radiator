@@ -41,13 +41,20 @@
                 <constraints nullable="true" />
             </column>
             
-            <column name="commiter_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="build_state" columnName="extracting_date" columnDataType="datetime"/>
+        
+        <createTable tableName="build_state_commiter">
+            <column name="commiters_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="build_states_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="build_states_id, commiters_id" tableName="build_state_commiter"/>
         
     </changeSet>
 </databaseChangeLog>
