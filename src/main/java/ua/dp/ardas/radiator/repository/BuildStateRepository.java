@@ -22,36 +22,24 @@ public interface BuildStateRepository extends JpaRepository<BuildState,Long> {
 
     Optional<BuildState> findOneByStateAndLastRunTimestemp(String state, Long lastRunTimestemp);
 
-    @Query(value = "" +
-            "SELECT bs.ID, bs.INSTANCES_NAME, bs.STATE, bs.ERROR_MESSAGE, bs.LAST_RUN_TIMESTEMP, bs.EXTRACTING_DATE " +
-            /*", c.ID as commiters " +*/
-            /*", bsc.BUILD_STATES_ID, bsc.COMMITERS_ID" +*/
-            /*", bsc.COMMITERS_ID as commiter " +*/
-            "FROM BUILD_STATE  bs " +
-            "  INNER JOIN (" +
-            "    SELECT " +
-            "      MAX(ID) as ID," +
-            "      MAX(LAST_RUN_TIMESTEMP) " +
-            "    FROM BUILD_STATE " +
-            "    GROUP BY INSTANCES_NAME) jbs " +
-            "  ON bs.ID = jbs.ID" /*+
-            "   left join BUILD_STATE_COMMITER  bsc on bsc.BUILD_STATES_ID = bs.ID "*/ /*+
-            "   left join COMMITER c   on bsc.COMMITERS_ID  = c.ID "*/
-            , nativeQuery = true)
+//    @Query(value = "" +
+//            "SELECT bs.ID, bs.INSTANCES_NAME, bs.STATE, bs.ERROR_MESSAGE, bs.LAST_RUN_TIMESTEMP, bs.EXTRACTING_DATE " +
+//            /*", c.ID as commiters " +*/
+//            /*", bsc.BUILD_STATES_ID, bsc.COMMITERS_ID" +*/
+//            /*", bsc.COMMITERS_ID as commiter " +*/
+//            "FROM BUILD_STATE  bs " +
+//            "  INNER JOIN (" +
+//            "    SELECT " +
+//            "      MAX(ID) as ID," +
+//            "      MAX(LAST_RUN_TIMESTEMP) " +
+//            "    FROM BUILD_STATE " +
+//            "    GROUP BY INSTANCES_NAME) jbs " +
+//            "  ON bs.ID = jbs.ID" /*+
+//            "   left join BUILD_STATE_COMMITER  bsc on bsc.BUILD_STATES_ID = bs.ID "*/ /*+
+//            "   left join COMMITER c   on bsc.COMMITERS_ID  = c.ID "*/
+//            , nativeQuery = true)
+//    List<BuildState> findLastBuildStates();
+
+    @Query("select MAX(buildState) from BuildState buildState GROUP BY buildState.instancesName")
     List<BuildState> findLastBuildStates();
-/*
-
-SELECT bs.ID, bs.INSTANCES_NAME, bs.STATE, bs.ERROR_MESSAGE, bs.LAST_RUN_TIMESTEMP, bs.EXTRACTING_DATE  , c.NAME , c.EMAIL
-FROM BUILD_STATE  bs
-  INNER JOIN (
-    SELECT
-      MAX(ID) as ID,
-      MAX(LAST_RUN_TIMESTEMP)
-    FROM BUILD_STATE
-    GROUP BY INSTANCES_NAME) jbs
-  ON bs.ID = jbs.ID
-  left join BUILD_STATE_COMMITER  bsc on bsc.BUILD_STATES_ID = bs.ID
-  left join COMMITER c   on bsc.COMMITERS_ID  = c.ID
-*/
-
 }

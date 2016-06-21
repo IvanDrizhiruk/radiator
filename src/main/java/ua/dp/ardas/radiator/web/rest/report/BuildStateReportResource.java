@@ -35,11 +35,6 @@ public class BuildStateReportResource {
 
         List<BuildState> lastBuildStates = buildStateRepository.findLastBuildStates();
 
-//        System.out.println("============================");
-//        for (BuildState s : lastBuildStates) {
-//            System.out.println(s.getCommiters());
-//        }
-
         return lastBuildStates;
     }
 }

@@ -36,7 +36,7 @@ public class BuildState implements Serializable {
     @Column(name = "extracting_date")
     private ZonedDateTime extractingDate;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "build_state_commiter",
                joinColumns = @JoinColumn(name="build_states_id", referencedColumnName="ID"),
                inverseJoinColumns = @JoinColumn(name="commiters_id", referencedColumnName="ID"))

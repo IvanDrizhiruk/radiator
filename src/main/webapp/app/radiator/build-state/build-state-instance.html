@@ -2,21 +2,21 @@
 <div class="col-md-4 text-center"
      ng-switch="vm.item.state">
     <div>{{vm.item.instancesName}}</div>
-
+    id = {{vm.item.id}}
     <div ng-switch-when="SUCCESS">
         <img class="buildStateImage" src="content/images/successes.jpg">
     </div>
     <div ng-switch-when="BUILD_FAILED">
         <div class="row" ng-repet="">
-            <div>
+
+            <div ng-repeat="commiter in vm.item.commiters">
                 <img class="buildStateImage" src="content/images/unknown.jpg">
-                <img class="buildStateImage" ng-src="{{vm.emailToImagePath(vm.item.commiter.email)}}">
-                <div ng-bind="vm.item.commiter.name"></div>
+                <img class="buildStateImage" ng-src="{{vm.emailToImagePath(commiter.email)}}">
+                <div ng-bind="commiter.name"></div>
             </div>
             <div>
                 {{vm.item.errorMessage}}
             </div>
-
         </div>
     </div>
     <div ng-switch-when="CONFIGURATION_FAILED">
