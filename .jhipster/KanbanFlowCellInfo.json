@@ -1,0 +1,41 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "board",
+      "otherEntityName": "kanbanFlowBoard",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipId": 2,
+      "relationshipName": "column",
+      "otherEntityName": "kanbanFlowColumn",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipId": 3,
+      "relationshipName": "swimlane",
+      "otherEntityName": "kanbanFlowSwimlane",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "name"
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "totalSecondsEstimated",
+      "fieldType": "Long"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "totalSecondsSpent",
+      "fieldType": "Long"
+    }
+  ],
+  "changelogDate": "20160622044500",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no"
+}

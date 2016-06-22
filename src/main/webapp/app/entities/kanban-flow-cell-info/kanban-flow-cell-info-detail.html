@@ -1,0 +1,34 @@
+
+<div>
+    <h2><span>Kanban Flow Cell Info</span> {{vm.kanbanFlowCellInfo.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Total Seconds Estimated</span></dt>
+        <dd>
+            <span>{{vm.kanbanFlowCellInfo.totalSecondsEstimated}}</span>
+        </dd>
+        <dt><span>Total Seconds Spent</span></dt>
+        <dd>
+            <span>{{vm.kanbanFlowCellInfo.totalSecondsSpent}}</span>
+        </dd>
+        <dt><span>Board</span></dt>
+        <dd>
+            <a ui-sref="kanban-flow-board-detail({id:vm.kanbanFlowCellInfo.board.id})">{{vm.kanbanFlowCellInfo.board.name}}</a>
+        </dd>
+        <dt><span>Column</span></dt>
+        <dd>
+            <a ui-sref="kanban-flow-column-detail({id:vm.kanbanFlowCellInfo.column.id})">{{vm.kanbanFlowCellInfo.column.name}}</a>
+        </dd>
+        <dt><span>Swimlane</span></dt>
+        <dd>
+            <a ui-sref="kanban-flow-swimlane-detail({id:vm.kanbanFlowCellInfo.swimlane.id})">{{vm.kanbanFlowCellInfo.swimlane.name}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>

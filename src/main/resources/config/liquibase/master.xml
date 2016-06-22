@@ -8,7 +8,12 @@
     <include file="classpath:config/liquibase/changelog/20160525043358_added_entity_BuildState.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160525043359_added_entity_Commiter.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160620060558_added_entity_IntegrationTestResult.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160622044500_added_entity_KanbanFlowCellInfo.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160622044557_added_entity_KanbanFlowBoard.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160622044558_added_entity_KanbanFlowColumn.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160622044559_added_entity_KanbanFlowSwimlane.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20160525043358_added_entity_constraints_BuildState.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160622044500_added_entity_constraints_KanbanFlowCellInfo.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

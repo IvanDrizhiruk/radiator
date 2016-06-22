@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity KanbanFlowCellInfo.
+    -->
+    <changeSet id="20160622044500-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="board_id"
+                                 baseTableName="kanban_flow_cell_info"
+                                 constraintName="fk_kanbanflowcellinfo_board_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="kanban_flow_board"/>
+
+        <addForeignKeyConstraint baseColumnNames="column_id"
+                                 baseTableName="kanban_flow_cell_info"
+                                 constraintName="fk_kanbanflowcellinfo_column_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="kanban_flow_column"/>
+
+        <addForeignKeyConstraint baseColumnNames="swimlane_id"
+                                 baseTableName="kanban_flow_cell_info"
+                                 constraintName="fk_kanbanflowcellinfo_swimlane_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="kanban_flow_swimlane"/>
+
+    </changeSet>
+</databaseChangeLog>

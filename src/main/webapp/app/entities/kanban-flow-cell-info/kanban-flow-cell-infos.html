@@ -1,0 +1,70 @@
+<div>
+    <h2>Kanban Flow Cell Infos</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="kanban-flow-cell-info.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new Kanban Flow Cell Info
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span>ID</span></th>
+                    <th><span>Total Seconds Estimated</span></th>
+                    <th><span>Total Seconds Spent</span></th>
+                    <th><span>Board</span></th>
+                    <th><span>Column</span></th>
+                    <th><span>Swimlane</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="kanbanFlowCellInfo in vm.kanbanFlowCellInfos track by kanbanFlowCellInfo.id">
+                    <td><a ui-sref="kanban-flow-cell-info-detail({id:kanbanFlowCellInfo.id})">{{kanbanFlowCellInfo.id}}</a></td>
+                    <td>{{kanbanFlowCellInfo.totalSecondsEstimated}}</td>
+                    <td>{{kanbanFlowCellInfo.totalSecondsSpent}}</td>
+                    <td>
+                        <a ui-sref="kanban-flow-board-detail({id:kanbanFlowCellInfo.board.id})">{{kanbanFlowCellInfo.board.name}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="kanban-flow-column-detail({id:kanbanFlowCellInfo.column.id})">{{kanbanFlowCellInfo.column.name}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="kanban-flow-swimlane-detail({id:kanbanFlowCellInfo.swimlane.id})">{{kanbanFlowCellInfo.swimlane.name}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="kanban-flow-cell-info-detail({id:kanbanFlowCellInfo.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="kanban-flow-cell-info.edit({id:kanbanFlowCellInfo.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="kanban-flow-cell-info.delete({id:kanbanFlowCellInfo.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

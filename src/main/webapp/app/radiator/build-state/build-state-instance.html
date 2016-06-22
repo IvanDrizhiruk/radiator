@@ -1,8 +1,7 @@
 
 <div class="col-md-4 text-center"
      ng-switch="vm.item.state">
-    <div>{{vm.item.instancesName}}</div>
-    id = {{vm.item.id}}
+    <div ng-bind="vm.item.instancesName"></div>
     <div ng-switch-when="SUCCESS">
         <img class="buildStateImage" src="content/images/successes.jpg">
     </div>
@@ -14,9 +13,7 @@
                 <img class="buildStateImage" ng-src="{{vm.emailToImagePath(commiter.email)}}">
                 <div ng-bind="commiter.name"></div>
             </div>
-            <div>
-                {{vm.item.errorMessage}}
-            </div>
+            <div ng-bind="vm.item.errorMessage"></div>
         </div>
     </div>
     <div ng-switch-when="CONFIGURATION_FAILED">

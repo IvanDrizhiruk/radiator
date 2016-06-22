@@ -19,7 +19,37 @@ entity IntegrationTestResult {
 	extractingDate ZonedDateTime
 }
 
+entity KanbanFlowBoard {
+	name String
+}
+
+entity KanbanFlowColumn {
+	name String,
+	indexNumber Integer
+}
+
+entity KanbanFlowSwimlane {
+	name String,
+	indexNumber Integer
+}
+
+entity KanbanFlowCellInfo {
+    totalSecondsEstimated Long,
+    totalSecondsSpent Long
+}
+
 relationship ManyToMany {
   BuildState{commiter(name)} to Commiter{buildState}
 }
 
+relationship ManyToOne {
+  KanbanFlowCellInfo{board(name)} to KanbanFlowBoard
+}
+
+relationship ManyToOne {
+  KanbanFlowCellInfo{column(name)} to KanbanFlowColumn
+}
+
+relationship ManyToOne {
+  KanbanFlowCellInfo{swimlane(name)} to KanbanFlowSwimlane
+}
