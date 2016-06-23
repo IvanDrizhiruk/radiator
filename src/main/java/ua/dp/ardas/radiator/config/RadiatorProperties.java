@@ -20,6 +20,7 @@ public class RadiatorProperties {
 
     public final BuildState buildState = new BuildState();
     public final IntegrationTest integrationTest = new IntegrationTest();
+    public final Kanbanflow kanbanflow = new Kanbanflow();
 
     public BuildState getBuildState() {
         return buildState;
@@ -27,6 +28,10 @@ public class RadiatorProperties {
 
     public IntegrationTest getIntegrationTest() {
         return integrationTest;
+    }
+
+    public Kanbanflow getKanbanflow() {
+        return kanbanflow;
     }
 
     public static class BuildState {
@@ -125,6 +130,60 @@ public class RadiatorProperties {
 
         public void setUrl(String url) {
             this.url = url;
+        }
+    }
+
+    public static class Kanbanflow {
+
+        public String cron;
+
+        public final List<BoardConfig> boardConfigs = new ArrayList<>();
+
+        public String getCron() {
+            return cron;
+        }
+
+        public void setCron(String cron) {
+            this.cron = cron;
+        }
+
+        public List<BoardConfig> getBoardConfigs() {
+            return boardConfigs;
+        }
+
+        public static class BoardConfig {
+            public String instansName;
+            public String url;
+            public String token;
+            public final List<Integer> columnNumbers = new ArrayList<>();
+
+            public String getInstansName() {
+                return instansName;
+            }
+
+            public void setInstansName(String instansName) {
+                this.instansName = instansName;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+
+            public String getToken() {
+                return token;
+            }
+
+            public void setToken(String token) {
+                this.token = token;
+            }
+
+            public List<Integer> getColumnNumbers() {
+                return columnNumbers;
+            }
         }
     }
 }

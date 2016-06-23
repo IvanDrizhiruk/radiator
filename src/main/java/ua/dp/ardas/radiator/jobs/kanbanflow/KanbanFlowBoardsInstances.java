@@ -1,7 +1,6 @@
 package ua.dp.ardas.radiator.jobs.kanbanflow;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +11,7 @@ public class KanbanFlowBoardsInstances {
 
 //    @Autowired
 //    protected AppConfig config;
-    @Value("${kanbanflow.board.instances}")
+    //@Value("${kanbanflow.board.instances}")
     protected String instancesString;
 
 //    private List<KanbanFlowBoardConfig> instances;

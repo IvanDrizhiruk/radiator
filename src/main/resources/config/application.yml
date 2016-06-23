@@ -102,4 +102,12 @@ radiator:
     integrationTest:
         cron: '*/10 * * * * *'
         url: http://jenkins-cerri.devel.ardas.dp.ua:82/last/result.xml
+    kanbanflow:
+        cron: '*/10 * * * * *'
+        boardConfigs:
+            -
+                instansName: Central / Task
+                url: https://kanbanflow.com/api/v1/
+                token: cf3677f3f14ca6b3264596410af07dd4
+                columnNumbers: [1, 2, 3, 4, 5, 6]
 

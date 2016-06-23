@@ -2,6 +2,10 @@ package ua.dp.ardas.radiator.jobs.kanbanflow;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
+import ua.dp.ardas.radiator.config.RadiatorProperties;
+import ua.dp.ardas.radiator.config.RadiatorProperties.Kanbanflow.BoardConfig;
+
+import javax.inject.Inject;
 
 @Component
 public class KanbanFlowStatisticContorller {
@@ -11,11 +15,11 @@ public class KanbanFlowStatisticContorller {
 //    private KanbanFlowRestClient restClient;
 //    @Autowired
 //    private KanbanFlowStatisticDAO dao;
-//    @Autowired
-//    private KanbanFlowBoardsInstances kanbanFlowBoardsInstances;
-//
-//    public void execute() {
-//        for (KanbanFlowBoardConfig boardConfig : kanbanFlowBoardsInstances.getBoardsInstances()) {
+    @Inject
+    private RadiatorProperties properties;
+
+    public void execute() {
+        for (BoardConfig boardConfig : properties.kanbanflow.boardConfigs) {
 //            try {
 //                List<TasksSet> taskSet = restClient.loadTaskSets(boardConfig.url, boardConfig.token);
 //                List<Column> totalTaskCounts = prepareTotalStatistic(taskSet);
@@ -25,8 +29,8 @@ public class KanbanFlowStatisticContorller {
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
-//        }
-//    }
+        }
+    }
 //
 //    private List<Column> filterTotalStatistic(List<Column> totalTaskCounts, Set<Integer> availableColumnNumbers) {
 //        List<Column> res = Lists.newArrayList();

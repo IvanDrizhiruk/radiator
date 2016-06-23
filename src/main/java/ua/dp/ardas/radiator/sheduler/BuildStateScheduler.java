@@ -24,7 +24,14 @@ public class BuildStateScheduler {
 	
 	@PostConstruct
 	void initialize() {
-		executeTask();
+		try {
+			executeTask();
+		} catch (Exception e) {
+			LOG.warn("Unable init Builds states.");
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(String.format("Error: ", e));
+			}
+		}
 	}
 	
 	@Scheduled(cron="${radiator.buildState.cron}")
