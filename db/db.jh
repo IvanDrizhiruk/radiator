@@ -47,6 +47,14 @@ relationship ManyToOne {
 }
 
 relationship ManyToOne {
+  KanbanFlowColumn{board(name)} to KanbanFlowBoard
+}
+
+relationship ManyToOne {
+  KanbanFlowSwimlane{board(name)} to KanbanFlowBoard
+}
+
+relationship ManyToOne {
   KanbanFlowCellInfo{column(name)} to KanbanFlowColumn
 }
 

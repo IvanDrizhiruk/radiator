@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ua.dp.ardas.radiator.config.RadiatorProperties;
 import ua.dp.ardas.radiator.dto.hudson.api.BuildDetails;
+import ua.dp.ardas.radiator.restclient.auth.BasicAutorisationRestClient;
+import ua.dp.ardas.radiator.restclient.auth.UsarnamePasswordAuthTokenGenerator;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -24,7 +26,10 @@ public class BuildStatusRestClient {
 	@PostConstruct
 	public void init() {
 		if (null == restClient) {
-			restClient = new BasicAutorisationRestClient(properties.buildState.auth.username, properties.buildState.auth.password);
+			UsarnamePasswordAuthTokenGenerator generator = new UsarnamePasswordAuthTokenGenerator(
+					properties.buildState.auth.username,
+					properties.buildState.auth.password);
+			restClient = new BasicAutorisationRestClient(generator);
 		}
 	}
 

@@ -152,17 +152,17 @@ public class RadiatorProperties {
         }
 
         public static class BoardConfig {
-            public String instansName;
+            public String boardName;
             public String url;
             public String token;
             public final List<Integer> columnNumbers = new ArrayList<>();
 
-            public String getInstansName() {
-                return instansName;
+            public String getBoardName() {
+                return boardName;
             }
 
-            public void setInstansName(String instansName) {
-                this.instansName = instansName;
+            public void setBoardName(String boardName) {
+                this.boardName = boardName;
             }
 
             public String getUrl() {

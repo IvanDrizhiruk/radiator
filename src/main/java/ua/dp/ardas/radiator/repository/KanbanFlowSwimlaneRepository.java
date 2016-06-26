@@ -1,10 +1,7 @@
 package ua.dp.ardas.radiator.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ua.dp.ardas.radiator.domain.KanbanFlowSwimlane;
-
-import org.springframework.data.jpa.repository.*;
-
-import java.util.List;
 
 /**
  * Spring Data JPA repository for the KanbanFlowSwimlane entity.
@@ -12,4 +9,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface KanbanFlowSwimlaneRepository extends JpaRepository<KanbanFlowSwimlane,Long> {
 
+    KanbanFlowSwimlane findOneByNameAndIndexNumber(String name, Integer indexNumber);
 }

@@ -1,4 +1,4 @@
-package ua.dp.ardas.radiator.restclient;
+package ua.dp.ardas.radiator.restclient.auth;
 
 import com.google.common.base.Preconditions;
 import org.springframework.http.HttpRequest;
@@ -10,32 +10,30 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Base64;
 
 public class BasicAutorisationRestClient extends RestTemplate {
 
-    public BasicAutorisationRestClient(String username, String password) {
-        Preconditions.checkNotNull(username);
+    public BasicAutorisationRestClient(AuthTokenGenerator tokenGenerator) {
+        Preconditions.checkNotNull(tokenGenerator);
 
         setRequestFactory(new InterceptingClientHttpRequestFactory(getRequestFactory(),
-                Arrays.asList(new BasicAuthorizationInterceptor(username, password))));
+                Arrays.asList(new BasicAuthorizationInterceptor(tokenGenerator))));
 
     }
 
     private static class BasicAuthorizationInterceptor implements ClientHttpRequestInterceptor {
 
-        private final String username;
-        private final String password;
 
-        public BasicAuthorizationInterceptor(String username, String password) {
-            this.username = username;
-            this.password = (password == null ? "" : password);
+        private AuthTokenGenerator tokenGenerator;
+
+        public BasicAuthorizationInterceptor(AuthTokenGenerator tokenGenerator) {
+            this.tokenGenerator = tokenGenerator;
         }
 
         @Override
         public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-            byte[] token = Base64.getEncoder().encode((this.username + ":" + this.password).getBytes());
-            request.getHeaders().add("Authorization", "Basic " + new String(token));
+
+            request.getHeaders().add("Authorization", "Basic " + tokenGenerator.generateToken());
 
             return execution.execute(request, body);
         }

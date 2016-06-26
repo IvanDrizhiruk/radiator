@@ -1,7 +1,6 @@
 package ua.dp.ardas.radiator.sheduler;
 
 import org.apache.log4j.Logger;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ua.dp.ardas.radiator.jobs.kanbanflow.KanbanFlowStatisticContorller;
 import ua.dp.ardas.radiator.utils.Timer;
@@ -32,7 +31,7 @@ public class KanbanFlowScheduler {
 		}
 	}
 	
-	@Scheduled(cron="${radiator.kanbanflow.cron}")
+	//@Scheduled(cron="${radiator.kanbanflow.cron}")
 	private void  executeTask() {
 		LOG.info(format("Start KanbanFlow calculation %s", currentLongTime()));
 		Timer timer = new Timer();

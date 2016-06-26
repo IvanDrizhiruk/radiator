@@ -1,16 +1,15 @@
 package ua.dp.ardas.radiator.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import ua.dp.ardas.radiator.domain.KanbanFlowBoard;
-import ua.dp.ardas.radiator.repository.KanbanFlowBoardRepository;
-import ua.dp.ardas.radiator.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.dp.ardas.radiator.domain.KanbanFlowBoard;
+import ua.dp.ardas.radiator.repository.KanbanFlowBoardRepository;
+import ua.dp.ardas.radiator.web.rest.util.HeaderUtil;
 
 import javax.inject.Inject;
 import java.net.URI;
@@ -29,7 +28,7 @@ public class KanbanFlowBoardResource {
         
     @Inject
     private KanbanFlowBoardRepository kanbanFlowBoardRepository;
-    
+
     /**
      * POST  /kanban-flow-boards : Create a new kanbanFlowBoard.
      *
@@ -126,5 +125,4 @@ public class KanbanFlowBoardResource {
         kanbanFlowBoardRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("kanbanFlowBoard", id.toString())).build();
     }
-
 }
