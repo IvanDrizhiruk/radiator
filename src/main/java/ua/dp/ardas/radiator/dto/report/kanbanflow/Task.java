@@ -6,6 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Task {
-    public int totalSecondsSpent;
-    public int totalSecondsEstimate;
+    public long totalSecondsSpent;
+    public long totalSecondsEstimate;
 }

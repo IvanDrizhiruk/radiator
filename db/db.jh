@@ -35,7 +35,8 @@ entity KanbanFlowSwimlane {
 
 entity KanbanFlowCellInfo {
     totalSecondsEstimated Long,
-    totalSecondsSpent Long
+    totalSecondsSpent Long,
+    extractingDate ZonedDateTime
 }
 
 relationship ManyToMany {

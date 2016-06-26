@@ -69,6 +69,8 @@ public class KanbanFlowStatisticContorller {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
+        //check isNeed to save
+
         kanbanFlowCellInfoRepository.save(cellsForSave);
     }
 
@@ -199,8 +201,8 @@ public class KanbanFlowStatisticContorller {
         currentCell.setSwimlane(toSwimlane(taskSet.swimlaneName));
 
         TotalTaskCounts totalCounts = calculateTotalTaskCount(taskSet.tasks);
-        currentCell.setTotalSecondsSpent(new Long(totalCounts.totalSecondsSpent));
-        currentCell.setTotalSecondsEstimated(new Long(totalCounts.totalSecondsEstimate));
+        currentCell.setTotalSecondsSpent(totalCounts.totalSecondsSpent);
+        currentCell.setTotalSecondsEstimated(totalCounts.totalSecondsEstimate);
 
         return currentCell;
     }
@@ -233,7 +235,7 @@ public class KanbanFlowStatisticContorller {
     }
 
     private class TotalTaskCounts {
-        public int totalSecondsEstimate;
-        public int totalSecondsSpent;
+        public long totalSecondsEstimate;
+        public long totalSecondsSpent;
     }
 }
