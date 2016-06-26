@@ -60,8 +60,8 @@ public class KanbanFlowStatisticContorller {
         List<KanbanFlowColumn> filteredColumns = filterAvailableColumns(columns, boardConfig.columnNumbers);
 
         KanbanFlowBoard board = loadOrCreateBoard(boardConfig.boardName);
-        Map<String, KanbanFlowColumn> dbcolumns = loadOrCreateColumns(filteredColumns);
-        Map<String, KanbanFlowSwimlane> dbswimlanes = loadOrCreateSwimlanes(swimlanes);
+        Map<String, KanbanFlowColumn> dbcolumns = loadOrCreateColumns(filteredColumns, board);
+        Map<String, KanbanFlowSwimlane> dbswimlanes = loadOrCreateSwimlanes(swimlanes, board);
 
 
         List<KanbanFlowCellInfo> cellsForSave = cellsInfos.stream()
@@ -102,33 +102,47 @@ public class KanbanFlowStatisticContorller {
         return kanbanFlowBoardRepository.save(newBoard);
     }
 
-    private Map<String, KanbanFlowSwimlane> loadOrCreateSwimlanes(List<KanbanFlowSwimlane> swimlanes) {
+    private Map<String, KanbanFlowSwimlane> loadOrCreateSwimlanes(List<KanbanFlowSwimlane> swimlanes, KanbanFlowBoard board) {
         return swimlanes.stream()
-                .map(this::loadOrCreateSwimlanes)
-                .collect(Collectors.toMap(KanbanFlowSwimlane::getName, swimlane -> swimlane));
+                .collect(Collectors.toMap(KanbanFlowSwimlane::getName, swimlane -> loadOrCreateSwimlane(swimlane, board)));
     }
 
-    private KanbanFlowSwimlane loadOrCreateSwimlanes(KanbanFlowSwimlane kanbanFlowSwimlane) {
-        KanbanFlowSwimlane swimlane = kanbanFlowSwimlaneRepository.findOneByNameAndIndexNumber(
-                kanbanFlowSwimlane.getName(), kanbanFlowSwimlane.getIndexNumber());
+    private KanbanFlowSwimlane loadOrCreateSwimlane(KanbanFlowSwimlane swimlane, KanbanFlowBoard board) {
+        KanbanFlowSwimlane swimlaneFromDB = kanbanFlowSwimlaneRepository.findOneByNameAndIndexNumberAndBoard(
+                swimlane.getName(), swimlane.getIndexNumber(), board);
 
-        return (null == swimlane)
-                ? kanbanFlowSwimlaneRepository.save(kanbanFlowSwimlane)
-                : swimlane;
+        if (null != swimlaneFromDB) {
+            return swimlaneFromDB;
+        }
+
+        KanbanFlowSwimlane newSwimlane = new KanbanFlowSwimlane();
+        newSwimlane.setName(swimlane.getName());
+        newSwimlane.setIndexNumber(swimlane.getIndexNumber());
+        newSwimlane.setBoard(board);
+
+        return kanbanFlowSwimlaneRepository.save(newSwimlane);
     }
 
-    private Map<String, KanbanFlowColumn> loadOrCreateColumns(List<KanbanFlowColumn> columns) {
+    private Map<String, KanbanFlowColumn> loadOrCreateColumns(List<KanbanFlowColumn> columns, KanbanFlowBoard board) {
         return columns.stream()
-                .collect(Collectors.toMap(KanbanFlowColumn::getName, this::loadOrCreateColumn));
+                .collect(Collectors.toMap(KanbanFlowColumn::getName, column -> loadOrCreateColumn(column, board)));
     }
 
-    private KanbanFlowColumn loadOrCreateColumn(KanbanFlowColumn kanbanFlowColumn) {
-        KanbanFlowColumn column = kanbanFlowColumnRepository.findOneByNameAndIndexNumber(
-                kanbanFlowColumn.getName(), kanbanFlowColumn.getIndexNumber());
+    private KanbanFlowColumn loadOrCreateColumn(KanbanFlowColumn column, KanbanFlowBoard board) {
+        KanbanFlowColumn columnFromDB = kanbanFlowColumnRepository.findOneByNameAndIndexNumberAndBoard(
+                column.getName(), column.getIndexNumber(), board);
 
-        return (null == column)
-            ? kanbanFlowColumnRepository.save(kanbanFlowColumn)
-                : column;
+        if (null != columnFromDB) {
+            return columnFromDB;
+        }
+
+        KanbanFlowColumn newColumn = new KanbanFlowColumn();
+        newColumn.setName(column.getName());
+        newColumn.setIndexNumber(column.getIndexNumber());
+        newColumn.setBoard(board);
+
+
+        return kanbanFlowColumnRepository.save(newColumn);
     }
 
     private List<KanbanFlowColumn> filterAvailableColumns(List<KanbanFlowColumn> columns, List<Integer> columnNumbers) {

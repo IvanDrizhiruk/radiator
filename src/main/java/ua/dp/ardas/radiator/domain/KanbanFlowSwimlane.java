@@ -24,6 +24,9 @@ public class KanbanFlowSwimlane implements Serializable {
     @Column(name = "index_number")
     private Integer indexNumber;
 
+    @ManyToOne
+    private KanbanFlowBoard board;
+
     public Long getId() {
         return id;
     }
@@ -46,6 +49,14 @@ public class KanbanFlowSwimlane implements Serializable {
 
     public void setIndexNumber(Integer indexNumber) {
         this.indexNumber = indexNumber;
+    }
+
+    public KanbanFlowBoard getBoard() {
+        return board;
+    }
+
+    public void setBoard(KanbanFlowBoard kanbanFlowBoard) {
+        this.board = kanbanFlowBoard;
     }
 
     @Override

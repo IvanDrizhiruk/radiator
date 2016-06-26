@@ -5,9 +5,9 @@
         .module('radiatorApp')
         .controller('KanbanFlowColumnDetailController', KanbanFlowColumnDetailController);
 
-    KanbanFlowColumnDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'entity', 'KanbanFlowColumn'];
+    KanbanFlowColumnDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'entity', 'KanbanFlowColumn', 'KanbanFlowBoard'];
 
-    function KanbanFlowColumnDetailController($scope, $rootScope, $stateParams, entity, KanbanFlowColumn) {
+    function KanbanFlowColumnDetailController($scope, $rootScope, $stateParams, entity, KanbanFlowColumn, KanbanFlowBoard) {
         var vm = this;
         vm.kanbanFlowColumn = entity;
         

@@ -1,5 +1,13 @@
 {
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "board",
+      "otherEntityName": "kanbanFlowBoard",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "name"
+    }
+  ],
   "fields": [
     {
       "fieldId": 1,

@@ -9,5 +9,5 @@ import ua.dp.ardas.radiator.domain.KanbanFlowBoard;
 @SuppressWarnings("unused")
 public interface KanbanFlowBoardRepository extends JpaRepository<KanbanFlowBoard,Long> {
 
-    KanbanFlowBoard findOneByName(String name);
+    KanbanFlowBoard findOneByName(String boardName);
 }

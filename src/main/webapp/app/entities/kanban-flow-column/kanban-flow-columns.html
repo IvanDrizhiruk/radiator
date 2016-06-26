@@ -21,6 +21,7 @@
                     <th><span>ID</span></th>
                     <th><span>Name</span></th>
                     <th><span>Index Number</span></th>
+                    <th><span>Board</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -29,6 +30,9 @@
                     <td><a ui-sref="kanban-flow-column-detail({id:kanbanFlowColumn.id})">{{kanbanFlowColumn.id}}</a></td>
                     <td>{{kanbanFlowColumn.name}}</td>
                     <td>{{kanbanFlowColumn.indexNumber}}</td>
+                    <td>
+                        <a ui-sref="kanban-flow-board-detail({id:kanbanFlowColumn.board.id})">{{kanbanFlowColumn.board.name}}</a>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

@@ -12,6 +12,10 @@
         <dd>
             <span>{{vm.kanbanFlowSwimlane.indexNumber}}</span>
         </dd>
+        <dt><span>Board</span></dt>
+        <dd>
+            <a ui-sref="kanban-flow-board-detail({id:vm.kanbanFlowSwimlane.board.id})">{{vm.kanbanFlowSwimlane.board.name}}</a>
+        </dd>
     </dl>
 
     <button type="submit"

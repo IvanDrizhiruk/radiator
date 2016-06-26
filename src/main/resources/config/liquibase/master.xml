@@ -15,5 +15,7 @@
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20160525043358_added_entity_constraints_BuildState.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160622044500_added_entity_constraints_KanbanFlowCellInfo.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160622044558_added_entity_constraints_KanbanFlowColumn.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160622044559_added_entity_constraints_KanbanFlowSwimlane.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

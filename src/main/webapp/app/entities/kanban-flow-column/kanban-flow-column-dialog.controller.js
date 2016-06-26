@@ -5,11 +5,12 @@
         .module('radiatorApp')
         .controller('KanbanFlowColumnDialogController', KanbanFlowColumnDialogController);
 
-    KanbanFlowColumnDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'KanbanFlowColumn'];
+    KanbanFlowColumnDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'KanbanFlowColumn', 'KanbanFlowBoard'];
 
-    function KanbanFlowColumnDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, KanbanFlowColumn) {
+    function KanbanFlowColumnDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, KanbanFlowColumn, KanbanFlowBoard) {
         var vm = this;
         vm.kanbanFlowColumn = entity;
+        vm.kanbanflowboards = KanbanFlowBoard.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

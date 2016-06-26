@@ -4,7 +4,7 @@ describe('Controller Tests', function() {
 
     describe('KanbanFlowSwimlane Management Detail Controller', function() {
         var $scope, $rootScope;
-        var MockEntity, MockKanbanFlowSwimlane;
+        var MockEntity, MockKanbanFlowSwimlane, MockKanbanFlowBoard;
         var createController;
 
         beforeEach(inject(function($injector) {
@@ -12,13 +12,15 @@ describe('Controller Tests', function() {
             $scope = $rootScope.$new();
             MockEntity = jasmine.createSpy('MockEntity');
             MockKanbanFlowSwimlane = jasmine.createSpy('MockKanbanFlowSwimlane');
+            MockKanbanFlowBoard = jasmine.createSpy('MockKanbanFlowBoard');
             
 
             var locals = {
                 '$scope': $scope,
                 '$rootScope': $rootScope,
                 'entity': MockEntity ,
-                'KanbanFlowSwimlane': MockKanbanFlowSwimlane
+                'KanbanFlowSwimlane': MockKanbanFlowSwimlane,
+                'KanbanFlowBoard': MockKanbanFlowBoard
             };
             createController = function() {
                 $injector.get('$controller')("KanbanFlowSwimlaneDetailController", locals);

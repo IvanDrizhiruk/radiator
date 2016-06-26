@@ -28,7 +28,7 @@ public class KanbanFlowBoardResource {
         
     @Inject
     private KanbanFlowBoardRepository kanbanFlowBoardRepository;
-
+    
     /**
      * POST  /kanban-flow-boards : Create a new kanbanFlowBoard.
      *
@@ -125,4 +125,5 @@ public class KanbanFlowBoardResource {
         kanbanFlowBoardRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("kanbanFlowBoard", id.toString())).build();
     }
+
 }
