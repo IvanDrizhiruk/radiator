@@ -40,5 +40,12 @@
         vm.clear = function() {
             $uibModalInstance.dismiss('cancel');
         };
+
+        vm.datePickerOpenStatus = {};
+        vm.datePickerOpenStatus.extractingDate = false;
+
+        vm.openCalendar = function(date) {
+            vm.datePickerOpenStatus[date] = true;
+        };
     }
 })();

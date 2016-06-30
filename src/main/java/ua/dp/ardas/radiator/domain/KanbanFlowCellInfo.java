@@ -3,6 +3,7 @@ package ua.dp.ardas.radiator.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -23,6 +24,9 @@ public class KanbanFlowCellInfo implements Serializable {
 
     @Column(name = "total_seconds_spent")
     private Long totalSecondsSpent;
+
+    @Column(name = "extracting_date")
+    private ZonedDateTime extractingDate;
 
     @ManyToOne
     private KanbanFlowBoard board;
@@ -55,6 +59,14 @@ public class KanbanFlowCellInfo implements Serializable {
 
     public void setTotalSecondsSpent(Long totalSecondsSpent) {
         this.totalSecondsSpent = totalSecondsSpent;
+    }
+
+    public ZonedDateTime getExtractingDate() {
+        return extractingDate;
+    }
+
+    public void setExtractingDate(ZonedDateTime extractingDate) {
+        this.extractingDate = extractingDate;
     }
 
     public KanbanFlowBoard getBoard() {
@@ -107,6 +119,7 @@ public class KanbanFlowCellInfo implements Serializable {
             "id=" + id +
             ", totalSecondsEstimated='" + totalSecondsEstimated + "'" +
             ", totalSecondsSpent='" + totalSecondsSpent + "'" +
+            ", extractingDate='" + extractingDate + "'" +
             '}';
     }
 }

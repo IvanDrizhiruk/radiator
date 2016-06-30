@@ -29,6 +29,10 @@
                 <constraints nullable="true" />
             </column>
             
+            <column name="extracting_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+            
             <column name="board_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -43,6 +47,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="kanban_flow_cell_info" columnName="extracting_date" columnDataType="datetime"/>
         
     </changeSet>
 </databaseChangeLog>

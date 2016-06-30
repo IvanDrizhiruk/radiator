@@ -15,8 +15,10 @@ import ua.dp.ardas.radiator.repository.KanbanFlowCellInfoRepository;
 import ua.dp.ardas.radiator.repository.KanbanFlowColumnRepository;
 import ua.dp.ardas.radiator.repository.KanbanFlowSwimlaneRepository;
 import ua.dp.ardas.radiator.restclient.KanbanFlowRestClient;
+import ua.dp.ardas.radiator.utils.DataTimeUtils;
 
 import javax.inject.Inject;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -190,21 +192,25 @@ public class KanbanFlowStatisticContorller {
     }
 
     private List<KanbanFlowCellInfo> transformToStatisticInfo(List<TasksSet> tasks) {
+        ZonedDateTime extractingDate = DataTimeUtils.nowZonedDateTime();
+
         return tasks.stream()
-                .map(this::toCellInfo)
+                .map(taskset -> toCellInfo(taskset, extractingDate))
                 .collect(Collectors.toList());
     }
 
-    private KanbanFlowCellInfo toCellInfo(TasksSet taskSet) {
-        KanbanFlowCellInfo currentCell = new KanbanFlowCellInfo();
-        currentCell.setColumn(toColumn(taskSet.columnName));
-        currentCell.setSwimlane(toSwimlane(taskSet.swimlaneName));
+    private KanbanFlowCellInfo toCellInfo(TasksSet taskSet, ZonedDateTime extractingDate) {
+        KanbanFlowCellInfo cell = new KanbanFlowCellInfo();
+        cell.setColumn(toColumn(taskSet.columnName));
+        cell.setSwimlane(toSwimlane(taskSet.swimlaneName));
 
         TotalTaskCounts totalCounts = calculateTotalTaskCount(taskSet.tasks);
-        currentCell.setTotalSecondsSpent(totalCounts.totalSecondsSpent);
-        currentCell.setTotalSecondsEstimated(totalCounts.totalSecondsEstimate);
+        cell.setTotalSecondsSpent(totalCounts.totalSecondsSpent);
+        cell.setTotalSecondsEstimated(totalCounts.totalSecondsEstimate);
 
-        return currentCell;
+        cell.setExtractingDate(extractingDate);
+
+        return cell;
     }
 
     private KanbanFlowSwimlane toSwimlane(String swimlaneName) {

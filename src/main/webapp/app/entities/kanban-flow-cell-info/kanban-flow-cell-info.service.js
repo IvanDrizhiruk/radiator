@@ -4,9 +4,9 @@
         .module('radiatorApp')
         .factory('KanbanFlowCellInfo', KanbanFlowCellInfo);
 
-    KanbanFlowCellInfo.$inject = ['$resource'];
+    KanbanFlowCellInfo.$inject = ['$resource', 'DateUtils'];
 
-    function KanbanFlowCellInfo ($resource) {
+    function KanbanFlowCellInfo ($resource, DateUtils) {
         var resourceUrl =  'api/kanban-flow-cell-infos/:id';
 
         return $resource(resourceUrl, {}, {
@@ -16,6 +16,7 @@
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
+                        data.extractingDate = DateUtils.convertDateTimeFromServer(data.extractingDate);
                     }
                     return data;
                 }

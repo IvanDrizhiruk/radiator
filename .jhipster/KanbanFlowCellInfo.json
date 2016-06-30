@@ -32,6 +32,11 @@
       "fieldId": 2,
       "fieldName": "totalSecondsSpent",
       "fieldType": "Long"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "extractingDate",
+      "fieldType": "ZonedDateTime"
     }
   ],
   "changelogDate": "20160622044500",

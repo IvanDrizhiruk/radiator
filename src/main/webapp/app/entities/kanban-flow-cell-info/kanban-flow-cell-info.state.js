@@ -64,6 +64,7 @@
                             return {
                                 totalSecondsEstimated: null,
                                 totalSecondsSpent: null,
+                                extractingDate: null,
                                 id: null
                             };
                         }

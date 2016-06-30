@@ -23,8 +23,6 @@
     function rIntegrationTestResultController ($scope) {
         var vm = $scope.vm;
 
-        console.log("ISD $scope", vm);
-
         vm.chartData = {
             data: [vm.item.passed, vm.item.pending, vm.item.failed],
             labels: ['Passed', 'Pending', 'Failed'],

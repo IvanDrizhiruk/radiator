@@ -21,6 +21,7 @@
                     <th><span>ID</span></th>
                     <th><span>Total Seconds Estimated</span></th>
                     <th><span>Total Seconds Spent</span></th>
+                    <th><span>Extracting Date</span></th>
                     <th><span>Board</span></th>
                     <th><span>Column</span></th>
                     <th><span>Swimlane</span></th>
@@ -32,6 +33,7 @@
                     <td><a ui-sref="kanban-flow-cell-info-detail({id:kanbanFlowCellInfo.id})">{{kanbanFlowCellInfo.id}}</a></td>
                     <td>{{kanbanFlowCellInfo.totalSecondsEstimated}}</td>
                     <td>{{kanbanFlowCellInfo.totalSecondsSpent}}</td>
+                    <td>{{kanbanFlowCellInfo.extractingDate | date:'medium'}}</td>
                     <td>
                         <a ui-sref="kanban-flow-board-detail({id:kanbanFlowCellInfo.board.id})">{{kanbanFlowCellInfo.board.name}}</a>
                     </td>

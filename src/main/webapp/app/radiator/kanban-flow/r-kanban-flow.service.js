@@ -2,12 +2,12 @@
     'use strict';
     angular
         .module('radiatorApp')
-        .factory('RBuildState', rBuildState);
+        .factory('RKanbanFlow', rKanbanFlow);
 
-    rBuildState.$inject = ['$resource', 'DateUtils'];
+    rKanbanFlow.$inject = ['$resource', 'DateUtils'];
 
-    function rBuildState ($resource, DateUtils) {
-        var resourceUrl =  'api/report/build-states/last';
+    function rKanbanFlow ($resource, DateUtils) {
+        var resourceUrl =  'api/report/kanbanflow/last';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true}
