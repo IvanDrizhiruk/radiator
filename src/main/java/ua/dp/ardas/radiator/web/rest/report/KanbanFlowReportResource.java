@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ua.dp.ardas.radiator.config.RadiatorProperties;
 import ua.dp.ardas.radiator.config.RadiatorProperties.Kanbanflow.BoardConfig;
-import ua.dp.ardas.radiator.domain.KanbanFlowCellInfo;
+import ua.dp.ardas.radiator.domain.KanbanFlowBoard;
+import ua.dp.ardas.radiator.repository.KanbanFlowBoardRepository;
 import ua.dp.ardas.radiator.repository.KanbanFlowCellInfoRepository;
 
 import javax.inject.Inject;
@@ -24,7 +25,9 @@ import java.util.List;
 public class KanbanFlowReportResource {
 
     private final Logger log = LoggerFactory.getLogger(KanbanFlowReportResource.class);
-        
+
+    @Inject
+    private KanbanFlowBoardRepository kanbanFlowBoardRepository;
     @Inject
     private KanbanFlowCellInfoRepository kanbanFlowCellInfoRepository;
     @Inject
@@ -42,21 +45,20 @@ public class KanbanFlowReportResource {
     @Timed
     public List<KanbanflowBoard> getLastKanbanFlow() {
         log.debug("REST request to get all KanbanFlowCellInfos");
-        List<KanbanFlowCellInfo> kanbanFlowCellInfos = kanbanFlowCellInfoRepository.findAll();
-
 
         List<KanbanflowBoard> boardas = new ArrayList<>();
 
         for (BoardConfig boardConfig : radiatorProperties.kanbanflow.boardConfigs) {
-            log.warn("ISD " + boardConfig.boardName);
-            KanbanflowBoard board = new KanbanflowBoard();
-            board.boardName = boardConfig.boardName;
-            board.cells = kanbanFlowCellInfoRepository.findAll();
+            KanbanFlowBoard dbBoard = kanbanFlowBoardRepository.findOneByName(boardConfig.boardName) ;
 
-            boardas.add(board);
+            if (null != dbBoard) {
+                KanbanflowBoard board = new KanbanflowBoard();
+                board.boardName = boardConfig.boardName;
+                board.cells = kanbanFlowCellInfoRepository.findLastKanbanFlowCells(dbBoard);
+
+                boardas.add(board);
+            }
         }
-
-        log.warn("ISD boardas" + boardas);
 
         return boardas;
     }
