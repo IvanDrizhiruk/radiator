@@ -8,15 +8,6 @@
     </div>
 
     <div ng-controller="RKanbanFlowController as kanbanFlowController">
-       <div ng-repeat="board in kanbanFlowController.boards">
-           <div ng-bind="board.name"></div>
-           <div ng-repeat="column in board.columns">
-               <div ng-bind="column.name"></div>
-               <div ng-repeat="swimlane in board.swimlanes">
-                   <div ng-bind="swimlane.name"></div>
-                   <div ng-bind="board.cells[kanbanFlowController.calculateCellKey(column, swimlane)].totalSecondsEstimated / 60 / 60"></div>
-               </div>
-           </div>
-       </div>
+       <r-kanban-flow-boards boards="kanbanFlowController.boards" />
     </div>
 </div>

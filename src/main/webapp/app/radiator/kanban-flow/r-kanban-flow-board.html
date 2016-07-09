@@ -1,0 +1,18 @@
+<div class="row kanban-flow">
+    <div ng-bind="board.name"></div>
+    <table>
+        <tr>
+            <th ng-repeat="column in board.columns">
+                <div ng-bind="column.name"></div>
+            </th>
+        </tr>
+        <tr ng-repeat="swimlane in board.swimlanes">
+            <td ng-repeat="cell in swimlane.cells">
+                <div ng-bind="cell.totalHoursEstimated"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+

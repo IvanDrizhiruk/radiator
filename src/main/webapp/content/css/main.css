@@ -336,3 +336,8 @@ ui bootstrap tweaks
 .buildStateImage {
     height: 100px;
 }
+
+.kanban-flow table {
+    width: 100%;
+    table-layout: fixed;
+}

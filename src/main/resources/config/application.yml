@@ -103,16 +103,10 @@ radiator:
         cron: '*/10 * * * * *'
         url: http://jenkins-cerri.devel.ardas.dp.ua:82/last/result.xml
     kanbanflow:
-        cron: '*/10 * * * * *'
+        cron: '0 */10 * * * *'
         boardConfigs:
             -
                 boardName: Central / Task
                 url: https://kanbanflow.com/api/v1/
-                token: 85e855f137f0832ccc699fa35a11ff78
+                token: 9d2e110ca46f3c5c81e8ed8c703e8c5e
                 columnNumbers: [4, 5, 6, 7, 8, 9, 10, 11]
-            -
-                boardName: Central / Task 2
-                url: https://kanbanflow.com/api/v1/
-                token: 85e855f137f0832ccc699fa35a11ff78
-                columnNumbers: [4, 5, 6, 7, 8, 9, 10, 11]
-

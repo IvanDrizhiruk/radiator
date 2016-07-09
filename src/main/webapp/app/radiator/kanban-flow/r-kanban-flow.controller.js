@@ -53,6 +53,7 @@
                 uiBoard.swimlanes = swimlanes;
                 uiBoard.cells = cells;
 
+                prepareCellsInSwimlanes(uiBoard);
 
                 uiBoards.push(uiBoard);
 
@@ -63,6 +64,24 @@
 
         function calculateCellKey(column, swimlane) {
             return column.indexNumber + '-' + swimlane.indexNumber;
+        }
+
+        function prepareCellsInSwimlanes(uiBoard) {
+            for(var swimlaneIndex in uiBoard.swimlanes) {
+                var cells = [];
+                for(var columnIndex in uiBoard.columns) {
+                    var column =  uiBoard.columns[columnIndex];
+                    var swimlane =  uiBoard.swimlanes[swimlaneIndex];
+                    var cellInHours = uiBoard.cells[calculateCellKey(column, swimlane)].totalSecondsEstimated / 60 / 60;
+
+                    cells.push({
+                        column: column,
+                        totalHoursEstimated: cellInHours
+                    });
+                }
+
+                swimlane.cells = cells
+            }
         }
     }
 })();

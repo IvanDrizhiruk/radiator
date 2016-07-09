@@ -65,15 +65,42 @@ public class KanbanFlowStatisticContorller {
         Map<String, KanbanFlowColumn> dbcolumns = loadOrCreateColumns(filteredColumns, board);
         Map<String, KanbanFlowSwimlane> dbswimlanes = loadOrCreateSwimlanes(swimlanes, board);
 
-
         List<KanbanFlowCellInfo> cellsForSave = cellsInfos.stream()
                 .map(cell -> updateDBObjectsInCellOrNull(cell, board, dbcolumns, dbswimlanes))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        //check isNeed to save
+        if (isNeedSave(board, cellsForSave)) {
+            kanbanFlowCellInfoRepository.save(cellsForSave);
+        }
+    }
 
-        kanbanFlowCellInfoRepository.save(cellsForSave);
+    private boolean isNeedSave(KanbanFlowBoard board, List<KanbanFlowCellInfo> cellsForSave) {
+        List<KanbanFlowCellInfo> cellsFromDb = kanbanFlowCellInfoRepository.findLastKanbanFlowCells(board);
+
+        if(cellsFromDb.isEmpty()) {
+            return true;
+        }
+
+        if (cellsForSave.size() != cellsFromDb.size()) {
+            return false;
+        }
+
+        return cellsForSave.stream()
+                .filter(cellForSave -> !isPresentInList(cellForSave, cellsFromDb))
+                .findFirst()
+                .isPresent();
+    }
+
+    private boolean isPresentInList(KanbanFlowCellInfo cellForSave, List<KanbanFlowCellInfo> cellsFromDb) {
+        return cellsFromDb.stream()
+                .filter(cellfromDb ->
+                        cellForSave.getColumn().getId().equals(cellfromDb.getColumn().getId())
+                        && cellForSave.getSwimlane().getId().equals(cellfromDb.getSwimlane().getId())
+                        && cellForSave.getTotalSecondsEstimated().equals(cellfromDb.getTotalSecondsEstimated())
+                        && cellForSave.getTotalSecondsSpent().equals(cellfromDb.getTotalSecondsSpent()))
+                .findFirst()
+                .isPresent();
     }
 
     private KanbanFlowCellInfo updateDBObjectsInCellOrNull(KanbanFlowCellInfo cell, KanbanFlowBoard board, Map<String,
