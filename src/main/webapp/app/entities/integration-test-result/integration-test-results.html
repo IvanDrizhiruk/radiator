@@ -19,6 +19,7 @@
             <thead>
                 <tr>
                     <th><span>ID</span></th>
+                    <th><span>Instances Name</span></th>
                     <th><span>Total</span></th>
                     <th><span>Passed</span></th>
                     <th><span>Pending</span></th>
@@ -30,6 +31,7 @@
             <tbody>
                 <tr ng-repeat="integrationTestResult in vm.integrationTestResults track by integrationTestResult.id">
                     <td><a ui-sref="integration-test-result-detail({id:integrationTestResult.id})">{{integrationTestResult.id}}</a></td>
+                    <td>{{integrationTestResult.instancesName}}</td>
                     <td>{{integrationTestResult.total}}</td>
                     <td>{{integrationTestResult.passed}}</td>
                     <td>{{integrationTestResult.pending}}</td>

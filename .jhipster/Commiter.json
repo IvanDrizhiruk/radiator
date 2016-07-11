@@ -2,9 +2,9 @@
   "relationships": [
     {
       "relationshipId": 1,
+      "relationshipType": "many-to-many",
       "relationshipName": "buildState",
       "otherEntityName": "buildState",
-      "relationshipType": "many-to-many",
       "ownerSide": false,
       "otherEntityRelationshipName": "commiter"
     }
@@ -24,5 +24,6 @@
   "changelogDate": "20160525043359",
   "dto": "no",
   "pagination": "no",
-  "service": "no"
+  "service": "no",
+  "entityTableName": "commiter"
 }

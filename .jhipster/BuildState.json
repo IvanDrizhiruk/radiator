@@ -2,9 +2,9 @@
   "relationships": [
     {
       "relationshipId": 1,
+      "relationshipType": "many-to-many",
       "relationshipName": "commiter",
       "otherEntityName": "commiter",
-      "relationshipType": "many-to-many",
       "otherEntityField": "name",
       "ownerSide": true
     }
@@ -12,7 +12,7 @@
   "fields": [
     {
       "fieldId": 1,
-      "fieldName": "instancesName",
+      "fieldName": "instanceName",
       "fieldType": "String"
     },
     {
@@ -39,5 +39,6 @@
   "changelogDate": "20160525043358",
   "dto": "no",
   "pagination": "no",
-  "service": "no"
+  "service": "no",
+  "entityTableName": "build_state"
 }

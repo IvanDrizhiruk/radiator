@@ -4,8 +4,9 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import ua.dp.ardas.radiator.config.RadiatorProperties;
+import ua.dp.ardas.radiator.config.RadiatorProperties.IntegrationTest.IntegrationTestInstance;
 import ua.dp.ardas.radiator.domain.IntegrationTestResult;
 import ua.dp.ardas.radiator.repository.IntegrationTestResultRepository;
 import ua.dp.ardas.radiator.restclient.IntegrationTestRestClient;
@@ -25,20 +26,25 @@ public class IntegrationTestResultContorller {
 	private IntegrationTestRestClient restClient;
 	@Inject
 	private IntegrationTestResultRepository repository;
-	@Value("${radiator.integrationTest.url}")
-	private String url;
-	private boolean equals;
+	@Inject
+	private RadiatorProperties properties;
+
 
 	public void execute() {
-        try {
+		for (IntegrationTestInstance instance : properties.getIntegrationTest().getInstances()) {
+			try {
+				loadAndStoreDataForIntegrationTest(instance);
+			} catch (Exception e) {
+				LOG.warn("Some problem on processing of integration test result");
+			}
+		}
+	}
 
-			String report = restClient.loadTestReport(url);
-			IntegrationTestResult statistic = extractStatistic(report);
+	private void loadAndStoreDataForIntegrationTest(IntegrationTestInstance instance) {
+		String report = restClient.loadTestReport(instance.url);
+		IntegrationTestResult statistic = extractStatistic(report);
 
-			saveResultIfNeed(statistic);
-        } catch (Exception e) {
-			LOG.warn("Some problem on processing of integration test result");
-        }
+		saveResultIfNeed(statistic);
 	}
 
 	private void saveResultIfNeed(IntegrationTestResult statistic) {

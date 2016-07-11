@@ -62,6 +62,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                instancesName: null,
                                 total: null,
                                 passed: null,
                                 pending: null,

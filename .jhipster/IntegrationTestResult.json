@@ -3,26 +3,31 @@
   "fields": [
     {
       "fieldId": 1,
+      "fieldName": "instanceName",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 2,
       "fieldName": "total",
       "fieldType": "Long"
     },
     {
-      "fieldId": 2,
+      "fieldId": 3,
       "fieldName": "passed",
       "fieldType": "Long"
     },
     {
-      "fieldId": 3,
+      "fieldId": 4,
       "fieldName": "pending",
       "fieldType": "Long"
     },
     {
-      "fieldId": 4,
+      "fieldId": 5,
       "fieldName": "failed",
       "fieldType": "Long"
     },
     {
-      "fieldId": 5,
+      "fieldId": 6,
       "fieldName": "extractingDate",
       "fieldType": "ZonedDateTime"
     }
@@ -30,5 +35,6 @@
   "changelogDate": "20160620060558",
   "dto": "no",
   "pagination": "no",
-  "service": "no"
+  "service": "no",
+  "entityTableName": "integration_test_result"
 }

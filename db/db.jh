@@ -12,6 +12,7 @@ entity Commiter {
 }
 
 entity IntegrationTestResult {
+	instancesName String,
 	total Long,
 	passed Long,
 	pending Long,

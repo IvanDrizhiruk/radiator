@@ -19,6 +19,9 @@ public class IntegrationTestResult implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "instances_name")
+    private String instancesName;
+
     @Column(name = "total")
     private Long total;
 
@@ -40,6 +43,14 @@ public class IntegrationTestResult implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getInstancesName() {
+        return instancesName;
+    }
+
+    public void setInstancesName(String instancesName) {
+        this.instancesName = instancesName;
     }
 
     public Long getTotal() {
@@ -106,6 +117,7 @@ public class IntegrationTestResult implements Serializable {
     public String toString() {
         return "IntegrationTestResult{" +
             "id=" + id +
+            ", instancesName='" + instancesName + "'" +
             ", total='" + total + "'" +
             ", passed='" + passed + "'" +
             ", pending='" + pending + "'" +

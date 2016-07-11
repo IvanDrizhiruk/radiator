@@ -14,6 +14,12 @@
                     ng-model="vm.integrationTestResult.id" readonly />
         </div>
         <div class="form-group">
+            <label class="control-label" for="field_instancesName">Instances Name</label>
+            <input type="text" class="form-control" name="instancesName" id="field_instancesName"
+                    ng-model="vm.integrationTestResult.instancesName"
+                     />
+        </div>
+        <div class="form-group">
             <label class="control-label" for="field_total">Total</label>
             <input type="number" class="form-control" name="total" id="field_total"
                     ng-model="vm.integrationTestResult.total"

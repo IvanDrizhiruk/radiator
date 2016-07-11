@@ -101,7 +101,13 @@ radiator:
             password: password
     integrationTest:
         cron: '*/10 * * * * *'
-        url: http://jenkins-cerri.devel.ardas.dp.ua:82/last/result.xml
+        instances:
+            -
+                name: Central / Task
+                url: http://jenkins-cerri.devel.ardas.dp.ua:82/last/result.xml
+            -
+                name: Gantt
+                url: http://jenkins-cerri.devel.ardas.dp.ua:82/last/result.xml
     kanbanflow:
         cron: '0 */10 * * * *'
         boardConfigs:

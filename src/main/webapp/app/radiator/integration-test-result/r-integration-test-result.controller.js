@@ -5,13 +5,13 @@
         .module('radiatorApp')
         .controller('RIntegrationTestResultController', RIntegrationTestResultController);
 
-    RIntegrationTestResultController.$inject = ['$scope', 'IntegrationTestResult'];
+    RIntegrationTestResultController.$inject = ['$scope', 'RIntegrationTest'];
 
-    function RIntegrationTestResultController ($scope, IntegrationTestResult) {
+    function RIntegrationTestResultController ($scope, RIntegrationTest) {
         var vm = this;
         vm.buildStates = [];
         vm.loadAll = function() {
-            IntegrationTestResult.query(function(testResult) {
+            RIntegrationTest.query(function(testResult) {
                 vm.testResult = testResult;
             });
         };

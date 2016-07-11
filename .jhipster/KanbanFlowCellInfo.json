@@ -2,23 +2,23 @@
   "relationships": [
     {
       "relationshipId": 1,
+      "relationshipType": "many-to-one",
       "relationshipName": "board",
       "otherEntityName": "kanbanFlowBoard",
-      "relationshipType": "many-to-one",
       "otherEntityField": "name"
     },
     {
       "relationshipId": 2,
+      "relationshipType": "many-to-one",
       "relationshipName": "column",
       "otherEntityName": "kanbanFlowColumn",
-      "relationshipType": "many-to-one",
       "otherEntityField": "name"
     },
     {
       "relationshipId": 3,
+      "relationshipType": "many-to-one",
       "relationshipName": "swimlane",
       "otherEntityName": "kanbanFlowSwimlane",
-      "relationshipType": "many-to-one",
       "otherEntityField": "name"
     }
   ],
@@ -42,5 +42,6 @@
   "changelogDate": "20160622044500",
   "dto": "no",
   "pagination": "no",
-  "service": "no"
+  "service": "no",
+  "entityTableName": "kanban_flow_cell_info"
 }

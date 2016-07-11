@@ -2,9 +2,9 @@
   "relationships": [
     {
       "relationshipId": 1,
+      "relationshipType": "many-to-one",
       "relationshipName": "board",
       "otherEntityName": "kanbanFlowBoard",
-      "relationshipType": "many-to-one",
       "otherEntityField": "name"
     }
   ],
@@ -23,5 +23,6 @@
   "changelogDate": "20160622044558",
   "dto": "no",
   "pagination": "no",
-  "service": "no"
+  "service": "no",
+  "entityTableName": "kanban_flow_column"
 }

@@ -114,7 +114,8 @@ public class RadiatorProperties {
 
         public String cron;
 
-        public String url;
+        public final List<IntegrationTestInstance> instances = new ArrayList<>();
+
 
         public String getCron() {
             return cron;
@@ -124,12 +125,29 @@ public class RadiatorProperties {
             this.cron = cron;
         }
 
-        public String getUrl() {
-            return url;
+        public List<IntegrationTestInstance> getInstances() {
+            return instances;
         }
 
-        public void setUrl(String url) {
-            this.url = url;
+        public static class IntegrationTestInstance {
+            public String name;
+            public String url;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
         }
     }
 

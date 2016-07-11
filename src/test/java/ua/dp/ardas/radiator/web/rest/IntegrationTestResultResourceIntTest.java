@@ -1,35 +1,34 @@
 package ua.dp.ardas.radiator.web.rest;
 
-import ua.dp.ardas.radiator.RadiatorApp;
-import ua.dp.ardas.radiator.domain.IntegrationTestResult;
-import ua.dp.ardas.radiator.repository.IntegrationTestResultRepository;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import ua.dp.ardas.radiator.RadiatorApp;
+import ua.dp.ardas.radiator.domain.IntegrationTestResult;
+import ua.dp.ardas.radiator.repository.IntegrationTestResultRepository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -47,6 +46,8 @@ public class IntegrationTestResultResourceIntTest {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("Z"));
 
+    private static final String DEFAULT_INSTANCES_NAME = "AAAAA";
+    private static final String UPDATED_INSTANCES_NAME = "BBBBB";
 
     private static final Long DEFAULT_TOTAL = 1L;
     private static final Long UPDATED_TOTAL = 2L;
@@ -90,6 +91,7 @@ public class IntegrationTestResultResourceIntTest {
     @Before
     public void initTest() {
         integrationTestResult = new IntegrationTestResult();
+        integrationTestResult.setInstancesName(DEFAULT_INSTANCES_NAME);
         integrationTestResult.setTotal(DEFAULT_TOTAL);
         integrationTestResult.setPassed(DEFAULT_PASSED);
         integrationTestResult.setPending(DEFAULT_PENDING);
@@ -113,6 +115,7 @@ public class IntegrationTestResultResourceIntTest {
         List<IntegrationTestResult> integrationTestResults = integrationTestResultRepository.findAll();
         assertThat(integrationTestResults).hasSize(databaseSizeBeforeCreate + 1);
         IntegrationTestResult testIntegrationTestResult = integrationTestResults.get(integrationTestResults.size() - 1);
+        assertThat(testIntegrationTestResult.getInstancesName()).isEqualTo(DEFAULT_INSTANCES_NAME);
         assertThat(testIntegrationTestResult.getTotal()).isEqualTo(DEFAULT_TOTAL);
         assertThat(testIntegrationTestResult.getPassed()).isEqualTo(DEFAULT_PASSED);
         assertThat(testIntegrationTestResult.getPending()).isEqualTo(DEFAULT_PENDING);
@@ -131,6 +134,7 @@ public class IntegrationTestResultResourceIntTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(integrationTestResult.getId().intValue())))
+                .andExpect(jsonPath("$.[*].instancesName").value(hasItem(DEFAULT_INSTANCES_NAME.toString())))
                 .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL.intValue())))
                 .andExpect(jsonPath("$.[*].passed").value(hasItem(DEFAULT_PASSED.intValue())))
                 .andExpect(jsonPath("$.[*].pending").value(hasItem(DEFAULT_PENDING.intValue())))
@@ -149,6 +153,7 @@ public class IntegrationTestResultResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(integrationTestResult.getId().intValue()))
+            .andExpect(jsonPath("$.instancesName").value(DEFAULT_INSTANCES_NAME.toString()))
             .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL.intValue()))
             .andExpect(jsonPath("$.passed").value(DEFAULT_PASSED.intValue()))
             .andExpect(jsonPath("$.pending").value(DEFAULT_PENDING.intValue()))
@@ -174,6 +179,7 @@ public class IntegrationTestResultResourceIntTest {
         // Update the integrationTestResult
         IntegrationTestResult updatedIntegrationTestResult = new IntegrationTestResult();
         updatedIntegrationTestResult.setId(integrationTestResult.getId());
+        updatedIntegrationTestResult.setInstancesName(UPDATED_INSTANCES_NAME);
         updatedIntegrationTestResult.setTotal(UPDATED_TOTAL);
         updatedIntegrationTestResult.setPassed(UPDATED_PASSED);
         updatedIntegrationTestResult.setPending(UPDATED_PENDING);
@@ -189,6 +195,7 @@ public class IntegrationTestResultResourceIntTest {
         List<IntegrationTestResult> integrationTestResults = integrationTestResultRepository.findAll();
         assertThat(integrationTestResults).hasSize(databaseSizeBeforeUpdate);
         IntegrationTestResult testIntegrationTestResult = integrationTestResults.get(integrationTestResults.size() - 1);
+        assertThat(testIntegrationTestResult.getInstancesName()).isEqualTo(UPDATED_INSTANCES_NAME);
         assertThat(testIntegrationTestResult.getTotal()).isEqualTo(UPDATED_TOTAL);
         assertThat(testIntegrationTestResult.getPassed()).isEqualTo(UPDATED_PASSED);
         assertThat(testIntegrationTestResult.getPending()).isEqualTo(UPDATED_PENDING);

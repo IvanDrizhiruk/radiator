@@ -10,5 +10,6 @@
   "changelogDate": "20160622044557",
   "dto": "no",
   "pagination": "no",
-  "service": "no"
+  "service": "no",
+  "entityTableName": "kanban_flow_board"
 }
