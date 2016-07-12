@@ -9,10 +9,9 @@ import ua.dp.ardas.radiator.domain.Commiter;
 import ua.dp.ardas.radiator.dto.hudson.api.Person;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-import static com.google.common.base.Predicates.notNull;
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -65,25 +64,25 @@ public class BuildStateUtils {
 				CharMatcher.is('.').replaceFrom(person.fullName, " "));
 	}
 
+	private static Commiter transformToCommiter(String emailFormat, Person person) {
+		String name = personFullNameToName(person);
+		String email = personFullNameToEmail(emailFormat, person);
+
+		if (null == name || null == email) {
+			return null;
+		}
+
+		Commiter commiter = new Commiter();
+		commiter.setName(name);
+		commiter.setEmail(email);
+
+		return commiter;
+	}
+
 	public static List<Commiter> calculateCommiters(List<Person> culprits, final String emailFormat) {
-		List<Commiter> commiters = Lists.transform(culprits,new Function<Person, Commiter>() {
-			public Commiter apply(Person person) {
-				
-				String name = personFullNameToName(person);
-				String email = personFullNameToEmail(emailFormat, person);
-
-				if (null == name || null == email) {
-					return null;
-				}
-
-				Commiter commiter = new Commiter();
-				commiter.setName(name);
-				commiter.setEmail(email);
-				return commiter;
-			}
-		});
-		
-		return newArrayList(
-				filter(commiters, notNull()));
+		return culprits.stream()
+				.map(person -> transformToCommiter(emailFormat, person))
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
 	}
 }

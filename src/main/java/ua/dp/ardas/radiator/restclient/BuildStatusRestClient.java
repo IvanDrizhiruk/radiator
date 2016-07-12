@@ -83,7 +83,6 @@ public class BuildStatusRestClient {
 		}
 		BuildDetails forObject = null;
 		try {
-
 			return forObject = restClient.getForObject(fullUrl, BuildDetails.class);
 		} finally {
 			if (LOG.isDebugEnabled()) {

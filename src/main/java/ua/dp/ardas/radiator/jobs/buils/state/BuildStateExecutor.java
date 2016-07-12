@@ -1,5 +1,6 @@
 package ua.dp.ardas.radiator.jobs.buils.state;
 
+import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,11 +9,13 @@ import ua.dp.ardas.radiator.domain.BuildState;
 import ua.dp.ardas.radiator.domain.Commiter;
 import ua.dp.ardas.radiator.dto.BuildStates;
 import ua.dp.ardas.radiator.dto.hudson.api.BuildDetails;
+import ua.dp.ardas.radiator.dto.hudson.api.Person;
 import ua.dp.ardas.radiator.restclient.BuildStatusRestClient;
 import ua.dp.ardas.radiator.utils.BuildStateUtils;
 import ua.dp.ardas.radiator.utils.DataTimeUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -79,12 +82,6 @@ public class BuildStateExecutor {
 		return buildState;
 	}
 
-	private Long getLastRunTimestemp(String url, int lastBuild) {
-		BuildDetails buildDetails = restClient.loadBuildDetails(url, lastBuild);
-
-		return buildDetails.timestamp;
-	}
-
 	private BuildState newBuildFailedState(BuildStateInstance instance, String url, Integer lastFailedBuild, Long lastRunTimestemp) {
 
 
@@ -97,10 +94,34 @@ public class BuildStateExecutor {
 		buildState.setExtractingDate(DataTimeUtils.nowZonedDateTime());
 
 		BuildDetails buildDetails = restClient.loadBuildDetails(url, lastFailedBuild);
-		List<Commiter> commiters = BuildStateUtils.calculateCommiters(buildDetails.culprits, emailFormat);
+
+		List<Person> culprits = extractCulprits(buildDetails);
+		List<Commiter> commiters = BuildStateUtils.calculateCommiters(culprits, emailFormat);
+
 		buildState.getCommiters().addAll(commiters);
 
 		return buildState;
+	}
+
+	private Long getLastRunTimestemp(String url, int lastBuild) {
+		BuildDetails buildDetails = restClient.loadBuildDetails(url, lastBuild);
+
+		return buildDetails.timestamp;
+	}
+
+	private List<Person> extractCulprits(BuildDetails buildDetails) {
+		//		List<Person> culprits = buildDetails.culprits;
+		if (null == buildDetails.changeSet || null == buildDetails.changeSet.items) {
+			return Lists.newArrayList();
+		}
+
+		return buildDetails.changeSet.items.stream()
+				.collect(Collectors.toMap(
+						item -> item.author.fullName,
+						item -> item.author,
+						(item1, item2) -> item1))
+				.values().stream()
+				.collect(Collectors.toList());
 	}
 
 
