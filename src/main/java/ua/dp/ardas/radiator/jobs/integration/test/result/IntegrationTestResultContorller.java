@@ -44,28 +44,30 @@ public class IntegrationTestResultContorller {
 		String report = restClient.loadTestReport(instance.url);
 		IntegrationTestResult statistic = extractStatistic(report);
 
-		saveResultIfNeed(statistic);
+		saveResultIfNeed(instance, statistic);
 	}
 
-	private void saveResultIfNeed(IntegrationTestResult statistic) {
-		Optional<IntegrationTestResult> lastResult = repository.findLast();
+	private void saveResultIfNeed(IntegrationTestInstance instance, IntegrationTestResult statistic) {
+		String instancesName = instance.name;
+		Optional<IntegrationTestResult> lastResult = repository.findLastByInstancesName(instancesName);
 
-		if (lastResult.isPresent()) {
-			IntegrationTestResult lastResultObj = lastResult.get();
-
-			if (!isEquals(lastResultObj.getTotal(), statistic.getTotal())
-					|| !isEquals(lastResultObj.getPassed(), statistic.getPassed())
-					|| !isEquals(lastResultObj.getPending(), statistic.getPending())
-					|| !isEquals(lastResultObj.getFailed(), statistic.getFailed()) ) {
-				repository.save(statistic);
-			}
-
-
-		} else {
+		if(!isEquelsStatistic(statistic, lastResult)) {
+			statistic.setInstancesName(instancesName);
 			repository.save(statistic);
 		}
+	}
 
+	private boolean isEquelsStatistic(IntegrationTestResult statistic, Optional<IntegrationTestResult> lastResult) {
+		if (!lastResult.isPresent()) {
+			return false;
+		}
 
+		IntegrationTestResult lastResultObj = lastResult.get();
+
+		return isEquals(lastResultObj.getTotal(), statistic.getTotal())
+				&& isEquals(lastResultObj.getPassed(), statistic.getPassed())
+				&& isEquals(lastResultObj.getPending(), statistic.getPending())
+				&& isEquals(lastResultObj.getFailed(), statistic.getFailed());
 	}
 
 	protected IntegrationTestResult extractStatistic(String report) {

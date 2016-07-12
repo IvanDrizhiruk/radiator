@@ -1,7 +1,6 @@
 package ua.dp.ardas.radiator.web.rest.report;
 
 import com.codahale.metrics.annotation.Timed;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -13,7 +12,6 @@ import ua.dp.ardas.radiator.repository.IntegrationTestResultRepository;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing BuildState.
@@ -35,12 +33,6 @@ public class IntegrationTestsReportResource {
     public List<IntegrationTestResult> getLastIntegratinTests() {
         log.debug("REST request to get last BuildStates");
 
-        Optional<IntegrationTestResult> lastBuildStates = integrationTestResultRepository.findLast();
-
-        List<IntegrationTestResult> result = Lists.newArrayList();
-
-        lastBuildStates.ifPresent(buildState -> result.add(buildState));
-
-        return result;
+        return integrationTestResultRepository.findLasts();
     }
 }
