@@ -1,15 +1,26 @@
-<div class="row">
-    <div ng-bind="vm.item.instancesName"></div>
-    <div class="col-md-8">
-        failed: {{ vm.item.failed }} <br />
-        passed: {{ vm.item.passed }} <br />
-        pending: {{ vm.item.pending }} <br />
+<div class="row block-title"><h1 ng-bind="vm.item.instancesName"></h1></div>
+<div class="row block-body itegration-test-content">
+    <div class="col-md-6">
+        <div class="info info-faild">
+            <div class="info-cell info-label">Failed:</div>
+            <div class="info-cell info-data" ng-bind="vm.item.failed"></div>
+        </div>
+        <div class="info info-pending">
+            <div class="info-cell info-label">Pending:</div>
+            <div class="info-cell info-data" ng-bind="vm.item.pending"></div>
+        </div>
+        <div class="info info-passed">
+            <div class="info-cell info-label">Passed:</div>
+            <div class="info-cell info-data" ng-bind="vm.item.passed"></div>
+        </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-1"></div>
+    <div class="col-md-5">
         <canvas id="pie" class="chart chart-pie"
                 chart-data="vm.chartData.data"
                 chart-labels="vm.chartData.labels"
-                chart-colors="vm.chartData.colors">
+                chart-colors="vm.chartData.colors"
+                chart-options="vm.chartData.options">
         </canvas>
     </div>
 </div>

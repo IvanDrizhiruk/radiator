@@ -9,8 +9,9 @@
         <div class="row" ng-repet="">
 
             <div ng-repeat="commiter in vm.item.commiters">
-                <img class="buildStateImage" src="content/images/unknown.jpg">
-                <img class="buildStateImage" ng-src="{{vm.emailToImagePath(commiter.email)}}">
+                <img class="buildStateImage"
+                     ng-src="{{vm.emailToImagePath(commiter.email)}}"
+                     r-default-image-src="content/images/unknown.jpg"/>
                 <div ng-bind="commiter.name"></div>
             </div>
             <div ng-bind="vm.item.errorMessage"></div>

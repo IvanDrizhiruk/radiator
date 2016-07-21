@@ -5,9 +5,9 @@
         .module('radiatorApp')
         .controller('RKanbanFlowController', rKanbanFlowController);
 
-    rKanbanFlowController.$inject = ['$scope', '$state', 'RKanbanFlow'];
+    rKanbanFlowController.$inject = ['$scope', '$state', 'RKanbanFlow', 'RRefresher'];
 
-    function rKanbanFlowController ($scope, $state, RKanbanFlow) {
+    function rKanbanFlowController ($scope, $state, RKanbanFlow, RRefresher) {
         var vm = this;
         vm.boards = [];
 
@@ -19,6 +19,8 @@
                     vm.boards = transformToUIBoard(result);
             });
         };
+
+        RRefresher.registrate(vm.loadAll);
 
         vm.loadAll();
 

@@ -1,5 +1,5 @@
-<div class="row kanban-flow">
-    <div ng-bind="board.name"></div>
+<div class="row block-title"><h1 ng-bind="board.name"></h1></div>
+<div class="row block-body kanban-flow">
     <table>
         <tr>
             <th ng-repeat="column in board.columns">

@@ -33,7 +33,11 @@ public class BuildStateContorller {
 		for(BuildStateInstance instances : properties.buildState.instances) {
 			BuildState buildState = executor.loadState(instances);
 
-			Optional<BuildState> res = buildStateRepository.findOneByStateAndLastRunTimestemp(buildState.getState(), buildState.getLastRunTimestemp());
+			Optional<BuildState> res = Optional.empty();
+
+			if (null == buildState || null ==  buildState.getLastRunTimestemp()) {
+				buildStateRepository.findOneByStateAndLastRunTimestemp(buildState.getState(), buildState.getLastRunTimestemp());
+			}
 
 			if(!res.isPresent()) {
 				prepareCommiters(buildState);

@@ -26,7 +26,8 @@
         vm.chartData = {
             data: [vm.item.passed, vm.item.pending, vm.item.failed],
             labels: ['Passed', 'Pending', 'Failed'],
-            colors: ['#109618', '#FF9900', '#DC3912']
+            colors: ['#109618', '#FF9900', '#DC3912'],
+            options: {animation : false}
         };
     }
 })();

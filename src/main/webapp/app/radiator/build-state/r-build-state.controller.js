@@ -5,9 +5,9 @@
         .module('radiatorApp')
         .controller('RBuildStateController', RBuildStateController);
 
-    RBuildStateController.$inject = ['$scope', '$state', 'RBuildState'];
+    RBuildStateController.$inject = ['$scope', '$state', 'RBuildState', 'RRefresher'];
 
-    function RBuildStateController ($scope, $state, RBuildState) {
+    function RBuildStateController ($scope, $state, RBuildState, RRefresher) {
         var vm = this;
         vm.buildStates = [];
         vm.loadAll = function() {
@@ -15,6 +15,8 @@
                 vm.buildStates = result;
             });
         };
+
+        RRefresher.registrate(vm.loadAll);
 
         vm.loadAll();
     }

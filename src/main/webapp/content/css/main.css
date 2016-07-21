@@ -333,11 +333,99 @@ ui bootstrap tweaks
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
 
+.block-body {
+
+}
+
+.block-title {
+    text-align: center;
+
+    background-image: radial-gradient( #e3e3e3, #f2f2f2 )
+}
+
+.block-title h1 {
+    font-weight: bold;
+}
+
+/**/
 .buildStateImage {
     height: 100px;
 }
 
+.block-body.build-state {
+    border-radius: 50px;
+}
+
+/**/
+
+.block-body.itegration-test-content {
+    border-radius: 50px 300px 300px 50px;
+}
+
+.itegration-test-content .info {
+    display: flex;
+}
+
+.itegration-test-content .info .info-label {
+    flex-grow: 1;
+    font: 50px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+    width: 100%;
+}
+
+.itegration-test-content .info .info-data {
+    flex-grow: 5;
+    font: 50px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+}
+
+.info-faild {
+    color: #e30613;
+}
+
+.info-faild .info-data {
+    background: #e30613;
+    color: #fff;
+}
+
+.info-pending {
+    color: #FF8C00;
+}
+
+.info-passed {
+    color: #006400;
+}
+
+/**/
 .kanban-flow table {
     width: 100%;
     table-layout: fixed;
+}
+
+/*.kanban-flow table {
+    border: 1px solid;
+}*/
+
+.kanban-flow th {
+    opacity: 0.6;
+    text-align: center;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    font-size: 20px;
+}
+
+.kanban-flow td {
+    font: 50px Ubuntu, Tahoma, Helvetica, Arial, Verdana;
+    opacity: 0.6;
+    text-align: center;
+    border-left: 1px solid;
+    border-right: 1px solid;
+}
+
+.kanban-flow td:first-child,
+.kanban-flow th:first-child {
+    border-left: 0px solid;
+}
+
+.kanban-flow td:last-child,
+.kanban-flow th:last-child {
+    border-right: 0px solid;
 }
